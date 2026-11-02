@@ -1,0 +1,7 @@
+# Lokal auf Entwickler-Zugängen entwickeln, dann Übergabe an den Verein
+
+Domain, Hoster, SMTP und den Produktiv-Space vom Verein gibt es noch nicht. Bis zur Übergabe läuft deshalb alles auf Zugängen des Entwicklers: Repo unter `ismailytics`, eigener Storyblok-Test-Space mit Beispielinhalten, Mailpit statt SMTP. Bei der Übergabe wird das Repo an ein GitHub-Konto des Vereins übertragen, Issues und ADRs gehen mit. Der Produktiv-Space wird mit dem Redaktionszugang des Vereins angelegt und bekommt die Komponenten-Schemas und die Beispielinhalte. Die echten Inhalte gibt die Redaktion selbst ein, indem sie die Beispielinhalte überschreibt; ein Migrationsskript von Jimdo gibt es nicht. Der Test-Space bleibt beim Entwickler. Danach besitzt der Verein alle Zugänge, und der Entwickler ist nur noch delegierter Admin. Wechselt der Entwickler, ist die Übergabe ein Postfach-Passwort.
+
+## Consequences
+
+Das Repo ist die Quelle für Komponenten-Schemas und Beispielinhalte: Beide werden per Storyblok-CLI aus dem Test-Space gezogen, committet und bei der Übergabe in den Produktiv-Space geschoben. Die Beispielinhalte dienen zugleich als Test-Fixtures. Beispielbilder müssen deshalb frei lizenziert sein und dürfen keine Kinder zeigen. Das CLI überträgt keine Löschungen; die macht man im Produktiv-Space von Hand.
