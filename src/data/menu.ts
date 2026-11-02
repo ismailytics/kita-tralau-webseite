@@ -32,4 +32,10 @@ export const MainMenu: MenuItem[] = [
 		hoverClass: "hover:text-brand-yellow",
 		activeClass: "text-brand-yellow",
 	},
+	{
+		label: "Downloads",
+		href: "/downloads",
+		hoverClass: "hover:text-brand-blue",
+		activeClass: "text-brand-blue",
+	},
 ];

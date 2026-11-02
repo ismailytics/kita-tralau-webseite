@@ -78,6 +78,22 @@ export interface GlobaleAngaben {
   _editable?: string | undefined;
 }
 
+export interface Kontakt {
+  intro_titel: string;
+  intro_text?: string;
+  kitaportal_titel: string;
+  kitaportal_text: string;
+  kitaportal_url: string;
+  kitaportal_link_text: string;
+  karte_bild: StoryblokAsset;
+  karte_quelle: string;
+  karte_url: string;
+  karte_link_text: string;
+  component: "kontakt";
+  _uid: string;
+  _editable?: string | undefined;
+}
+
 export interface Startseite {
   hero_titel: string;
   hero_text?: string;
@@ -149,6 +165,7 @@ export type ContentType =
   | Faq
   | Galerie
   | GlobaleAngaben
+  | Kontakt
   | Startseite
   | Tagesablauf
   | Termin
