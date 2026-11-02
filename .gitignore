@@ -13,3 +13,4 @@ playwright-report/
 .storyblok/
 
 .DS_Store
+.playwright-mcp/

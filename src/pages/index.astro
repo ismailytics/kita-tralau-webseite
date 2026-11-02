@@ -41,7 +41,7 @@ const { hero, konzept, kontaktCta } = await startseite();
 
 	<Section class:list={"bg-brand-blue text-white"}>
 		<Container class:list={"lg:py-12"}>
-			<SectionHeading class="mb-0">
+			<SectionHeading>
 				<h2 class="text-4xl font-bold tracking-wide">{kontaktCta.titel}</h2>
 				{kontaktCta.text && <p class="max-w-2xl mx-auto">{kontaktCta.text}</p>}
 				<Button href="#kontakt" variant="white">{kontaktCta.button}</Button>
