@@ -11,45 +11,69 @@
   "is_folder": false,
   "content": {
     "_uid": "4509a89c-166b-4e82-baa0-73df8b228987",
-    "intro": "So sieht ein typischer Tag bei uns aus. Feste Zeiten geben den Kindern Sicherheit, dazwischen bleibt viel Raum zum Spielen.",
+    "intro": "So sieht ein Tag bei uns aus. Die Zeiten sind flexibel und greifen ineinander über. Bis 9:00 Uhr sollten alle Kinder angekommen sein, ab 12:00 Uhr beginnt die Abholzeit. Während der Ruhepause wird nicht abgeholt.",
     "titel": "Unser Tagesablauf",
     "component": "tagesablauf",
     "zeitbloecke": [
       {
-        "_uid": "ad075f62-70bc-4afc-88cc-7aab5a3209bd",
-        "uhrzeit": "7:30 – 8:30",
+        "_uid": "422c81f3-af4c-4dd1-9562-8e43d9b33ea9",
         "component": "zeitblock",
-        "beschreibung": "Ankommen und Freispiel"
+        "uhrzeit": "7:30 – 9:00",
+        "beschreibung": "Freispielzeit"
       },
       {
-        "_uid": "a10692b5-da9c-4737-bdab-338c97cda565",
-        "uhrzeit": "8:30 – 9:00",
+        "_uid": "ef432209-0ad2-42b1-8ad8-b9380699c4c2",
         "component": "zeitblock",
-        "beschreibung": "Gemeinsames Frühstück"
-      },
-      {
-        "_uid": "a3b1f530-6c57-4f8f-833c-ce9fd16dc1ae",
         "uhrzeit": "9:00 – 9:30",
-        "component": "zeitblock",
         "beschreibung": "Morgenkreis"
       },
       {
-        "_uid": "716311e2-fb92-4eb0-829e-ced6bdcacd37",
-        "uhrzeit": "9:30 – 11:30",
+        "_uid": "dd6e475f-89f3-4657-9bc0-d6a624f7fba9",
         "component": "zeitblock",
-        "beschreibung": "Spielen im Garten, Ausflüge und Projekte"
+        "uhrzeit": "9:30 – 10:00",
+        "beschreibung": "Frühstück mit anschließendem Zähneputzen"
       },
       {
-        "_uid": "18f4fe3d-5fc2-4b9d-a651-7cc764e8a9a5",
-        "uhrzeit": "11:30 – 12:30",
+        "_uid": "6a5a3f05-91e0-4d22-9528-4b4cf27484df",
         "component": "zeitblock",
-        "beschreibung": "Mittagessen"
+        "uhrzeit": "10:00 – 11:00",
+        "beschreibung": "Kleingruppenarbeit und Freispielzeit"
       },
       {
-        "_uid": "8431507a-cb62-4de0-95ce-369b335f09e0",
-        "uhrzeit": "12:30 – 14:00",
+        "_uid": "17064374-16c7-4fed-9b6b-e74931c64899",
         "component": "zeitblock",
-        "beschreibung": "Ruhezeit, Freispiel und Abholen"
+        "uhrzeit": "11:00 – 12:00",
+        "beschreibung": "Aufenthalt im Freien"
+      },
+      {
+        "_uid": "ba825db3-6759-48c5-ba65-0770e44fb4d7",
+        "component": "zeitblock",
+        "uhrzeit": "12:00 – 13:00",
+        "beschreibung": "Mittagessen, kalt und warm"
+      },
+      {
+        "_uid": "b587b3ad-0936-44cb-a1fb-1c3ba6206c1a",
+        "component": "zeitblock",
+        "uhrzeit": "13:00 – 13:30",
+        "beschreibung": "Ruhepause"
+      },
+      {
+        "_uid": "c41cfd97-5fa3-4c56-829d-2b1851d0eff5",
+        "component": "zeitblock",
+        "uhrzeit": "13:30 – 15:00",
+        "beschreibung": "Freispielzeit"
+      },
+      {
+        "_uid": "e7963588-02eb-47d0-98d9-825c954bfb02",
+        "component": "zeitblock",
+        "uhrzeit": "15:00 – 15:30",
+        "beschreibung": "Kreis und Nachmittagssnack"
+      },
+      {
+        "_uid": "419ef137-a52e-4073-90cd-85208f13b205",
+        "component": "zeitblock",
+        "uhrzeit": "15:30 – 17:00",
+        "beschreibung": "Freispielzeit"
       }
     ]
   },

@@ -14,8 +14,7 @@ const { bearbeiten, name, logo, footerText, kontakt, oeffnungszeiten } = await g
 		<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8">
 			<div class="lg:col-span-2">
 				<a href={pfad("/")} class="flex gap-x-4 items-center">
-					<Bild bild={logo} class="size-12" />
-					<span class="font-bold font-fredoka text-2xl">{name}</span>
+					<Bild bild={logo} class="h-16 w-auto bg-white rounded-xl p-2" widths={[200, 400]} sizes="200px" />
 				</a>
 				{footerText && <p class="font-body text-base mt-4">{footerText}</p>}
 			</div>

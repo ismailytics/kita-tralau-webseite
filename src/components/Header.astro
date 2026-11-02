@@ -6,16 +6,15 @@ import { MainMenu } from "@/data/menu";
 import MobileMenu from "@/components/MobileMenu.astro";
 
 const pathname = seitenpfad(Astro.url.pathname);
-const { bearbeiten, name, logo } = await globaleAngaben();
+const { bearbeiten, logo } = await globaleAngaben();
 ---
 
 <header id="main-header" class="sticky top-0 z-50" {...bearbeiten}>
 	<div class="bg-white/90 backdrop-blur-md">
 		<div class="container py-4 flex items-center justify-between gap-x-4">
 			<!-- Logo -->
-			<a href={pfad("/")} class="flex gap-x-4 items-center">
-				<Bild bild={logo} class="size-12" loading="eager" />
-				<span class="font-bold font-fredoka text-2xl md:text-3xl">{name}</span>
+			<a href={pfad("/")} class="flex gap-x-4 items-center shrink-0">
+				<Bild bild={logo} class="h-12 w-auto shrink-0" widths={[150, 300]} sizes="150px" loading="eager" />
 			</a>
 
 			<!-- Menu -->

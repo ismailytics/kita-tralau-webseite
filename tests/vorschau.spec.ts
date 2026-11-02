@@ -70,7 +70,7 @@ for (const pfad of [
 	"/impressum",
 	"/datenschutz",
 	"/kontakt",
-	"/galerie/sommer-2026",
+	"/galerie/aussengelaende",
 	"/aktuelles/laternelaufen",
 ]) {
 	test(`${pfad}: Seite ist bearbeitbar`, async ({ page }) => {

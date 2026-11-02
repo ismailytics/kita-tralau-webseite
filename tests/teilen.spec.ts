@@ -17,7 +17,7 @@ for (const { pfad, titel, beschreibung } of [
 	{ pfad: "/", titel: "Kindergruppe Travenbrück e.V.", beschreibung: /./ },
 	{ pfad: "/aktuelles/laternelaufen", titel: "Laternelaufen am 11. November", beschreibung: /./ },
 	{ pfad: "/termine", titel: "Termine", beschreibung: /^Termine und Schließzeiten/ },
-	{ pfad: "/galerie/sommer-2026", titel: "Sommer rund ums Haus" },
+	{ pfad: "/galerie/gruppenraeume", titel: "Gruppenräume und Ballbad" },
 ]) {
 	test(`${pfad}: OG- und Twitter-Meta zeigen auf die eigene Domain`, async ({ page }) => {
 		await page.goto(pfad);
@@ -35,7 +35,7 @@ for (const { pfad, titel, beschreibung } of [
 test("Beitrag und Album teilen ihr eigenes Bild, nicht das der Startseite", async ({ page }) => {
 	await page.goto("/");
 	const start = await meta(page, "og:image").getAttribute("content");
-	for (const pfad of ["/aktuelles/laternelaufen", "/galerie/sommer-2026"]) {
+	for (const pfad of ["/aktuelles/laternelaufen", "/galerie/gruppenraeume"]) {
 		await page.goto(pfad);
 		expect(await meta(page, "og:image").getAttribute("content"), pfad).not.toBe(start);
 	}
@@ -47,7 +47,7 @@ test("Favicon kommt aus dem Logo der Globalen Angaben, same-origin", async ({ pa
 	await page.goto("/");
 	for (const rel of ["icon", "apple-touch-icon"]) {
 		const href = await page.locator(`link[rel="${rel}"]`).getAttribute("href");
-		expect(href).toMatch(/^\/_astro\/logo_.*\.png$/);
+		expect(href).toMatch(/^\/_astro\/logo-kindergruppe-travenbrueck_.*\.png$/);
 		await bildAusDemBuild(page, `${SITE}${href}`);
 	}
 	await expect(page.locator('link[rel="shortcut icon"]')).toHaveCount(0);

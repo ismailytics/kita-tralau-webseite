@@ -18,7 +18,7 @@
           "type": "paragraph",
           "content": [
             {
-              "text": "Platzhaltertext: Wir sind eine kleine, von Eltern getragene Kindergruppe in Tralau.",
+              "text": "Wir bieten derzeit 80 Kindern ab drei Jahren Platz zum Spielen, Toben, Träumen und Kreativsein. Als kleine, überschaubare Einrichtung mit guter personeller Besetzung haben wir Zeit für die individuellen Bedürfnisse unserer Kinder und können ihnen die nötige Geborgenheit für eine bestmögliche Entwicklung geben.",
               "type": "text"
             }
           ]
@@ -36,6 +36,15 @@
           ]
         },
         {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Unseren Kindergarten sehen wir als familienergänzende Einrichtung, die die Bildungsleitlinien des Landes Schleswig-Holstein umsetzt. Im Mittelpunkt unserer Arbeit stehen die Interessen und Bedürfnisse der Kinder und ihrer Familien.",
+              "type": "text"
+            }
+          ]
+        },
+        {
           "type": "bullet_list",
           "content": [
             {
@@ -45,7 +54,7 @@
                   "type": "paragraph",
                   "content": [
                     {
-                      "text": "Viel Zeit draußen im Garten",
+                      "text": "Freispiel im Haus, im Ballbad und auf dem Außengelände",
                       "type": "text"
                     }
                   ]
@@ -59,7 +68,7 @@
                   "type": "paragraph",
                   "content": [
                     {
-                      "text": "Feste Rituale im Tagesablauf",
+                      "text": "Morgenkreis und Kleingruppenarbeit zu Projekten über mehrere Wochen",
                       "type": "text"
                     }
                   ]
@@ -73,7 +82,21 @@
                   "type": "paragraph",
                   "content": [
                     {
-                      "text": "Kleine Gruppe mit vertrauten Bezugspersonen",
+                      "text": "Einmal pro Woche Turnen in der Turnhalle des Gemeinschaftshauses",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "text": "Gezielte Vorbereitung auf die Schule",
                       "type": "text"
                     }
                   ]
@@ -86,11 +109,82 @@
           "type": "paragraph",
           "content": [
             {
+              "text": "Die komplette ",
+              "type": "text"
+            },
+            {
+              "text": "Konzeption (PDF)",
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://a.storyblok.com/f/0/5050ab0267/konzeption.pdf",
+                    "uuid": null,
+                    "anchor": null,
+                    "target": "_self",
+                    "linktype": "asset"
+                  }
+                }
+              ]
+            },
+            {
+              "text": " können Sie herunterladen.",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "text": "Unsere Gruppen",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Die Kinder sind in vier Gruppen zu Hause: bei den Eichhörnchen, den Raupen, den Mäusen und den Schnecken.",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "text": "Haus und Gelände",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Unsere Kita liegt in ländlicher Umgebung, direkt am Sportplatz und am Wald. Zum Außengelände gehört ein Spielplatz mit verschiedenen Spielgeräten, Fahrzeugen und einer Sandkiste.",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
               "type": "image",
               "attrs": {
-                "id": 237372048111712,
-                "alt": "Spielplatz mit Schaukel unter einem großen Kastanienbaum",
-                "src": "https://a.storyblok.com/f/0/430047c164/spielplatz.jpg",
+                "id": 237390000000005,
+                "alt": "Kletterturm mit Rutsche auf einer Sandfläche, dahinter Rasen und Waldrand",
+                "src": "https://a.storyblok.com/f/0/03eeffa6db/aussengelaende-kletterturm.jpg",
                 "title": "",
                 "source": "",
                 "copyright": "",
@@ -106,7 +200,7 @@
           },
           "content": [
             {
-              "text": "Wer wir sind",
+              "text": "Ein Verein von Eltern",
               "type": "text"
             }
           ]
@@ -115,7 +209,7 @@
           "type": "paragraph",
           "content": [
             {
-              "text": "Getragen wird die Kita vom Verein, geleitet vom ",
+              "text": "Getragen wird die Kita vom Verein, vertreten durch den ",
               "type": "text"
             },
             {
@@ -135,17 +229,17 @@
               ]
             },
             {
-              "text": ". Wer sich für einen Platz interessiert, findet hier den ",
+              "text": ". Was ein Platz kostet, steht in der ",
               "type": "text"
             },
             {
-              "text": "Aufnahmeantrag (PDF)",
+              "text": "Gebührenordnung (PDF)",
               "type": "text",
               "marks": [
                 {
                   "type": "link",
                   "attrs": {
-                    "href": "https://a.storyblok.com/f/0/6323edf146/aufnahmeantrag.pdf",
+                    "href": "https://a.storyblok.com/f/0/cebda85a84/gebuehrenordnung.pdf",
                     "uuid": null,
                     "anchor": null,
                     "target": "_self",
@@ -162,31 +256,57 @@
         }
       ]
     },
-    "intro": "Platzhaltertext: Hier stellt der Vorstand die Kindergruppe Travenbrück und ihr Konzept vor.",
+    "intro": "Die Kindergruppe Travenbrück e.V. ist ein Elternverein. Er wurde am 6. Januar 1987 gegründet und ist Träger des Kindergartens in Tralau, Gemeinde Travenbrück.",
     "titel": "Über uns",
     "bilder": [
       {
-        "id": 237374962956819,
-        "alt": "Kita-Gebäude mit Laternen und verschneitem Vorplatz unter blauem Himmel",
+        "id": 237390000000010,
+        "alt": "Gruppenschild der Eichhörnchen: gemaltes Eichhörnchen mit Nuss",
         "name": "",
         "focus": "",
         "title": "",
         "source": "",
-        "filename": "https://a.storyblok.com/f/0/9a2ec8b949/winter-gebaeude.jpg",
-        "copyright": "CC0, Wikimedia Commons",
+        "filename": "https://a.storyblok.com/f/0/728a2d2312/gruppe-eichhoernchen.jpg",
+        "copyright": "",
         "fieldtype": "asset",
         "meta_data": {},
         "is_external_url": false
       },
       {
-        "id": 237374983502362,
-        "alt": "Kiesweg zwischen Rasenflächen führt zum hellen Kita-Gebäude mit großen Fenstern",
+        "id": 237390000000011,
+        "alt": "Gruppenschild der Raupen: gebastelte grüne Raupe",
         "name": "",
         "focus": "",
         "title": "",
         "source": "",
-        "filename": "https://a.storyblok.com/f/0/e1bad32341/sommer-weg.jpg",
-        "copyright": "CC0, Wikimedia Commons",
+        "filename": "https://a.storyblok.com/f/0/7837083baa/gruppe-raupen.jpg",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      },
+      {
+        "id": 237390000000012,
+        "alt": "Gruppenschild der Mäuse: Maus auf einem Stück Käse",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/0/7cd029ff70/gruppe-maeuse.jpg",
+        "copyright": "",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      },
+      {
+        "id": 237390000000013,
+        "alt": "Gruppenschild der Schnecken: grüne Schnecke mit orangefarbenem Haus",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/0/3f75e48cdb/gruppe-schnecken.jpg",
+        "copyright": "",
         "fieldtype": "asset",
         "meta_data": {},
         "is_external_url": false

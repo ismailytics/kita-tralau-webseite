@@ -15,40 +15,32 @@ test("Vorstandsseite zeigt Intro, Vorstandsmitglieder in Storyblok-Reihenfolge u
 	await page.goto("/vorstand");
 
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Der Vorstand");
-	await expect(page.getByText("Der Vorstand wird jedes Jahr von der Mitgliederversammlung gewählt")).toBeVisible();
+	await expect(page.getByText("Die Mitgliederversammlung wählt alle zwei Jahre den Vorstand.")).toBeVisible();
 	await expect(page.getByRole("main").getByRole("listitem").getByRole("heading", { level: 2 })).toHaveText([
-		"Anna Beispiel",
-		"Jonas Muster",
-		"Maria Platzhalter",
+		"Thomas Junker",
+		"Eva Noßke",
+		"Malte Stobbe",
 	]);
 	await expect(page.getByRole("heading", { level: 2, name: "Mitglied werden" })).toBeVisible();
 	await expect(
-		page.getByText("Alle Eltern, deren Kinder bei uns betreut werden, sind Mitglied im Verein."),
+		page.getByText(/^Mindestens ein Elternteil jedes betreuten Kindes ist Mitglied im Verein\./),
 	).toBeVisible();
 });
 
 test("Vorstandsmitglied mit Foto und Mail zeigt beides", async ({ page }) => {
 	await page.goto("/vorstand");
-	const anna = page.getByRole("main").getByRole("listitem").filter({ hasText: "Anna Beispiel" });
+	const thomas = page.getByRole("main").getByRole("listitem").filter({ hasText: "Thomas Junker" });
 
-	await expect(anna.getByText("Erste Vorsitzende")).toBeVisible();
-	await expect(anna.getByRole("img", { name: "Porträt von Anna Beispiel" })).toBeVisible();
-	await expect(anna.getByRole("link", { name: "anna.beispiel@kita-tralau.example" })).toHaveAttribute(
-		"href",
-		"mailto:anna.beispiel@kita-tralau.example",
-	);
+	await expect(thomas.getByText("1. Vorsitzender")).toBeVisible();
+	await expect(thomas.getByRole("img", { name: "Porträt von Thomas Junker" })).toBeVisible();
+	await expect(thomas.getByRole("link", { name: "kitra.ev@web.de" })).toHaveAttribute("href", "mailto:kitra.ev@web.de");
 });
 
-test("Vorstandsmitglied ohne Foto bzw. Mail wird ohne leere Bilder und Links dargestellt", async ({ page }) => {
+test("Vorstandsmitglied ohne Mail wird ohne leeren Link dargestellt", async ({ page }) => {
 	await page.goto("/vorstand");
-	const jonas = page.getByRole("main").getByRole("listitem").filter({ hasText: "Jonas Muster" });
-	const maria = page.getByRole("main").getByRole("listitem").filter({ hasText: "Maria Platzhalter" });
+	const eva = page.getByRole("main").getByRole("listitem").filter({ hasText: "Eva Noßke" });
 
-	await expect(jonas.getByText("Zweiter Vorsitzender")).toBeVisible();
-	await expect(jonas.getByRole("img")).toHaveCount(0);
-	await expect(jonas.getByRole("link")).toHaveAttribute("href", "mailto:jonas.muster@kita-tralau.example");
-
-	await expect(maria.getByText("Kassenwartin")).toBeVisible();
-	await expect(maria.getByRole("img")).toHaveCount(0);
-	await expect(maria.getByRole("link")).toHaveCount(0);
+	await expect(eva.getByText("Schriftführung")).toBeVisible();
+	await expect(eva.getByRole("img", { name: "Porträt von Eva Noßke" })).toBeVisible();
+	await expect(eva.getByRole("link")).toHaveCount(0);
 });

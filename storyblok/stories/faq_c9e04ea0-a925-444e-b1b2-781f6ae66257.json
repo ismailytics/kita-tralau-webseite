@@ -11,32 +11,56 @@
   "is_folder": false,
   "content": {
     "_uid": "a1e4e454-e69a-4239-a9ba-b07906c6e703",
-    "intro": "Ihre Frage ist nicht dabei? Schreiben Sie uns, wir antworten gern.",
+    "intro": "Ihre Frage ist nicht dabei? Rufen Sie uns an oder schreiben Sie uns, wir antworten gern.",
     "titel": "Häufige Fragen",
     "fragen": [
       {
-        "_uid": "26ab4c6e-f3fb-42e0-b8d5-a41394e7869b",
+        "_uid": "1e35c08e-c261-4c38-95bd-3476d1bd4526",
+        "component": "faq_frage",
         "frage": "Ab welchem Alter kann mein Kind zu Ihnen kommen?",
-        "antwort": "Wir betreuen Kinder ab drei Jahren bis zum Schuleintritt.",
-        "component": "faq_frage"
+        "antwort": "Wir nehmen Kinder ab drei Jahren auf, auch während des Kindergartenjahres, wenn ein Platz frei ist."
       },
       {
-        "_uid": "d33e006f-b4a0-4165-b7d6-a907ee89edcf",
+        "_uid": "70746a3f-12ca-4c0c-bec7-990a2ee6f749",
+        "component": "faq_frage",
         "frage": "Wie melde ich mein Kind an?",
-        "antwort": "Die Anmeldung läuft über das Kitaportal des Kreises. Gern zeigen wir Ihnen vorher bei einem Besuch unsere Räume.",
-        "component": "faq_frage"
+        "antwort": "Vereinbaren Sie bitte einen Termin mit unserer Kitaleiterin Frau Spradau unter 04531 7351. Wir nehmen uns gern Zeit, zeigen Ihnen unsere Einrichtung und informieren Sie über alles Wissenswerte."
       },
       {
-        "_uid": "44565692-47bc-42e4-9d57-7c69847209e7",
-        "frage": "Was bedeutet Elterninitiative?",
-        "antwort": "Die Kita wird von einem Verein der Eltern getragen. Eltern übernehmen kleine Aufgaben, etwa im Garten oder beim Sommerfest.",
-        "component": "faq_frage"
+        "_uid": "22055295-3b54-451b-8362-5c25b488a748",
+        "component": "faq_frage",
+        "frage": "Wie werden die Plätze vergeben?",
+        "antwort": "Gibt es mehr Anmeldungen als freie Plätze, gilt diese Reihenfolge:\n1. Kinder von Mitarbeitenden\n2. Geschwisterkinder aus der Gemeinde\n3. Kinder aus der Gemeinde\n4. Geschwisterkinder aus anderen Gemeinden\n5. Alter des Kindes bei Eintritt\n6. Datum der Anmeldung"
       },
       {
-        "_uid": "49451ded-7925-4a7a-9271-2e997b27fc63",
+        "_uid": "9675d54f-c87e-40fc-b59f-3cd0768b487a",
+        "component": "faq_frage",
+        "frage": "Was kostet ein Platz?",
+        "antwort": "Die monatlichen Betreuungskosten richten sich nach der Betreuungszeit:\n7:30 bis 14:00 Uhr: 183 €\n7:30 bis 15:00 Uhr: 212 €\n7:30 bis 16:00 Uhr: 240 €\nFür Geschwisterkinder gibt es eine Ermäßigung. Weitere Zuschüsse können Sie gegebenenfalls beim Kreis Stormarn oder bei der Gemeinde beantragen. Bei Bedarf unterstützen wir Sie gern. Alle Einzelheiten stehen in der Gebührenordnung unter Downloads."
+      },
+      {
+        "_uid": "0aa96b2e-1a69-473f-ab5c-bf8012770457",
+        "component": "faq_frage",
         "frage": "Gibt es ein Mittagessen?",
-        "antwort": "Ja, wir essen jeden Tag gemeinsam warm zu Mittag.",
-        "component": "faq_frage"
+        "antwort": "Ja, ein warmes Mittagessen können Sie für 75 € im Monat dazubuchen."
+      },
+      {
+        "_uid": "7b299453-bcc0-4df3-afb7-fe1116de2ff8",
+        "component": "faq_frage",
+        "frage": "Bis wann muss mein Kind morgens da sein?",
+        "antwort": "Damit der Tag geregelt beginnen kann, bringen Sie Ihr Kind bitte bis spätestens 9:00 Uhr. Die Abholzeiten richten sich nach dem Tagesablauf der Gruppen."
+      },
+      {
+        "_uid": "0dd9c9e8-24a6-4f3c-98fc-66dea6d0a785",
+        "component": "faq_frage",
+        "frage": "Muss ich Mitglied im Verein werden?",
+        "antwort": "Ja, mindestens ein Elternteil ist Mitglied im Verein. Beiträge und Möglichkeiten zum Mitmachen stehen auf der Seite Vorstand unter „Mitglied werden“."
+      },
+      {
+        "_uid": "6606d508-65c7-4c62-812c-2fe45bdb3122",
+        "component": "faq_frage",
+        "frage": "Wann ist die Kita geschlossen?",
+        "antwort": "Im Sommer und zwischen Weihnachten und Neujahr, außerdem an einem Konzeptionstag und einem Tag für die Teamfortbildung im Jahr. Die genauen Schließzeiten stehen unter Termine."
       }
     ],
     "component": "faq"

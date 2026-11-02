@@ -3,8 +3,12 @@ import { expect, test } from "@playwright/test";
 const FRAGEN = [
 	"Ab welchem Alter kann mein Kind zu Ihnen kommen?",
 	"Wie melde ich mein Kind an?",
-	"Was bedeutet Elterninitiative?",
+	"Wie werden die Plätze vergeben?",
+	"Was kostet ein Platz?",
 	"Gibt es ein Mittagessen?",
+	"Bis wann muss mein Kind morgens da sein?",
+	"Muss ich Mitglied im Verein werden?",
+	"Wann ist die Kita geschlossen?",
 ];
 
 test("FAQ zeigt die Fragen in Storyblok-Reihenfolge, Antworten zugeklappt", async ({ page }) => {
@@ -12,13 +16,15 @@ test("FAQ zeigt die Fragen in Storyblok-Reihenfolge, Antworten zugeklappt", asyn
 
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Häufige Fragen");
 	await expect(page.locator("summary")).toHaveText(FRAGEN);
-	await expect(page.getByText("Wir betreuen Kinder ab drei Jahren bis zum Schuleintritt.")).toBeHidden();
+	await expect(
+		page.getByText("Wir nehmen Kinder ab drei Jahren auf, auch während des Kindergartenjahres"),
+	).toBeHidden();
 });
 
 test("FAQ lässt sich per Tastatur auf- und zuklappen", async ({ page }) => {
 	await page.goto("/faq");
 	const frage = page.getByText(FRAGEN[1]);
-	const antwort = page.getByText("Die Anmeldung läuft über das Kitaportal");
+	const antwort = page.getByText("Vereinbaren Sie bitte einen Termin mit unserer Kitaleiterin");
 
 	await frage.focus();
 	await page.keyboard.press("Enter");
@@ -34,6 +40,8 @@ test.describe("ohne JavaScript", () => {
 		await page.goto("/faq");
 		await page.getByText(FRAGEN[0]).click();
 
-		await expect(page.getByText("Wir betreuen Kinder ab drei Jahren bis zum Schuleintritt.")).toBeVisible();
+		await expect(
+			page.getByText("Wir nehmen Kinder ab drei Jahren auf, auch während des Kindergartenjahres"),
+		).toBeVisible();
 	});
 });

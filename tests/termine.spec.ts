@@ -5,25 +5,25 @@ test("Terminliste zeigt alle Termine nach Datum aufsteigend", async ({ page }) =
 
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Termine");
 	await expect(page.getByRole("main").getByRole("listitem").locator("h2")).toHaveText([
-		"Laternelaufen",
-		"Schließtag: Teamfortbildung",
-		"Weihnachtsschließzeit",
-		"Sommerfest",
+		"Schließzeit Winter 2026",
+		"Schließzeit Sommer 2027",
+		"Schließzeit Winter 2027",
 	]);
 });
 
-test("Termine zeigen Datum, Uhrzeit nur wenn vorhanden und mehrtägige als Zeitraum", async ({ page }) => {
+test("Mehrtägige Termine zeigen den Zeitraum, Kurztext nur wenn vorhanden", async ({ page }) => {
 	await page.goto("/termine");
 	const termin = (titel: string) =>
 		page.getByRole("listitem").filter({ has: page.getByRole("heading", { name: titel }) });
 
-	await expect(termin("Laternelaufen")).toContainText("Fr., 13. November 2026 · 17:00 Uhr");
-	await expect(termin("Laternelaufen")).toContainText("Treffpunkt am Gartentor.");
-	await expect(termin("Schließtag: Teamfortbildung")).toHaveText(
-		/^\s*Fr\., 27\. November 2026\s*Schließtag: Teamfortbildung\s*$/,
+	await expect(termin("Schließzeit Winter 2026")).toContainText("Do., 24. Dezember 2026 – So., 3. Januar 2027");
+	await expect(termin("Schließzeit Sommer 2027")).toContainText("Mo., 2. – Fr., 13. August 2027");
+	await expect(termin("Schließzeit Sommer 2027")).toContainText(
+		"Die Betreuungsverträge für dieses Kindergartenjahr enden am 31. Juli 2027.",
 	);
-	await expect(termin("Weihnachtsschließzeit")).toContainText("Mi., 23. Dezember 2026 – Fr., 1. Januar 2027");
-	await expect(termin("Sommerfest")).toContainText("Sa., 19. Juni 2027 · 14:00 – 17:00 Uhr");
+	await expect(termin("Schließzeit Winter 2027")).toHaveText(
+		/^\s*Fr\., 24\. Dezember 2027\s*–\s*Sa\., 1\. Januar 2028\s*Schließzeit Winter 2027\s*$/,
+	);
 });
 
 test("Termine sind über die Navigation erreichbar", async ({ page }) => {
@@ -41,11 +41,11 @@ test("Startseite zeigt unter „Nächste Termine“ die ersten drei Termine", as
 		.filter({ has: page.getByRole("heading", { level: 2, name: "Nächste Termine" }) });
 
 	await expect(teaser.getByRole("heading", { level: 3 })).toHaveText([
-		"Laternelaufen",
-		"Schließtag: Teamfortbildung",
-		"Weihnachtsschließzeit",
+		"Schließzeit Winter 2026",
+		"Schließzeit Sommer 2027",
+		"Schließzeit Winter 2027",
 	]);
-	await expect(teaser).toContainText("Fr., 13. November 2026 · 17:00 Uhr");
+	await expect(teaser).toContainText("Do., 24. Dezember 2026 – So., 3. Januar 2027");
 	await teaser.getByRole("link", { name: "Alle Termine" }).click();
 	await expect(page).toHaveURL(/\/termine\/?$/);
 });

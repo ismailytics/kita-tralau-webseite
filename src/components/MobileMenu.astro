@@ -5,7 +5,7 @@ import { globaleAngaben } from "@/inhaltsquelle";
 import { MainMenu } from "@/data/menu";
 
 const pathname = seitenpfad(Astro.url.pathname);
-const { name, logo } = await globaleAngaben();
+const { logo } = await globaleAngaben();
 ---
 
 <el-dialog>
@@ -15,8 +15,7 @@ const { name, logo } = await globaleAngaben();
 				<!-- Header row — matches sticky bar layout exactly -->
 				<div class="container py-4 flex items-center justify-between gap-x-4">
 					<a href={pfad("/")} class="flex gap-x-4 items-center">
-						<Bild bild={logo} class="size-12" />
-						<span class="font-bold font-fredoka text-2xl">{name}</span>
+						<Bild bild={logo} class="h-12 w-auto shrink-0" widths={[150, 300]} sizes="150px" />
 					</a>
 					<button
 						type="button"

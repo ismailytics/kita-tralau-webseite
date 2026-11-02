@@ -12,7 +12,7 @@ const SEITEN = [
 	"/tagesablauf",
 	"/faq",
 	"/galerie",
-	"/galerie/winter-2026",
+	"/galerie/aussengelaende",
 	"/downloads",
 	"/kontakt",
 	"/ueber-uns",

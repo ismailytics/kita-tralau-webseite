@@ -6,14 +6,14 @@ test("Kontaktseite zeigt Intro, Adresse und Öffnungszeiten aus den Globalen Ang
 
 	await expect(inhalt.getByRole("heading", { level: 1 })).toHaveText("Kontakt");
 	await expect(inhalt.getByText("Wir freuen uns, Sie kennenzulernen.")).toBeVisible();
-	await expect(inhalt.getByText("Beispielweg 1")).toBeVisible();
+	await expect(inhalt.getByText("Schulstraße 27")).toBeVisible();
 	await expect(inhalt.getByText("23843 Travenbrück-Tralau")).toBeVisible();
-	await expect(inhalt.getByRole("link", { name: "04531 123456" })).toHaveAttribute("href", "tel:04531123456");
-	await expect(inhalt.getByRole("link", { name: "kontakt@kita-tralau.example" })).toHaveAttribute(
+	await expect(inhalt.getByRole("link", { name: "04531 7351" })).toHaveAttribute("href", "tel:045317351");
+	await expect(inhalt.getByRole("link", { name: "kindergruppe.travenbrueck@gmx.de" })).toHaveAttribute(
 		"href",
-		"mailto:kontakt@kita-tralau.example",
+		"mailto:kindergruppe.travenbrueck@gmx.de",
 	);
-	await expect(inhalt.getByText("Montag bis Freitag: 7:30 – 14:00 Uhr")).toBeVisible();
+	await expect(inhalt.getByText("Montag bis Freitag: 7:30 – 16:00 Uhr")).toBeVisible();
 });
 
 test("Kontaktseite verweist für die Anmeldung auf das Kitaportal", async ({ page }) => {

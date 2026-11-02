@@ -18,7 +18,7 @@
           "type": "paragraph",
           "content": [
             {
-              "text": "Platzhaltertext: Der Vorstand ersetzt diesen Beispielinhalt vor der Veröffentlichung durch den geprüften Text.",
+              "text": "Platzhaltertext: Der Vorstand prüft diese Angaben und ergänzt Registergericht und Registernummer des Vereins.",
               "type": "text"
             }
           ]
@@ -46,7 +46,14 @@
               "type": "hard_break"
             },
             {
-              "text": "Musterstraße 1, 23843 Tralau",
+              "text": "Schulstraße 27",
+              "type": "text"
+            },
+            {
+              "type": "hard_break"
+            },
+            {
+              "text": "23843 Travenbrück",
               "type": "text"
             }
           ]
@@ -67,7 +74,7 @@
           "type": "paragraph",
           "content": [
             {
-              "text": "Den Vorstand des Vereins (Namen folgen).",
+              "text": "Den Vorstand: Thomas Junker (1. Vorsitzender)",
               "type": "text"
             }
           ]
@@ -88,7 +95,14 @@
           "type": "paragraph",
           "content": [
             {
-              "text": "Schreiben Sie uns über die ",
+              "text": "E-Mail: kitra.ev@web.de",
+              "type": "text"
+            },
+            {
+              "type": "hard_break"
+            },
+            {
+              "text": "Oder über die ",
               "type": "text"
             },
             {

@@ -12,8 +12,16 @@ const { title, seoDescription, noindex = VORSCHAU || process.env.NOINDEX === "1"
 const { name, logo } = await globaleAngaben();
 
 // Teilen-Bild und Favicon same-origin über astro:assets (ADR-0003), Meta-URLs absolut auf die eigene Domain.
+// Favicon mit fit "contain": Das Logo ist ein breiter Schriftzug und würde sonst beschnitten.
 const skaliert = (b: Bild, format: "png" | "jpg", width: number, height?: number) =>
-	getImage({ src: b.src, width, height, format, ...(typeof b.src === "string" && { inferSize: true }) });
+	getImage({
+		src: b.src,
+		width,
+		height,
+		format,
+		...(height && { fit: "contain", background: "#ffffff" }),
+		...(typeof b.src === "string" && { inferSize: true }),
+	});
 const teilenBild = bild ?? (await startseite()).hero.bild;
 const [og, icon, appleIcon] = await Promise.all([
 	skaliert(teilenBild, "jpg", 1200),
