@@ -1,0 +1,30 @@
+---
+import { useStoryblokApi } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+
+const api = useStoryblokApi();
+const { data } = await api.get('cdn/stories/home', { version: __PREVIEW__ ? 'draft' : 'published' });
+const story = data.story;
+---
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Prototyp {__PREVIEW__ ? 'VORSCHAU' : 'PROD'}</title>
+  </head>
+  <body style="font-family: system-ui; max-width: 50rem; margin: 2rem auto;">
+    <p style="background:#ffe; padding:.5rem; font-size:.8rem;">
+      PROTOTYP · Modus: <b>{__PREVIEW__ ? 'Vorschau (draft)' : 'Prod (published)'}</b> · Build {new Date(Number(__BUILD_ID__)).toLocaleTimeString('de-DE')}
+      · Story geändert {story.updated_at ?? story.published_at}
+    </p>
+    <StoryblokComponent blok={story.content} />
+    {__PREVIEW__ && (
+      <script is:inline define:vars={{ build: __BUILD_ID__ }}>
+        // Nur Vorschau: neu laden, sobald ein neuerer Build ausgeliefert wird
+        setInterval(async () => {
+          const r = await fetch('/build.txt', { cache: 'no-store' });
+          if (r.ok && (await r.text()).trim() !== build) location.reload();
+        }, 1500);
+      </script>
+    )}
+  </body>
+</html>

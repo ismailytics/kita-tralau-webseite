@@ -1,0 +1,19 @@
+{
+  "name": "prototype-static-draft-preview",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cert": "openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 30 -subj /CN=localhost",
+    "build:preview": "PREVIEW=1 node --env-file=.env node_modules/astro/bin/astro.mjs build",
+    "build:prod": "node --env-file=.env node_modules/astro/bin/astro.mjs build",
+    "preview": "pnpm build:preview && node --env-file=.env preview.mjs",
+    "check:prod": "pnpm build:prod && node check-prod.mjs"
+  },
+  "dependencies": {
+    "@storyblok/astro": "10.4.0",
+    "astro": "7.4.5"
+  },
+  "devDependencies": {
+    "playwright": "latest"
+  }
+}
