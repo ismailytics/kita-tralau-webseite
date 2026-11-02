@@ -71,6 +71,12 @@ if (import.meta.main) {
 				if (zuordnung.length < lokal.length) cli("assets", "push", "--target", "space", ...(dryRun ? ["--dry-run"] : []));
 			}
 			if (vorhanden.includes("stories")) {
+				// Storyblok gibt Ordnern Platzhalter-Inhalt des Standard-Inhaltstyps; der scheitert an der Schema-Validierung.
+				for (const d of readdirSync(quelle("stories")).filter((d) => d.endsWith(".json"))) {
+					const pfad = join(quelle("stories"), d);
+					const story = JSON.parse(readFileSync(pfad, "utf8"));
+					if (story.is_folder) writeFileSync(pfad, JSON.stringify({ ...story, content: undefined }));
+				}
 				cli("stories", "push", "--publish", ...(dryRun ? ["--dry-run"] : []));
 			}
 		}
