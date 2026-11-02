@@ -1,41 +1,45 @@
 ---
 import Button from "@/components/buttons/Button.astro";
+
+const feld =
+	"rounded-lg border border-gray-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-brand-blue/40";
 ---
 
-<form class="flex flex-col gap-4" onsubmit="return false;">
+<!-- Postet ohne JS direkt an das PHP-Skript; Grenzen wie in public/kontaktanfrage.php (ADR-0004). -->
+<form id="kontaktformular" aria-label="Kontaktformular" method="post" action="/kontaktanfrage.php" class="flex flex-col gap-4">
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 		<div class="flex flex-col gap-1.5">
-			<label class="text-sm font-bold">Parent/Guardian Name</label>
-			<input
-				type="text"
-				placeholder="Jane Smith"
-				class="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-blue/40"
-			/>
+			<label for="kontakt-name" class="text-sm font-bold">Name</label>
+			<input id="kontakt-name" name="name" type="text" required maxlength="100" autocomplete="name" class={feld} />
 		</div>
 		<div class="flex flex-col gap-1.5">
-			<label class="text-sm font-bold">Email</label>
-			<input
-				type="email"
-				placeholder="jane@example.com"
-				class="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-blue/40"
-			/>
+			<label for="kontakt-email" class="text-sm font-bold">E-Mail</label>
+			<input id="kontakt-email" name="email" type="email" required maxlength="254" autocomplete="email" class={feld} />
 		</div>
 	</div>
 	<div class="flex flex-col gap-1.5">
-		<label class="text-sm font-bold">Phone</label>
-		<input
-			type="tel"
-			placeholder="(555) 000-0000"
-			class="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-blue/40"
-		/>
-	</div>
-	<div class="flex flex-col gap-1.5">
-		<label class="text-sm font-bold">Message</label>
-		<textarea
-			rows="5"
-			placeholder="How can we help you?"
-			class="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-blue/40 resize-none"
+		<label for="kontakt-nachricht" class="text-sm font-bold">Nachricht</label>
+		<textarea id="kontakt-nachricht" name="nachricht" rows="6" required maxlength="5000" class:list={[feld, "resize-y"]}
 		></textarea>
 	</div>
-	<Button variant="blue" size="lg" class="w-full justify-center">Send Message ✉️</Button>
+	<!-- Honeypot: für Menschen unsichtbar, Bots füllen es aus. -->
+	<div class="absolute -left-[9999px]" aria-hidden="true">
+		<label for="kontakt-webseite">Bitte leer lassen</label>
+		<input id="kontakt-webseite" name="webseite" type="text" tabindex="-1" autocomplete="off" />
+	</div>
+	<input type="hidden" name="dauer" />
+	<p class="text-sm">
+		Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten. Mehr dazu in der
+		<a class="underline" href="/datenschutz">Datenschutzerklärung</a>.
+	</p>
+	<Button type="submit" variant="blue" size="lg" class="w-full sm:w-auto sm:self-start">Nachricht senden</Button>
 </form>
+
+<script>
+	// Mindestzeit (Spam-Schutz): Sekunden zwischen Seitenaufruf und Absenden.
+	const start = performance.now();
+	const formular = document.getElementById("kontaktformular") as HTMLFormElement;
+	formular.addEventListener("submit", () => {
+		formular.dauer.value = String(Math.floor((performance.now() - start) / 1000));
+	});
+</script>

@@ -47,3 +47,31 @@ test("Kontakt steht in der Navigation", async ({ page }) => {
 
 	await expect(page).toHaveURL(/\/kontakt\/?$/);
 });
+
+test("Kontaktformular hat Pflichtfelder und einen Datenschutzhinweis", async ({ page }) => {
+	await page.goto("/kontakt");
+	const formular = page.getByRole("form", { name: "Kontaktformular" });
+
+	await expect(formular).toHaveAttribute("method", "post");
+	await expect(formular).toHaveAttribute("action", "/kontaktanfrage.php");
+	await expect(formular.getByLabel("Name")).toHaveAttribute("required", "");
+	await expect(formular.getByLabel("E-Mail")).toHaveAttribute("type", "email");
+	await expect(formular.getByLabel("Nachricht")).toHaveAttribute("maxlength", "5000");
+	await expect(formular.getByRole("link", { name: "Datenschutzerklärung" })).toHaveAttribute("href", "/datenschutz");
+});
+
+for (const [pfad, ueberschrift] of [
+	["/kontakt/danke", "Vielen Dank für Ihre Nachricht"],
+	["/kontakt/ungueltig", "Bitte prüfen Sie Ihre Angaben"],
+	["/kontakt/fehler", "Ihre Nachricht ist nicht angekommen"],
+]) {
+	test(`Ergebnisseite ${pfad} erklärt das Ergebnis und führt zurück zum Formular`, async ({ page }) => {
+		await page.goto(pfad);
+
+		await expect(page.getByRole("heading", { level: 1 })).toHaveText(ueberschrift);
+		await expect(page.getByRole("main").getByRole("link", { name: "Zurück zum Kontaktformular" })).toHaveAttribute(
+			"href",
+			"/kontakt#kontaktformular",
+		);
+	});
+}

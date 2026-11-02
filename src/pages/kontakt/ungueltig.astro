@@ -1,0 +1,20 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Button from "@/components/buttons/Button.astro";
+---
+
+<!-- Ziel der Weiterleitung aus public/kontaktanfrage.php -->
+<Layout title="Bitte prüfen Sie Ihre Angaben" noindex>
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">Bitte prüfen Sie Ihre Angaben</h1>
+				<p>Ihre Nachricht wurde nicht verschickt. Bitte geben Sie Ihren Namen (höchstens 100 Zeichen), eine gültige E-Mail-Adresse und eine Nachricht (höchstens 5000 Zeichen) an und senden Sie das Formular erneut.</p>
+				<Button href="/kontakt#kontaktformular" variant="blue">Zurück zum Kontaktformular</Button>
+			</SectionHeading>
+		</Container>
+	</Section>
+</Layout>

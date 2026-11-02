@@ -8,6 +8,7 @@ import Container from "@/components/Container.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
 import Button from "@/components/buttons/Button.astro";
 import Bild from "@/components/Bild.astro";
+import FormContact from "@/components/forms/FormContact.astro";
 import { globaleAngaben, kontakt } from "@/inhaltsquelle";
 
 const [{ intro, kitaportal, karte }, { kontakt: adresse, oeffnungszeiten }] = await Promise.all([kontakt(), globaleAngaben()]);
@@ -63,6 +64,13 @@ const [{ intro, kitaportal, karte }, { kontakt: adresse, oeffnungszeiten }] = aw
 			</div>
 		</Container>
 	</Section>
+
+	<section aria-labelledby="nachricht-schreiben">
+		<Container class:list={"max-w-3xl"}>
+			<h2 id="nachricht-schreiben" class="text-3xl font-bold tracking-wide mb-6">Nachricht schreiben</h2>
+			<FormContact />
+		</Container>
+	</section>
 
 	<section aria-labelledby="kitaportal" class="bg-brand-blue text-white">
 		<Container class:list={"lg:py-12"}>
