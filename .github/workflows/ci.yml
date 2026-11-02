@@ -10,6 +10,15 @@ jobs:
     # Ohne Storyblok-Zugang: Build und Tests laufen gegen die Beispielinhalte im Repo.
     env:
       INHALTSQUELLE: beispiel
+      # Kontaktformular-Tests (Seam 2): Playwright nutzt den Mailpit-Service statt einen eigenen zu starten.
+      MAILPIT_SMTP_PORT: 1025
+      MAILPIT_HTTP_PORT: 8025
+    services:
+      mailpit:
+        image: axllent/mailpit:v1.33
+        ports:
+          - 1025:1025
+          - 8025:8025
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
@@ -17,6 +26,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: pnpm
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer
+      - run: composer install --no-interaction --no-progress
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm build

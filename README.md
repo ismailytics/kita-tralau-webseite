@@ -15,6 +15,32 @@ pnpm dev           # Entwicklungsserver
 ```
 
 Playwright nutzt lokal das installierte Chrome (`channel: "chrome"`), in CI das Chromium von Playwright.
+`pnpm test` braucht außerdem `php` (ab 8.1), `mailpit` im `PATH` und einmal `composer install` (siehe Kontaktformular).
+
+## Kontaktformular (ADR-0004)
+
+Das Formular auf `/kontakt` postet an `public/kontaktanfrage.php`. Das Skript prüft die Eingaben, verschickt per SMTP mit PHPMailer
+(Absender: Formular-Postfach, `Reply-To`: Besucher) und leitet auf `/kontakt/danke`, `/kontakt/ungueltig` oder `/kontakt/fehler` weiter.
+Spam-Schutz: Honeypot-Feld `webseite` und mindestens 3 Sekunden zwischen Seitenaufruf und Absenden (gemessen per JS; ohne JS greift nur der Honeypot).
+
+Lokal mit PHP-Built-in-Server und Mailpit, ohne echte Mails:
+
+```bash
+brew install php composer mailpit   # oder statische Binaries, Hauptsache im PATH
+composer install                    # PHPMailer nach vendor/
+pnpm build
+mailpit                             # SMTP auf :1025, Postfach unter http://localhost:8025
+KONTAKTFORMULAR_KONFIG=$PWD/kontaktformular.konfig.example.php php -S localhost:8000 -t dist
+# http://localhost:8000/kontakt öffnen, absenden, Mail in Mailpit ansehen
+```
+
+Die Tests starten PHP-Server und Mailpit selbst (Ports aus `TEST_PORT` abgeleitet, siehe `playwright.config.ts`); in CI läuft Mailpit als Service-Container.
+
+Beim Hoster:
+
+- `vendor/` (per `composer install --no-dev`) liegt eine Ebene über dem Webroot, also neben dem Inhalt von `dist/`.
+- Die SMTP-Zugangsdaten stehen in `kontaktformular.konfig.php` eine Ebene über dem Webroot, nie im Repo. Vorlage: `kontaktformular.konfig.example.php`.
+  Liegt die Datei woanders, zeigt `KONTAKTFORMULAR_KONFIG` (z. B. per `SetEnv` in der `.htaccess`) auf sie.
 
 ## Inhaltsquelle
 

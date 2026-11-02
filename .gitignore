@@ -16,3 +16,6 @@ playwright-report/
 
 .DS_Store
 .playwright-mcp/
+
+# PHP-Abhängigkeiten (composer install)
+vendor/
