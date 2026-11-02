@@ -1,0 +1,41 @@
+---
+import Button from "@/components/buttons/Button.astro";
+---
+
+<form class="flex flex-col gap-4" onsubmit="return false;">
+	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+		<div class="flex flex-col gap-1.5">
+			<label class="text-sm font-bold">Parent/Guardian Name</label>
+			<input
+				type="text"
+				placeholder="Jane Smith"
+				class="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-blue/40"
+			/>
+		</div>
+		<div class="flex flex-col gap-1.5">
+			<label class="text-sm font-bold">Email</label>
+			<input
+				type="email"
+				placeholder="jane@example.com"
+				class="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-blue/40"
+			/>
+		</div>
+	</div>
+	<div class="flex flex-col gap-1.5">
+		<label class="text-sm font-bold">Phone</label>
+		<input
+			type="tel"
+			placeholder="(555) 000-0000"
+			class="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-blue/40"
+		/>
+	</div>
+	<div class="flex flex-col gap-1.5">
+		<label class="text-sm font-bold">Message</label>
+		<textarea
+			rows="5"
+			placeholder="How can we help you?"
+			class="rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-blue/40 resize-none"
+		></textarea>
+	</div>
+	<Button variant="blue" size="lg" class="w-full justify-center">Send Message ✉️</Button>
+</form>

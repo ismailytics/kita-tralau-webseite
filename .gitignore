@@ -1,0 +1,15 @@
+# Build-Ausgabe und generierte Dateien
+dist/
+.astro/
+node_modules/
+test-results/
+playwright-report/
+
+# Zugangsdaten
+.env
+.env.*
+
+# Arbeitsverzeichnis des Storyblok-CLI (Logs, Reports, Zwischenstand)
+.storyblok/
+
+.DS_Store

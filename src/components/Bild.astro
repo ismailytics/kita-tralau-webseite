@@ -1,0 +1,10 @@
+---
+// Rendert ein Bild der Inhaltsquelle über astro:assets; Remote-Bilder werden beim Build geladen und same-origin ausgeliefert.
+import { Image } from "astro:assets";
+import type { Bild } from "@/inhaltsquelle";
+
+type Props = { bild: Bild; class?: string; widths?: number[]; sizes?: string; loading?: "eager" | "lazy" };
+const { bild, ...rest } = Astro.props;
+---
+
+<Image src={bild.src} alt={bild.alt} inferSize={typeof bild.src === "string"} {...rest} />

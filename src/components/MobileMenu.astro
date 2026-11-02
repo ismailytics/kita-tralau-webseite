@@ -1,0 +1,80 @@
+---
+import Bild from "@/components/Bild.astro";
+import { globaleAngaben } from "@/inhaltsquelle";
+import { MainMenu } from "@/data/menu";
+
+const rmTrailingSlash = (path: string): string => {
+	return path.endsWith("/") && path.length > 1 ? path.slice(0, path.length - 1) : path;
+};
+
+const pathname = rmTrailingSlash(Astro.url.pathname);
+const { name, logo } = await globaleAngaben();
+---
+
+<el-dialog>
+	<dialog id="mobile-menu" class="backdrop:bg-transparent md:hidden">
+		<div tabindex="0" class="fixed inset-0 focus:outline-none">
+			<el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-brand-foreground/10">
+				<!-- Header row — matches sticky bar layout exactly -->
+				<div class="container py-4 flex items-center justify-between gap-x-4">
+					<a href="/" class="flex gap-x-4 items-center">
+						<Bild bild={logo} class="size-12" />
+						<span class="font-bold font-fredoka text-2xl">{name}</span>
+					</a>
+					<button
+						type="button"
+						command="close"
+						commandfor="mobile-menu"
+						class="text-brand-foreground"
+					>
+						<span class="sr-only">Menü schließen</span>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							aria-hidden="true"
+							class="size-6"
+						>
+							<path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+						</svg>
+					</button>
+				</div>
+
+				<!-- Nav links -->
+				<nav class="container mt-24" aria-label="Hauptnavigation mobil">
+					<ul class="flex flex-col gap-1 font-fredoka text-3xl font-semibold tracking-wide items-center">
+						{
+							MainMenu.map((item) => (
+								<li class="w-full">
+									<a
+										href={item.href}
+										target={item.target}
+										rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+										class={`lowercase block px-3 py-2 text-center ${pathname === item.href ? (item.activeClass ?? "") : ""}`}
+									>
+										{item.label}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+			</el-dialog-panel>
+		</div>
+	</dialog>
+</el-dialog>
+
+<script>
+	const dialog = document.querySelector("el-dialog:has(#mobile-menu)") as HTMLElement & { hide(): void };
+	const panel = dialog?.querySelector("el-dialog-panel");
+
+	panel?.addEventListener("click", (e) => {
+		const anchor = (e.target as Element).closest("a");
+		if (!anchor) return;
+		const href = anchor.getAttribute("href") ?? "";
+		if (href.startsWith("#") || href.startsWith("/#")) {
+			dialog.hide();
+		}
+	});
+</script>

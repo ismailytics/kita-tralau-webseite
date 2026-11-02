@@ -1,0 +1,53 @@
+---
+import MapPin from "~icons/heroicons/map-pin";
+import Phone from "~icons/heroicons/phone";
+import Mail from "~icons/heroicons/envelope";
+import Bild from "@/components/Bild.astro";
+import { globaleAngaben } from "@/inhaltsquelle";
+
+const { name, logo, footerText, kontakt, oeffnungszeiten } = await globaleAngaben();
+---
+
+<footer class="bg-brand-foreground text-white py-12 px-4">
+	<div class="container">
+		<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8">
+			<div class="lg:col-span-2">
+				<a href="/" class="flex gap-x-4 items-center">
+					<Bild bild={logo} class="size-12" />
+					<span class="font-bold font-fredoka text-2xl">{name}</span>
+				</a>
+				{footerText && <p class="font-body text-base mt-4">{footerText}</p>}
+			</div>
+			<div id="kontakt" class="space-y-3 lg:col-start-4 lg:col-span-2">
+				<h2 class="font-body font-bold text-lg">Kontakt</h2>
+				<div class="flex items-center gap-2 text-sm">
+					<MapPin class="w-4 h-4 shrink-0" aria-hidden="true" />
+					<address class="not-italic">{kontakt.strasse}, {kontakt.ort}</address>
+				</div>
+				{
+					kontakt.telefon && (
+						<div class="flex items-center gap-2 text-sm">
+							<Phone class="w-4 h-4 shrink-0" aria-hidden="true" />
+							<a href={`tel:${kontakt.telefon.replace(/[^\d+]/g, "")}`}>{kontakt.telefon}</a>
+						</div>
+					)
+				}
+				{
+					kontakt.email && (
+						<div class="flex items-center gap-2 text-sm">
+							<Mail class="w-4 h-4 shrink-0" aria-hidden="true" />
+							<a href={`mailto:${kontakt.email}`}>{kontakt.email}</a>
+						</div>
+					)
+				}
+			</div>
+			<div class="space-y-3">
+				<h2 class="font-body font-bold text-lg">Öffnungszeiten</h2>
+				{oeffnungszeiten.map((zeile) => <p class="text-sm">{zeile}</p>)}
+			</div>
+		</div>
+		<div class="border-t border-primary-foreground/20 mt-8 pt-6 text-center text-sm opacity-60 font-body">
+			© {new Date().getFullYear()} {name}
+		</div>
+	</div>
+</footer>

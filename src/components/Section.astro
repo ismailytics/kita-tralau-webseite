@@ -1,0 +1,8 @@
+---
+import type { SectionProps as Props } from "@/types";
+const { id, class: className = "bg-brand-background" } = Astro.props;
+---
+
+<section id={id} class={className}>
+	<slot />
+</section>

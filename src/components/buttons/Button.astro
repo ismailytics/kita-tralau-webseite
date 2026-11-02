@@ -1,0 +1,41 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { tv, type VariantProps } from "tailwind-variants";
+
+interface Props extends HTMLAttributes<"button">, Omit<HTMLAttributes<"a">, "type">, VariantProps<typeof button> {}
+
+const { variant, size, class: className, ...rest } = Astro.props;
+
+const button = tv({
+	base: [
+		"inline-flex items-center justify-center gap-1.5 cursor-pointer font-bold rounded-2xl text-lg whitespace-nowrap transition",
+		"[&_svg]:pointer-events-none [&_svg]:shrink-0",
+		"focus-visible:outline-2 focus-visible:outline-offset-2",
+		"disabled:pointer-events-none",
+	],
+	variants: {
+		variant: {
+			default: "bg-brand-foreground text-white hover:bg-gray-900 focus-visible:outline-gray-900",
+			blue: "bg-brand-blue text-white hover:bg-brand-blue-dark focus-visible:outline-brand-blue",
+			yellow: "bg-brand-yellow text-white hover:bg-brand-yellow-dark focus-visible:outline-brand-yellow",
+			red: "bg-brand-red text-white hover:bg-brand-red-dark focus-visible:outline-brand-red",
+			green: "bg-brand-green text-white hover:bg-brand-green-dark focus-visible:outline-brand-green",
+			white: "bg-white hover:bg-gray-200 focus-visible:outline-white",
+			outline: "border border-gray-300 text-gray-800 hover:bg-gray-100 focus-visible:outline-gray-300",
+		},
+		size: {
+			sm: "px-3 py-2 text-base [&_svg]:size-3",
+			md: "px-8 py-3 text-lg [&_svg]:size-4",
+			lg: "px-10 py-4 text-xl [&_svg]:size-5",
+			icon: "size-11 [&_svg]:size-4",
+		},
+	},
+	defaultVariants: { variant: "default", size: "md" },
+});
+
+const Tag = Astro.props.href ? "a" : "button";
+---
+
+<Tag class={button({ variant, size, class: className })} {...rest}>
+	<slot />
+</Tag>

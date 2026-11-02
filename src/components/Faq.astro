@@ -1,0 +1,29 @@
+---
+import FaqItem from "@/components/FaqItem.astro";
+const faqs = [
+	{
+		question: "What grades does Elementary serve?",
+		answer: "We serve students from Pre-K through 5th grade, with dedicated classrooms and teachers for each grade level.",
+	},
+	{
+		question: "What are the school hours?",
+		answer: "Doors open at 7:45 AM for breakfast, classes begin at 8:15 AM, and dismissal is at 3:00 PM. After-school care is available until 5:30 PM.",
+	},
+	{
+		question: "How do I enroll my child?",
+		answer: "Visit our front office or call (555) 123-4567 to start the enrollment process. We'll guide you through every step!",
+	},
+	{
+		question: "Is there a school lunch program?",
+		answer: "Yes! We offer nutritious hot lunches daily with vegetarian and allergy-friendly options. Free and reduced-price meals are available for qualifying families.",
+	},
+	{
+		question: "Does the school offer before and after-school care?",
+		answer: "Absolutely! Our before-school program starts at 6:30 AM and after-school care runs until 5:30 PM with homework help, snacks, and supervised activities.",
+	},
+];
+---
+
+<dl class="space-y-4 max-w-3xl mx-auto">
+	{faqs.map((faq, i) => <FaqItem id={`faq-${i}`} question={faq.question} answer={faq.answer} />)}
+</dl>

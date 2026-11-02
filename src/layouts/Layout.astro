@@ -1,0 +1,53 @@
+---
+import "@/styles/global.css";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { globaleAngaben } from "@/inhaltsquelle";
+import type { LayoutProps as Props } from "@/types";
+
+const { title, seoDescription, noindex = false } = Astro.props;
+const { name } = await globaleAngaben();
+---
+
+<!doctype html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#fef08a" />
+		{seoDescription && <meta name="description" content={seoDescription} />}
+		{noindex && <meta name="robots" content="noindex,nofollow" />}
+
+		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+
+		<title>{title ? `${title} | ${name}` : name}</title>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<script>
+	import "@tailwindplus/elements";
+</script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const header = document.getElementById("main-header");
+
+		if (header) {
+			const updateHeaderHeight = () => {
+				document.documentElement.style.setProperty("--header-height", `${header.offsetHeight}px`);
+			};
+
+			updateHeaderHeight();
+			window.addEventListener("resize", updateHeaderHeight);
+		}
+	});
+</script>

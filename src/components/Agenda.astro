@@ -1,0 +1,30 @@
+---
+import LucideClock from "~icons/lucide/clock";
+
+const schedule = [
+	{ time: "7:45 AM", activity: "Doors Open & Breakfast", emoji: "🥞" },
+	{ time: "8:15 AM", activity: "Morning Assembly", emoji: "🌅" },
+	{ time: "8:30 AM", activity: "Core Academics", emoji: "📖" },
+	{ time: "10:15 AM", activity: "Recess & Snack", emoji: "⚽" },
+	{ time: "10:45 AM", activity: "Specials (Art, Music, PE)", emoji: "🎶" },
+	{ time: "12:00 PM", activity: "Lunch", emoji: "🍎" },
+	{ time: "12:45 PM", activity: "Afternoon Academics", emoji: "🧮" },
+	{ time: "2:15 PM", activity: "Clubs & Activities", emoji: "🎭" },
+	{ time: "3:00 PM", activity: "Dismissal", emoji: "🚌" },
+];
+---
+
+<div class="max-w-2xl mx-auto">
+	{
+		schedule.map((item) => (
+			<div class="flex items-center gap-4 py-4 border-b border-gray-400/50 last:border-b-0">
+				<div class="flex items-center gap-2 w-28 shrink-0">
+					<LucideClock class="size-4 text-brand-blue" />
+					<span class="font-bold text-sm">{item.time}</span>
+				</div>
+				<span class="text-2xl">{item.emoji}</span>
+				<span>{item.activity}</span>
+			</div>
+		))
+	}
+</div>

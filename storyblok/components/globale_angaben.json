@@ -1,0 +1,83 @@
+{
+  "name": "globale_angaben",
+  "display_name": "Globale Angaben",
+  "description": "Seitenweit gültige Angaben: Logo, Footer, Kontaktdaten, Öffnungszeiten. Gibt es genau einmal.",
+  "created_at": "2026-11-02T17:50:02.485Z",
+  "updated_at": "2026-11-02T17:50:02.485Z",
+  "id": 237372221383500,
+  "schema": {
+    "name": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Name des Vereins",
+      "id": "TOcxz7eKT06RbX52ObSnMA"
+    },
+    "logo": {
+      "type": "asset",
+      "pos": 1,
+      "required": true,
+      "filetypes": [
+        "images"
+      ],
+      "display_name": "Logo",
+      "description": "Alt-Text im Bild-Dialog ist Pflicht.",
+      "id": "nTLeJnsHRrqdaVzP5vJ7sg"
+    },
+    "footer_text": {
+      "type": "textarea",
+      "pos": 2,
+      "display_name": "Footer-Text",
+      "id": "IVRUuOCxQLueyEWw74hrOA"
+    },
+    "strasse": {
+      "type": "text",
+      "pos": 3,
+      "required": true,
+      "display_name": "Straße und Hausnummer",
+      "id": "XVhzPwLzT8aOktoJVOsGMw"
+    },
+    "ort": {
+      "type": "text",
+      "pos": 4,
+      "required": true,
+      "display_name": "PLZ und Ort",
+      "id": "kDt90A7SS8a3_4zAI_5nwA"
+    },
+    "telefon": {
+      "type": "text",
+      "pos": 5,
+      "display_name": "Telefon",
+      "id": "6AnUy9EWQVGQ1WO6wB4eXg"
+    },
+    "email": {
+      "type": "text",
+      "pos": 6,
+      "display_name": "E-Mail",
+      "id": "tdP4cSfORoah4p0y0dn2Tg"
+    },
+    "oeffnungszeiten": {
+      "type": "textarea",
+      "pos": 7,
+      "required": true,
+      "display_name": "Öffnungszeiten",
+      "description": "Eine Zeile pro Angabe, z. B. „Mo–Fr 7:30–14:00 Uhr“.",
+      "id": "QeqSayVJRHCoIfiFORAf3w"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Globale Angaben",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

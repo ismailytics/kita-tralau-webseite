@@ -1,0 +1,51 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import MainHeading from "@/components/MainHeading.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Button from "@/components/buttons/Button.astro";
+import Bild from "@/components/Bild.astro";
+import { startseite } from "@/inhaltsquelle";
+
+const { hero, konzept, kontaktCta } = await startseite();
+---
+
+<Layout seoDescription={hero.text}>
+	<Section class="relative">
+		<Bild
+			bild={hero.bild}
+			class="absolute inset-0 object-cover w-full h-full z-0"
+			widths={[640, 1024, 1600]}
+			sizes="100vw"
+			loading="eager"
+		/>
+		<div class="absolute inset-0 bg-white/70 z-10"></div>
+
+		<Container class:list={"relative z-20"}>
+			<MainHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{hero.titel}</h1>
+				{hero.text && <p>{hero.text}</p>}
+			</MainHeading>
+		</Container>
+	</Section>
+
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h2 class="text-4xl font-bold tracking-wide">{konzept.titel}</h2>
+				<p>{konzept.text}</p>
+			</SectionHeading>
+		</Container>
+	</Section>
+
+	<Section class:list={"bg-brand-blue text-white"}>
+		<Container class:list={"lg:py-12"}>
+			<SectionHeading class="mb-0">
+				<h2 class="text-4xl font-bold tracking-wide">{kontaktCta.titel}</h2>
+				{kontaktCta.text && <p class="max-w-2xl mx-auto">{kontaktCta.text}</p>}
+				<Button href="#kontakt" variant="white">{kontaktCta.button}</Button>
+			</SectionHeading>
+		</Container>
+	</Section>
+</Layout>
