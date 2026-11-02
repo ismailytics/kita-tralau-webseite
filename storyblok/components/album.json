@@ -1,0 +1,52 @@
+{
+  "name": "album",
+  "display_name": "Album",
+  "description": "Ein Album zu einem Anlass. Nur Fotos von Gebäude und Gelände, keine Kinder.",
+  "created_at": "2026-11-02T18:00:59.304Z",
+  "updated_at": "2026-11-02T18:00:59.304Z",
+  "id": 237374911714158,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Titel",
+      "id": "mEVihKM2QwKD-EseaeToNw"
+    },
+    "datum": {
+      "type": "datetime",
+      "pos": 1,
+      "required": true,
+      "disable_time": true,
+      "display_name": "Datum des Anlasses",
+      "description": "Die Galerie zeigt neueste Alben zuerst.",
+      "id": "_ViTbTk6SMmj5k_55Ulk6A"
+    },
+    "fotos": {
+      "type": "multiasset",
+      "pos": 2,
+      "required": true,
+      "filetypes": [
+        "images"
+      ],
+      "display_name": "Fotos",
+      "description": "Nur Gebäude und Gelände, keine Kinder. Alt-Text je Foto ist Pflicht (im Bild-Dialog).",
+      "id": "otVlWkFUTkK_bJFySHwMkA"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Album",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

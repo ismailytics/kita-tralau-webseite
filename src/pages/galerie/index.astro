@@ -1,0 +1,44 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Bild from "@/components/Bild.astro";
+import { alben, galerie } from "@/inhaltsquelle";
+import { datumLang } from "@/lib/datum";
+
+const { titel, intro } = await galerie();
+const liste = await alben();
+---
+
+<Layout title={titel} seoDescription={intro}>
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				{intro && <p>{intro}</p>}
+			</SectionHeading>
+
+			<ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+				{
+					liste.map((album) => (
+						<li>
+							<a href={`/galerie/${album.slug}/`} class="group block">
+								<Bild
+									bild={album.fotos[0]}
+									class="aspect-[4/3] w-full rounded-2xl object-cover group-hover:opacity-90"
+									widths={[400, 800]}
+									sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+								/>
+								<h2 class="mt-4 text-2xl font-bold group-hover:underline">{album.titel}</h2>
+								<p class="text-brand-foreground/70">
+									<time datetime={album.datum}>{datumLang(album.datum)}</time> · {album.fotos.length} {album.fotos.length === 1 ? "Foto" : "Fotos"}
+								</p>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</Section>
+</Layout>
