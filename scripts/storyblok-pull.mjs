@@ -1,21 +1,13 @@
 // Zieht Komponenten, Datasources, Stories und Assets aus dem Storyblok-Space nach storyblok/ und erzeugt Typen (ADR-0008).
 // Braucht STORYBLOK_PERSONAL_ACCESS_TOKEN und STORYBLOK_SPACE_ID (Region EU).
-import { execFileSync } from "node:child_process";
 import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { storyblokZugang } from "./storyblok-zugang.mjs";
 
-const { STORYBLOK_PERSONAL_ACCESS_TOKEN: pat, STORYBLOK_SPACE_ID: space } = process.env;
-if (!pat || !space) {
-	console.error("STORYBLOK_PERSONAL_ACCESS_TOKEN und STORYBLOK_SPACE_ID müssen gesetzt sein.");
-	process.exit(1);
-}
-
+const { space, cli: storyblok } = storyblokZugang();
 const tmp = mkdtempSync(join(tmpdir(), "storyblok-pull-"));
-// Das CLI liest STORYBLOK_TOKEN als Management-Token; im Projekt ist STORYBLOK_TOKEN der Preview-Token.
-const env = { ...process.env, STORYBLOK_LOGIN: "env", STORYBLOK_TOKEN: pat, STORYBLOK_REGION: "eu" };
-const cli = (...args) =>
-	execFileSync("pnpm", ["exec", "storyblok", "--no-ui-enabled", "-p", tmp, ...args, "-s", space], { env, stdio: "inherit" });
+const cli = (...args) => storyblok(tmp, ...args);
 
 cli("components", "pull", "--sf");
 cli("datasources", "pull", "--sf");

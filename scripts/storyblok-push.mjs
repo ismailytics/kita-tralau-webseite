@@ -2,10 +2,10 @@
 // Braucht STORYBLOK_PERSONAL_ACCESS_TOKEN und STORYBLOK_SPACE_ID des Ziel-Space (Region EU).
 // --dry-run: nichts schreiben. --nur-schemas: nur Datasources und Komponenten, Inhalte der Redaktion bleiben unberührt.
 // Upsert: Komponenten und Stories werden aktualisiert, vorhandene Assets bleiben, nichts wird gelöscht. Löschungen macht man im Ziel-Space von Hand.
-import { execFileSync } from "node:child_process";
 import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { storyblokZugang } from "./storyblok-zugang.mjs";
 
 // Ordnet lokale Assets vorhandenen im Ziel-Space zu (gleiche ID, sonst gleicher Dateiname), als Einträge fürs CLI-Manifest.
 export const assetZuordnung = (lokal, ziel) =>
@@ -32,11 +32,7 @@ const zielAssets = async (space, pat) => {
 };
 
 if (import.meta.main) {
-	const { STORYBLOK_PERSONAL_ACCESS_TOKEN: pat, STORYBLOK_SPACE_ID: space } = process.env;
-	if (!pat || !space) {
-		console.error("STORYBLOK_PERSONAL_ACCESS_TOKEN und STORYBLOK_SPACE_ID (Ziel-Space) müssen gesetzt sein.");
-		process.exit(1);
-	}
+	const { pat, space, cli: storyblok } = storyblokZugang(" (Ziel-Space)");
 	const dryRun = process.argv.includes("--dry-run");
 	const nurSchemas = process.argv.includes("--nur-schemas");
 
@@ -46,9 +42,7 @@ if (import.meta.main) {
 	const vorhanden = ["datasources", "components", "assets", "stories"].filter((dir) => existsSync(join("storyblok", dir)));
 	for (const dir of vorhanden) cpSync(join("storyblok", dir), quelle(dir), { recursive: true });
 
-	const env = { ...process.env, STORYBLOK_LOGIN: "env", STORYBLOK_TOKEN: pat, STORYBLOK_REGION: "eu" };
-	const cli = (...args) =>
-		execFileSync("pnpm", ["exec", "storyblok", "-p", tmp, ...args, "-s", space, "--from", "beispiel"], { env, stdio: "inherit" });
+	const cli = (...args) => storyblok(tmp, ...args, "--from", "beispiel");
 
 	try {
 		for (const typ of ["datasources", "components"].filter((dir) => vorhanden.includes(dir))) {
