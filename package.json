@@ -12,6 +12,8 @@
 		"build:vorschau": "VARIANTE=vorschau astro build",
 		"preview": "astro preview",
 		"test": "node --test 'scripts/*.test.mjs' && playwright test",
+		"lint": "biome check .",
+		"check": "astro check",
 		"vorschau": "node scripts/vorschau.mjs",
 		"vorschau:zertifikat": "mkdir -p .vorschau && openssl req -x509 -newkey rsa:2048 -nodes -keyout .vorschau/key.pem -out .vorschau/cert.pem -days 365 -subj /CN=localhost -addext subjectAltName=DNS:localhost",
 		"storyblok:pull": "node scripts/storyblok-pull.mjs",
@@ -27,11 +29,14 @@
 		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {
+		"@astrojs/check": "^0.9.12",
+		"@biomejs/biome": "2.4.9",
 		"@iconify-json/heroicons": "^1.2.3",
 		"@iconify-json/lucide": "^1.2.150",
 		"@playwright/test": "^1.64.1",
 		"@storyblok/js": "^6.4.1",
 		"storyblok": "4.26.0",
+		"typescript": "^6.0.3",
 		"unplugin-icons": "^24.0.0"
 	}
 }

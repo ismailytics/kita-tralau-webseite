@@ -1,5 +1,4 @@
 // Storyblok: veröffentlichte Inhalte (in der Vorschau Entwürfe) über die Content Delivery API, nur zur Build-Zeit.
-import type { StoryblokAsset } from "../../storyblok/storyblok";
 import { einmal } from "../lib/einmal";
 import { VORSCHAU } from "../variante";
 import { abrufen, dateiInhalt, versioniert } from "./abruf";
@@ -33,7 +32,7 @@ export async function fullSlug(uuid: string): Promise<string> {
 // Remote-URL der Storyblok-Asset-Domain mit Inhalts-Hash; astro:assets lädt sie beim Build herunter (image.domains).
 // shortcut: jedes Bild wird zum Hashen einmal extra geladen, bei sehr vielen Bildern ETag statt Inhalt hashen.
 const bildVersion = einmal(versioniert);
-export const bildDatei = (asset: StoryblokAsset): Promise<string> => bildVersion(asset.filename);
+export const bildDatei = (asset: { filename: string }): Promise<string> => bildVersion(asset.filename);
 
 // Dateien werden beim Build geladen und same-origin ausgeliefert, wie Bilder (ADR-0003).
 export const datei = dateiInhalt;

@@ -1,7 +1,6 @@
 // Beispielinhalte: die per Pull-Skript ins Repo gezogenen Stories und Assets (storyblok/).
 import { readFileSync } from "node:fs";
 import type { ImageMetadata } from "astro";
-import type { StoryblokAsset } from "../../storyblok/storyblok";
 import { VORSCHAU } from "../variante";
 
 type Story = { id: number; uuid: string; slug: string; full_slug: string; position: number; content: { component?: string } };
@@ -49,7 +48,7 @@ export async function fullSlug(uuid: string): Promise<string> {
 }
 
 // Das CLI legt Assets als <name>_<id>.<endung> ab.
-export function bildDatei(asset: StoryblokAsset): ImageMetadata {
+export function bildDatei(asset: { id?: number | null }): ImageMetadata {
 	const datei = Object.entries(bildDateien).find(([pfad]) => pfad.includes(`_${asset.id}.`));
 	if (!datei) throw new Error(`Beispielinhalte: Asset ${asset.id} fehlt in storyblok/assets/.`);
 	return datei[1];

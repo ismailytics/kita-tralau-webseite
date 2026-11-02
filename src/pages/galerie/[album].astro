@@ -32,7 +32,7 @@ const gross = await Promise.all(
 					album.fotos.map((foto, i) => (
 						<li>
 							<a href={gross[i].src} data-lightbox class="block">
-									<Bild
+								<Bild
 									bild={foto}
 									class="aspect-[4/3] w-full rounded-2xl object-cover hover:opacity-90"
 									widths={[400, 800]}

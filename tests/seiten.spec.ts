@@ -69,7 +69,7 @@ for (const pfad of SEITEN) {
 
 			expect(ebenen.filter((e) => e === 1)).toHaveLength(1);
 			expect(ebenen[0]).toBe(1);
-			ebenen.forEach((e, i) => i > 0 && expect(e, `h${ebenen[i - 1]} → h${e}`).toBeLessThanOrEqual(ebenen[i - 1] + 1));
+			for (let i = 1; i < ebenen.length; i++) expect(ebenen[i], `h${ebenen[i - 1]} → h${ebenen[i]}`).toBeLessThanOrEqual(ebenen[i - 1] + 1);
 		});
 	});
 }

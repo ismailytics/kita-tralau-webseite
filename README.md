@@ -11,6 +11,8 @@ corepack enable    # pnpm in der Version aus package.json
 pnpm install
 pnpm build         # Prod nach dist/ (+ Check auf Storyblok-Reste) und Vorschau nach dist-vorschau/, mit den Beispielinhalten
 pnpm test          # Unit-Tests der Skripte + Playwright gegen dist/ und dist-vorschau/
+pnpm lint          # Biome: Lint und Format (pnpm exec biome check --write . behebt Format)
+pnpm check         # astro check: Typen in .ts und .astro
 pnpm dev           # Entwicklungsserver
 ```
 

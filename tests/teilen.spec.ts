@@ -28,7 +28,7 @@ for (const { pfad, titel, beschreibung } of [
 		await expect(meta(page, "og:url")).toHaveAttribute("content", new RegExp(`^${SITE}${pfad.replace(/\/$/, "")}/?$`));
 		await expect(meta(page, "og:image:alt")).toHaveAttribute("content", /./);
 		await expect(meta(page, "twitter:card")).toHaveAttribute("content", "summary_large_image");
-		await bildAusDemBuild(page, (await meta(page, "og:image").getAttribute("content"))!);
+		await bildAusDemBuild(page, (await meta(page, "og:image").getAttribute("content")) ?? "");
 	});
 }
 

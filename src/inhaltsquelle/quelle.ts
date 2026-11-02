@@ -7,7 +7,8 @@ import * as storyblok from "./storyblok";
 export const quelle = process.env.INHALTSQUELLE === "storyblok" ? storyblok : beispiel;
 
 export async function bild(asset: StoryblokAsset): Promise<Bild> {
-	if (!asset?.filename) throw new Error("Inhaltsquelle: Bild fehlt.");
-	if (!asset.alt?.trim()) throw new Error(`Inhaltsquelle: Bild ohne Alt-Text (${asset.filename.split("/").pop()}).`);
-	return { src: await quelle.bildDatei(asset), alt: asset.alt };
+	const { id, filename, alt } = asset ?? {};
+	if (!filename) throw new Error("Inhaltsquelle: Bild fehlt.");
+	if (!alt?.trim()) throw new Error(`Inhaltsquelle: Bild ohne Alt-Text (${filename.split("/").pop()}).`);
+	return { src: await quelle.bildDatei({ id, filename }), alt };
 }

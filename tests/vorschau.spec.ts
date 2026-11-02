@@ -54,7 +54,8 @@ test("nach dem Speichern erscheint der Hinweis, bei neuer Build-ID lädt die Sei
 	await expect(hinweis).toBeHidden();
 
 	await page.evaluate(() => {
-		for (const [events, cb] of (window as any).bridgeHandler) if (events.includes("change")) cb({ action: "change" });
+		const { bridgeHandler } = window as unknown as { bridgeHandler: [string[], (e: { action: string }) => void][] };
+		for (const [events, cb] of bridgeHandler) if (events.includes("change")) cb({ action: "change" });
 	});
 	await expect(hinweis).toBeVisible();
 	await expect(hinweis).toHaveText(/wird aktualisiert/i);
