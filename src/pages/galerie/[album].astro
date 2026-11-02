@@ -1,0 +1,43 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import MainHeading from "@/components/MainHeading.astro";
+import Bild from "@/components/Bild.astro";
+import { alben, type Album } from "@/inhaltsquelle";
+import { datumLang } from "@/lib/datum";
+
+export async function getStaticPaths() {
+	return (await alben()).map((album) => ({ params: { album: album.slug }, props: { album } }));
+}
+
+const { album } = Astro.props as { album: Album };
+---
+
+<Layout title={album.titel}>
+	<Section>
+		<Container>
+			<MainHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{album.titel}</h1>
+				<p><time datetime={album.datum}>{datumLang(album.datum)}</time></p>
+			</MainHeading>
+
+			<ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				{
+					album.fotos.map((foto) => (
+						<li>
+							<Bild
+								bild={foto}
+								class="aspect-[4/3] w-full rounded-2xl object-cover"
+								widths={[400, 800]}
+								sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+							/>
+						</li>
+					))
+				}
+			</ul>
+
+			<p class="mt-12"><a href="/galerie/" class="underline">Alle Alben</a></p>
+		</Container>
+	</Section>
+</Layout>
