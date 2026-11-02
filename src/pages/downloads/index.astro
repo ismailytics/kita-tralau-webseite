@@ -1,0 +1,34 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import { downloadKategorien } from "@/inhaltsquelle";
+
+const kategorien = await downloadKategorien();
+---
+
+<Layout title="Downloads" seoDescription="Formulare, Elternbriefe und weitere Unterlagen der Kita zum Herunterladen.">
+	<Section>
+		<Container class:list={"flex flex-col gap-y-12"}>
+			<h1 class="text-5xl font-bold tracking-wide">Downloads</h1>
+			{
+				kategorien.map((k, i) => (
+					<section aria-labelledby={`kategorie-${i}`} class="flex flex-col gap-y-4">
+						<h2 id={`kategorie-${i}`} class="text-3xl font-bold tracking-wide">
+							{k.titel}
+						</h2>
+						<ul class="flex flex-col gap-y-2">
+							{k.downloads.map((d) => (
+								<li>
+									<a href={d.datei} class="underline hover:text-brand-blue">
+										{d.titel}
+									</a>
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			}
+		</Container>
+	</Section>
+</Layout>

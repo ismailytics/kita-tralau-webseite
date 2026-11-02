@@ -3,6 +3,8 @@
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
 import type {
+	Download as DownloadStory,
+	DownloadKategorie as DownloadKategorieStory,
 	Faq as FaqStory,
 	GlobaleAngaben as GlobaleAngabenStory,
 	Kontakt as KontaktStory,
@@ -166,6 +168,52 @@ export async function termine(): Promise<Termin[]> {
 			kurztext: t.kurztext || undefined,
 		}))
 		.sort((a, b) => a.datum.localeCompare(b.datum));
+}
+
+/** Ein Download; `datei` ist der same-origin Pfad, unter dem die Datei beim Build abgelegt wird. */
+export interface Download {
+	titel: string;
+	datei: string;
+}
+
+export interface DownloadKategorie {
+	titel: string;
+	downloads: Download[];
+}
+
+async function alleDownloads() {
+	return (await quelle.alleStories<DownloadStory>("download")).map(({ content: d }) => {
+		if (!d.datei?.filename) throw new Error(`Inhaltsquelle: Download „${d.titel}“ ohne Datei.`);
+		return {
+			titel: d.titel,
+			kategorie: d.kategorie as string,
+			asset: d.datei,
+			datei: `/downloads/dateien/${d.datei.id}/${d.datei.filename.split("/").pop()}`,
+		};
+	});
+}
+
+/** Download-Kategorien in der Reihenfolge der Redaktion, Downloads darin nach Titel; leere Kategorien entfallen. */
+export async function downloadKategorien(): Promise<DownloadKategorie[]> {
+	const [kategorien, downloads] = await Promise.all([
+		quelle.alleStories<DownloadKategorieStory>("download_kategorie"),
+		alleDownloads(),
+	]);
+	return kategorien
+		.toSorted((a, b) => Number(a.content.reihenfolge) - Number(b.content.reihenfolge))
+		.map((k) => ({
+			titel: k.content.titel,
+			downloads: downloads
+				.filter((d) => d.kategorie === k.uuid)
+				.toSorted((a, b) => a.titel.localeCompare(b.titel, "de"))
+				.map(({ titel, datei }) => ({ titel, datei })),
+		}))
+		.filter((k) => k.downloads.length);
+}
+
+/** Alle Download-Dateien mit ihrem Pfad, damit der Build sie same-origin ablegt (ADR-0003). */
+export async function downloadDateien(): Promise<{ pfad: string; inhalt: () => Promise<Uint8Array> }[]> {
+	return (await alleDownloads()).map((d) => ({ pfad: d.datei, inhalt: () => quelle.datei(d.asset) }));
 }
 
 export async function kontakt(): Promise<Kontakt> {
