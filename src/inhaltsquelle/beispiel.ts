@@ -17,6 +17,13 @@ export async function story<T>(slug: string): Promise<T> {
 	return gefunden.content as T;
 }
 
+/** Inhalte aller Stories eines Inhaltstyps (z. B. alle Termine). */
+export async function alle<T>(inhaltstyp: string): Promise<T[]> {
+	return Object.values(stories)
+		.map((s) => s.content as { component?: string })
+		.filter((c) => c?.component === inhaltstyp) as T[];
+}
+
 // Das CLI legt Assets als <name>_<id>.<endung> ab.
 export function bildDatei(asset: StoryblokAsset): ImageMetadata {
 	const datei = Object.entries(dateien).find(([pfad]) => pfad.includes(`_${asset.id}.`));
