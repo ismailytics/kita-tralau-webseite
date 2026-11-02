@@ -7,6 +7,7 @@ import type {
 	GlobaleAngaben as GlobaleAngabenStory,
 	Startseite as StartseiteStory,
 	Tagesablauf as TagesablaufStory,
+	Termin as TerminStory,
 	Vorstand as VorstandStory,
 } from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
@@ -30,6 +31,15 @@ export interface Startseite {
 	hero: { titel: string; text: string; bild: Bild };
 	konzept: { titel: string; text: string };
 	kontaktCta: { titel: string; text: string; button: string };
+}
+
+/** Ein Termin; Daten als ISO-Datum (JJJJ-MM-TT). */
+export interface Termin {
+	titel: string;
+	datum: string;
+	uhrzeit?: string;
+	enddatum?: string;
+	kurztext?: string;
 }
 
 // Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
@@ -129,4 +139,24 @@ export async function faq(): Promise<Faq> {
 		intro: s.intro ?? "",
 		fragen: (s.fragen ?? []).map((f) => ({ frage: f.frage, antwort: f.antwort })),
 	};
+}
+
+// Storyblok liefert Datumsfelder als „JJJJ-MM-TT HH:MM“.
+const tag = (wert?: string) => wert?.slice(0, 10) || undefined;
+const fehler = (meldung: string): never => {
+	throw new Error(meldung);
+};
+
+/** Alle Termine nach Datum aufsteigend; vergangene bleiben stehen, bis die Redaktion sie löscht. */
+export async function termine(): Promise<Termin[]> {
+	const alle = await quelle.alle<TerminStory>("termin");
+	return alle
+		.map((t) => ({
+			titel: t.titel,
+			datum: tag(t.datum) ?? fehler(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
+			uhrzeit: t.uhrzeit || undefined,
+			enddatum: tag(t.enddatum),
+			kurztext: t.kurztext || undefined,
+		}))
+		.sort((a, b) => a.datum.localeCompare(b.datum));
 }
