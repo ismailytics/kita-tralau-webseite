@@ -50,7 +50,7 @@ const absolut = (pfad: string) => new URL(pfad, Astro.site).href;
 	<body>
 		<Header />
 		{VORSCHAU && <Vorschau />}
-		<main {...bearbeiten}>
+		<main class="grow" {...bearbeiten}>
 			<slot />
 		</main>
 		<Footer />

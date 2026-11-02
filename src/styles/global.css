@@ -27,7 +27,7 @@
 	}
 
 	body {
-		@apply bg-brand-background text-brand-foreground font-nunito text-lg;
+		@apply bg-brand-background text-brand-foreground font-nunito text-lg min-h-svh flex flex-col;
 	}
 
 	:is(h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6) {
