@@ -8,4 +8,10 @@ export const MainMenu: MenuItem[] = [
 		hoverClass: "hover:text-brand-blue",
 		activeClass: "text-brand-blue",
 	},
+	{
+		label: "Termine",
+		href: "/termine",
+		hoverClass: "hover:text-brand-red",
+		activeClass: "text-brand-red",
+	},
 ];

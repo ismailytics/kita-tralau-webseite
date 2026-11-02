@@ -29,4 +29,15 @@ export interface Startseite {
   _editable?: string | undefined;
 }
 
-export type ContentType = GlobaleAngaben | Startseite;
+export interface Termin {
+  titel: string;
+  datum: string;
+  uhrzeit?: string;
+  enddatum?: string;
+  kurztext?: string;
+  component: "termin";
+  _uid: string;
+  _editable?: string | undefined;
+}
+
+export type ContentType = GlobaleAngaben | Startseite | Termin;
