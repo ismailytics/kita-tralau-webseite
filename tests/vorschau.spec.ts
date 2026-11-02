@@ -58,3 +58,10 @@ test("nach dem Speichern erscheint der Hinweis, bei neuer Build-ID lädt die Sei
 	await page.waitForEvent("load");
 	await expect(hinweis).toBeHidden();
 });
+
+for (const pfad of ["/ueber-uns", "/impressum", "/datenschutz"]) {
+	test(`${pfad}: Seite ist bearbeitbar`, async ({ page }) => {
+		await page.goto(pfad);
+		await expect(page.locator("main")).toHaveAttribute("data-blok-c", /"uid":/);
+	});
+}

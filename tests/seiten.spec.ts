@@ -13,6 +13,9 @@ const SEITEN = [
 	"/faq",
 	"/downloads",
 	"/kontakt",
+	"/ueber-uns",
+	"/impressum",
+	"/datenschutz",
 ];
 
 for (const pfad of SEITEN) {
@@ -39,6 +42,13 @@ for (const pfad of SEITEN) {
 				"content",
 				/default-src 'self'.*script-src 'self' 'sha/,
 			);
+		});
+
+		test("Impressum und Datenschutz sind im Footer verlinkt", async ({ page }) => {
+			await page.goto(pfad);
+			const footer = page.getByRole("contentinfo");
+			await expect(footer.getByRole("link", { name: "Impressum" })).toHaveAttribute("href", "/impressum");
+			await expect(footer.getByRole("link", { name: "Datenschutz" })).toHaveAttribute("href", "/datenschutz");
 		});
 
 		test("alle Bilder haben einen Alt-Text", async ({ page }) => {

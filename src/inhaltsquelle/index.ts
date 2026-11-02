@@ -11,7 +11,9 @@ import type {
 	Kontakt as KontaktStory,
 	Startseite as StartseiteStory,
 	Tagesablauf as TagesablaufStory,
+	Rechtstext as RechtstextStory,
 	Termin as TerminStory,
+	UeberUns as UeberUnsStory,
 	Vorstand as VorstandStory,
 } from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
@@ -152,9 +154,9 @@ type SbKnoten = { type: string; text?: string; attrs?: Record<string, any>; mark
 /** Asset-Dateien, auf die Inhalte verlinken: eigener Pfad → Storyblok-URL. */
 const dateiLinks = new Map<string, string>();
 
-/** Alle aus Rich Text verlinkten Asset-Dateien; der Build legt sie unter ihrem eigenen Pfad ab. */
+/** Alle aus Rich Text verlinkten Asset-Dateien (neue Inhaltstypen mit Rich Text hier mitladen); der Build legt sie unter ihrem eigenen Pfad ab. */
 export async function richTextDateien(): Promise<{ pfad: string; inhalt: () => Promise<Uint8Array> }[]> {
-	await beitraege();
+	await Promise.all([beitraege(), ueberUns(), rechtstext("impressum"), rechtstext("datenschutz")]);
 	return [...dateiLinks].map(([pfad, url]) => ({ pfad, inhalt: () => quelle.datei({ filename: url } as StoryblokAsset) }));
 }
 
@@ -339,4 +341,28 @@ export async function kontakt(): Promise<Kontakt> {
 		kitaportal: { titel: s.kitaportal_titel, text: s.kitaportal_text, url: s.kitaportal_url, linkText: s.kitaportal_link_text },
 		karte: { bild: bild(s.karte_bild), quelle: s.karte_quelle, url: s.karte_url, linkText: s.karte_link_text },
 	};
+}
+
+export interface UeberUns {
+	bearbeiten: Bearbeiten;
+	titel: string;
+	intro: string;
+	text: RichText;
+}
+
+export async function ueberUns(): Promise<UeberUns> {
+	const s = await quelle.story<UeberUnsStory>("ueber-uns");
+	return { bearbeiten: bearbeiten(s), titel: s.titel, intro: s.intro ?? "", text: await richText(s.text?.content as SbKnoten[]) };
+}
+
+/** Impressum oder Datenschutzerklärung. */
+export interface Rechtstext {
+	bearbeiten: Bearbeiten;
+	titel: string;
+	text: RichText;
+}
+
+export async function rechtstext(slug: "impressum" | "datenschutz"): Promise<Rechtstext> {
+	const s = await quelle.story<RechtstextStory>(slug);
+	return { bearbeiten: bearbeiten(s), titel: s.titel, text: await richText(s.text?.content as SbKnoten[]) };
 }

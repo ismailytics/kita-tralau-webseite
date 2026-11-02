@@ -1,0 +1,46 @@
+{
+  "name": "ueber_uns",
+  "display_name": "Über uns",
+  "description": "Die Seite Über uns: das Konzept der Kita.",
+  "created_at": "2026-11-02T18:15:19.080Z",
+  "updated_at": "2026-11-02T18:15:19.080Z",
+  "id": 237378433356689,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Überschrift",
+      "id": "jT_wS5yvSGaDKY-rOCfBVg"
+    },
+    "intro": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Einleitung",
+      "id": "B4IKKYNCREiGWkUdUGTaGg"
+    },
+    "text": {
+      "type": "richtext",
+      "pos": 2,
+      "required": true,
+      "display_name": "Text",
+      "description": "Bilder brauchen einen Alt-Text und zeigen keine Kinder. Überschriften ab Stufe 2.",
+      "id": "ptfoVTdnSOq9bO9luS754w"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Über uns",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

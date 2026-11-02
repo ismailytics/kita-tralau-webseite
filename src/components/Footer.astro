@@ -48,6 +48,10 @@ const { bearbeiten, name, logo, footerText, kontakt, oeffnungszeiten } = await g
 		</div>
 		<div class="border-t border-primary-foreground/20 mt-8 pt-6 text-center text-sm opacity-60 font-body">
 			© {new Date().getFullYear()} {name}
+			<nav aria-label="Rechtliches" class="mt-2 flex justify-center gap-x-6">
+				<a href="/impressum">Impressum</a>
+				<a href="/datenschutz">Datenschutz</a>
+			</nav>
 		</div>
 	</div>
 </footer>

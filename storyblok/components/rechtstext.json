@@ -1,0 +1,40 @@
+{
+  "name": "rechtstext",
+  "display_name": "Rechtstext",
+  "description": "Impressum oder Datenschutzerklärung; verlinkt im Footer jeder Seite.",
+  "created_at": "2026-11-02T18:15:19.068Z",
+  "updated_at": "2026-11-02T18:15:19.068Z",
+  "id": 237378433307536,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Überschrift",
+      "id": "NSoyNysCSDKPCq6rBrCtTQ"
+    },
+    "text": {
+      "type": "richtext",
+      "pos": 1,
+      "required": true,
+      "display_name": "Text",
+      "description": "Bilder brauchen einen Alt-Text und zeigen keine Kinder. Überschriften ab Stufe 2.",
+      "id": "i-azRm3USByrBrlNDTT3tw"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Rechtstext",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}
