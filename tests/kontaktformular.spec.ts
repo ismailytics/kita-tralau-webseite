@@ -36,7 +36,7 @@ test("Gültige Kontaktanfrage kommt im Postfach an, Antwort geht an den Besucher
 	expect(mail.Text).toContain("Haben Sie im Sommer noch einen Platz frei?");
 });
 
-const abgelehnt: [string, Record<string, string>, string][] = [
+const abgelehnt: [string, Record<string, string | undefined>, string][] = [
 	["fehlendem Namen", { name: "" }, "/kontakt/ungueltig"],
 	["fehlender Mail", { email: "" }, "/kontakt/ungueltig"],
 	["ungültiger Mail", { email: "erika(at)example.com" }, "/kontakt/ungueltig"],
@@ -47,11 +47,15 @@ const abgelehnt: [string, Record<string, string>, string][] = [
 	// Bots sollen nicht merken, dass sie erkannt wurden.
 	["ausgefülltem Honeypot", { webseite: "https://spam.example" }, "/kontakt/danke"],
 	["zu schnellem Absenden", { dauer: "1" }, "/kontakt/fehler"],
+	["unsinniger Dauer", { dauer: "-5" }, "/kontakt/fehler"],
+	// Ein POST ohne das Feld kommt nicht aus dem Formular (das schickt es mit JS gefüllt, ohne JS leer).
+	["fehlender Dauer", { dauer: undefined }, "/kontakt/fehler"],
 ];
 
 for (const [fall, felder, ziel] of abgelehnt) {
 	test(`Keine Mail bei ${fall}`, async ({ request }) => {
-		const antwort = await request.post(skript, { form: { ...gueltig, ...felder }, maxRedirects: 0 });
+		const form = Object.fromEntries(Object.entries({ ...gueltig, ...felder }).filter(([, wert]) => wert !== undefined));
+		const antwort = await request.post(skript, { form, maxRedirects: 0 });
 
 		expect(antwort.status()).toBe(303);
 		expect(antwort.headers().location).toBe(ziel);
@@ -59,6 +63,14 @@ for (const [fall, felder, ziel] of abgelehnt) {
 		expect(messages).toHaveLength(0);
 	});
 }
+
+test("Leere Dauer (Formular ohne JS) prüft nur den Honeypot, die Anfrage kommt an", async ({ request }) => {
+	const antwort = await request.post(skript, { form: { ...gueltig, dauer: "" }, maxRedirects: 0 });
+
+	expect(antwort.headers().location).toBe("/kontakt/danke");
+	const { messages } = await (await request.get(`${mailpit}/messages`)).json();
+	expect(messages).toHaveLength(1);
+});
 
 test("Ohne Formulardaten (GET) geht keine Mail raus", async ({ request }) => {
 	const antwort = await request.get(skript, { maxRedirects: 0 });

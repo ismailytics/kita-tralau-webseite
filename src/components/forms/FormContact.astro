@@ -27,7 +27,8 @@ const feld =
 		<label for="kontakt-webseite">Bitte leer lassen</label>
 		<input id="kontakt-webseite" name="webseite" type="text" tabindex="-1" autocomplete="off" />
 	</div>
-	<input type="hidden" name="dauer" />
+	<!-- Mindestzeit: ohne JS bleibt das Feld leer, siehe public/kontaktanfrage.php. -->
+	<input type="hidden" name="dauer" value="" />
 	<p class="text-sm">
 		Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten. Mehr dazu in der
 		<a class="underline" href="/datenschutz">Datenschutzerklärung</a>.

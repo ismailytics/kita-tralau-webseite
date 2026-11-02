@@ -28,9 +28,12 @@ $nachricht = $feld('nachricht');
 if ($feld('webseite') !== '') {
 	weiter('danke');
 }
-// shortcut: Die Dauer misst das Skript der Kontaktseite; ohne JS fehlt sie und die Prüfung entfällt (der Honeypot bleibt).
-// Bei Spam ohne JS auf ein serverseitig signiertes Token umstellen.
-if ($feld('dauer') !== '' && (int) $feld('dauer') < MINDESTDAUER_SEKUNDEN) {
+// Das Formular schickt `dauer` immer mit: mit JS die gemessenen Sekunden, ohne JS leer. Fehlt das Feld,
+// kam die Anfrage nicht aus dem Formular.
+// shortcut: Ohne JS (leere Dauer) prüft nur der Honeypot, und ein Bot kann das nachahmen. Bei Spam ohne JS
+// die Startzeit serverseitig nachweisen (z. B. signiertes Token beim Seitenaufruf).
+$dauer = $_POST['dauer'] ?? null;
+if (!is_string($dauer) || ($dauer !== '' && (!ctype_digit($dauer) || (int) $dauer < MINDESTDAUER_SEKUNDEN))) {
 	weiter('fehler');
 }
 
