@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 const { beitrag } = Astro.props as { beitrag: Beitrag };
 ---
 
-<Layout title={beitrag.titel} seoDescription={beitrag.kurztext}>
+<Layout title={beitrag.titel} seoDescription={beitrag.kurztext} bild={beitrag.teaserbild}>
 	<Section>
 		<Container>
 			<article class="max-w-3xl mx-auto flex flex-col gap-y-6">

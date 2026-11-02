@@ -11,9 +11,12 @@ const buildId = String(Date.now());
 
 export default defineConfig({
 	output: "static",
+	// Absolute URLs der Teilen-Vorschau (OG/Twitter). Die Domain des Vereins steht noch nicht fest.
+	site: process.env.SITE_URL ?? "https://kita-tralau.example",
 	outDir: vorschau ? "dist-vorschau" : "dist",
 	// Remote-Bilder nur von der Storyblok-Asset-Domain; sie werden beim Build heruntergeladen (ADR-0003).
-	image: { domains: ["a.storyblok.com"] },
+	// SVG-Rasterung für Favicon und Teilen-Vorschau aus einem SVG-Logo; SVGs kommen nur aus dem Space der Redaktion.
+	image: { domains: ["a.storyblok.com"], dangerouslyProcessSVG: true },
 	// Die Vorschau lädt die Bridge von app.storyblok.com, die Stylesheets einfügt; Hash-CSP würde das blockieren.
 	security: vorschau ? {} : {
 		csp: {

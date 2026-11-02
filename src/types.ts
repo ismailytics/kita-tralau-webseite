@@ -1,3 +1,5 @@
+import type { Bild } from "@/inhaltsquelle";
+
 export interface MenuItem {
 	label: string;
 	href: string;
@@ -13,6 +15,8 @@ export interface LayoutProps {
 	noindex?: boolean;
 	/** Klick-zum-Bearbeiten für den Inhalt der Seite (Inhaltsquelle). */
 	bearbeiten?: Record<string, string>;
+	/** Bild der Teilen-Vorschau (OG/Twitter); ohne Angabe das Hero-Bild der Startseite. */
+	bild?: Bild;
 }
 
 export interface ContainerProps {
