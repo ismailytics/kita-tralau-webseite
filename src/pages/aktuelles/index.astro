@@ -2,17 +2,21 @@
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 import Bild from "@/components/Bild.astro";
 import Datum from "@/components/Datum.astro";
-import { beitraege } from "@/inhaltsquelle";
+import { beitraege, listenseite } from "@/inhaltsquelle";
 
-const liste = await beitraege();
+const [{ bearbeiten, titel, intro }, liste] = await Promise.all([listenseite("aktuelles/"), beitraege()]);
 ---
 
-<Layout title="Aktuelles" seoDescription="Neuigkeiten aus der Kindergruppe Travenbrück.">
+<Layout title={titel} seoDescription={intro || undefined} bearbeiten={bearbeiten}>
 	<Section>
 		<Container>
-			<h1 class="text-5xl font-bold tracking-wide text-center mb-12">Aktuelles</h1>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				{intro && <p>{intro}</p>}
+			</SectionHeading>
 			<div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
 				{
 					liste.map((b) => (

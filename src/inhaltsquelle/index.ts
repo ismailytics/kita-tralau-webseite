@@ -2,10 +2,12 @@
 // Liefert fertige Daten in Begriffen des Glossars; dahinter Storyblok oder die Beispielinhalte im Repo.
 import type { ImageMetadata } from "astro";
 import type {
+	AktuellesSeite as AktuellesSeiteStory,
 	Album as AlbumStory,
 	Beitrag as BeitragStory,
 	Download as DownloadStory,
 	DownloadKategorie as DownloadKategorieStory,
+	DownloadsSeite as DownloadsSeiteStory,
 	Faq as FaqStory,
 	Galerie as GalerieStory,
 	GlobaleAngaben as GlobaleAngabenStory,
@@ -60,7 +62,8 @@ export interface Beitrag {
 	text: RichText;
 }
 
-export interface Galerie {
+/** Überschrift und Intro einer Listenseite (Galerie, Aktuelles, Downloads). */
+export interface Listenseite {
 	bearbeiten: Bearbeiten;
 	titel: string;
 	intro: string;
@@ -145,8 +148,9 @@ export const beitraege = einmal(async (): Promise<Beitrag[]> => {
 	return liste.sort((a, b) => b.datum.localeCompare(a.datum));
 });
 
-export const galerie = einmal(async (): Promise<Galerie> => {
-	const s = await quelle.story<GalerieStory>("galerie");
+// Aktuelles und Downloads sind Ordner; ihre Seite ist jeweils die Startseite des Ordners (full_slug „<ordner>/“).
+export const listenseite = einmal(async (slug: "galerie" | "aktuelles/" | "downloads/"): Promise<Listenseite> => {
+	const s = await quelle.story<GalerieStory | AktuellesSeiteStory | DownloadsSeiteStory>(slug);
 	return { bearbeiten: bearbeiten(s), titel: s.titel, intro: s.intro ?? "" };
 });
 
@@ -267,7 +271,7 @@ export interface DownloadKategorie {
 	downloads: Download[];
 }
 
-/** Download-Kategorien in der Reihenfolge der Redaktion, Downloads darin nach Titel; leere Kategorien entfallen. */
+/** Download-Kategorien in der Reihenfolge im Ordner, Downloads darin nach Titel; leere Kategorien entfallen. */
 export const downloadKategorien = einmal(async (): Promise<DownloadKategorie[]> => {
 	const [kategorien, downloads] = await Promise.all([
 		quelle.storiesDesTyps<DownloadKategorieStory>("download_kategorie"),
@@ -280,7 +284,7 @@ export const downloadKategorien = einmal(async (): Promise<DownloadKategorie[]> 
 		datei: dateiPfad(d.datei?.filename || abbrechen(`Inhaltsquelle: Download „${d.titel}“ ohne Datei.`)),
 	}));
 	return kategorien
-		.toSorted((a, b) => Number(a.content.reihenfolge) - Number(b.content.reihenfolge))
+		.toSorted((a, b) => a.position - b.position)
 		.map((k) => ({
 			bearbeiten: bearbeiten(k.content),
 			titel: k.content.titel,
@@ -307,11 +311,18 @@ export interface UeberUns {
 	titel: string;
 	intro: string;
 	text: RichText;
+	bilder: Bild[];
 }
 
 export const ueberUns = einmal(async (): Promise<UeberUns> => {
 	const s = await quelle.story<UeberUnsStory>("ueber-uns");
-	return { bearbeiten: bearbeiten(s), titel: s.titel, intro: s.intro ?? "", text: await richText(s.text) };
+	return {
+		bearbeiten: bearbeiten(s),
+		titel: s.titel,
+		intro: s.intro ?? "",
+		text: await richText(s.text),
+		bilder: await Promise.all((s.bilder ?? []).map(bild)),
+	};
 });
 
 /** Impressum oder Datenschutzerklärung. */

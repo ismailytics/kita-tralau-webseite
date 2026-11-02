@@ -3,7 +3,7 @@
   "display_name": "Über uns",
   "description": "Die Seite Über uns: das Konzept der Kita.",
   "created_at": "2026-11-02T18:15:19.080Z",
-  "updated_at": "2026-11-02T18:15:19.080Z",
+  "updated_at": "2026-11-02T18:36:35.062Z",
   "id": 237378433356689,
   "schema": {
     "titel": {
@@ -26,6 +26,16 @@
       "display_name": "Text",
       "description": "Bilder brauchen einen Alt-Text und zeigen keine Kinder. Überschriften ab Stufe 2.",
       "id": "ptfoVTdnSOq9bO9luS754w"
+    },
+    "bilder": {
+      "type": "multiasset",
+      "pos": 3,
+      "filetypes": [
+        "images"
+      ],
+      "display_name": "Bilder",
+      "description": "Fotos von Gebäude und Gelände, keine Kinder. Alt-Text je Bild ist Pflicht (im Bild-Dialog).",
+      "id": "2h4nDdu0RlG6IkAj_sLYDA"
     }
   },
   "image": null,

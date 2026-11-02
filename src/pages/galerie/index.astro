@@ -4,10 +4,10 @@ import Section from "@/components/Section.astro";
 import Container from "@/components/Container.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
 import Bild from "@/components/Bild.astro";
-import { alben, galerie } from "@/inhaltsquelle";
+import { alben, listenseite } from "@/inhaltsquelle";
 import Datum from "@/components/Datum.astro";
 
-const { bearbeiten, titel, intro } = await galerie();
+const { bearbeiten, titel, intro } = await listenseite("galerie");
 const liste = await alben();
 ---
 

@@ -2,15 +2,19 @@
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import Container from "@/components/Container.astro";
-import { downloadKategorien } from "@/inhaltsquelle";
+import SectionHeading from "@/components/SectionHeading.astro";
+import { downloadKategorien, listenseite } from "@/inhaltsquelle";
 
-const kategorien = await downloadKategorien();
+const [{ bearbeiten, titel, intro }, kategorien] = await Promise.all([listenseite("downloads/"), downloadKategorien()]);
 ---
 
-<Layout title="Downloads" seoDescription="Formulare, Elternbriefe und weitere Unterlagen der Kita zum Herunterladen.">
+<Layout title={titel} seoDescription={intro || undefined} bearbeiten={bearbeiten}>
 	<Section>
 		<Container class:list={"flex flex-col gap-y-12"}>
-			<h1 class="text-5xl font-bold tracking-wide">Downloads</h1>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				{intro && <p>{intro}</p>}
+			</SectionHeading>
 			{
 				kategorien.map((k, i) => (
 					<section aria-labelledby={`kategorie-${i}`} class="flex flex-col gap-y-4" {...k.bearbeiten}>

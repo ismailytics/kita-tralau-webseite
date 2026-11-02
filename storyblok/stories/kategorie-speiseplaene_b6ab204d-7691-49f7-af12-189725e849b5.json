@@ -12,8 +12,7 @@
   "content": {
     "_uid": "ab4e911d-cef0-459a-806f-922b10c2285e",
     "titel": "Speisepläne",
-    "component": "download_kategorie",
-    "reihenfolge": "3"
+    "component": "download_kategorie"
   },
   "published": true,
   "slug": "kategorie-speiseplaene",
@@ -50,13 +49,13 @@
   "expire_at": null,
   "translated_slugs": [],
   "localized_paths": [],
-  "position": -40,
+  "position": -5,
   "translated_stories": [],
   "can_not_view": false,
   "is_scheduled": null,
   "scheduled_dates": null,
   "ideas": [],
-  "current_version_id": 237375180922701,
+  "current_version_id": 237384381429224,
   "variant_type": null,
   "taxonomy_terms": [],
   "experiment_ids": [],

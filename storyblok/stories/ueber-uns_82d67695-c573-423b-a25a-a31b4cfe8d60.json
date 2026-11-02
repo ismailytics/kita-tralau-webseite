@@ -164,6 +164,34 @@
     },
     "intro": "Platzhaltertext: Hier stellt der Vorstand die Kindergruppe Travenbrück und ihr Konzept vor.",
     "titel": "Über uns",
+    "bilder": [
+      {
+        "id": 237374962956819,
+        "alt": "Kita-Gebäude mit Laternen und verschneitem Vorplatz unter blauem Himmel",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/0/9a2ec8b949/winter-gebaeude.jpg",
+        "copyright": "CC0, Wikimedia Commons",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      },
+      {
+        "id": 237374983502362,
+        "alt": "Kiesweg zwischen Rasenflächen führt zum hellen Kita-Gebäude mit großen Fenstern",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/0/e1bad32341/sommer-weg.jpg",
+        "copyright": "CC0, Wikimedia Commons",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      }
+    ],
     "component": "ueber_uns"
   },
   "published": true,
@@ -190,7 +218,7 @@
   "is_scheduled": null,
   "scheduled_dates": null,
   "ideas": [],
-  "current_version_id": 237378444869195,
+  "current_version_id": 237384585102898,
   "variant_type": null,
   "taxonomy_terms": [],
   "experiment_ids": [],

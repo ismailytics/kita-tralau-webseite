@@ -12,8 +12,7 @@
   "content": {
     "_uid": "88fc8d6d-ae71-4116-98b7-c9eb18491c70",
     "titel": "Elternbriefe",
-    "component": "download_kategorie",
-    "reihenfolge": "2"
+    "component": "download_kategorie"
   },
   "published": true,
   "slug": "kategorie-elternbriefe",
@@ -56,7 +55,7 @@
   "is_scheduled": null,
   "scheduled_dates": null,
   "ideas": [],
-  "current_version_id": 237375177289544,
+  "current_version_id": 237384377456099,
   "variant_type": null,
   "taxonomy_terms": [],
   "experiment_ids": [],

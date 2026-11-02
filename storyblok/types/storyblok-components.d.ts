@@ -2,6 +2,14 @@
 // DO NOT MODIFY THIS FILE BY HAND.
 import type { ISbStoryData } from '@storyblok/js';
 import type { StoryblokRichTextDoc, StoryblokMultiasset, StoryblokAsset } from '../storyblok.d.ts';
+export interface AktuellesSeite {
+  titel: string;
+  intro?: string;
+  component: "aktuelles_seite";
+  _uid: string;
+  _editable?: string | undefined;
+}
+
 export interface Album {
   titel: string;
   datum: string;
@@ -33,8 +41,15 @@ export interface Download {
 
 export interface DownloadKategorie {
   titel: string;
-  reihenfolge: string;
   component: "download_kategorie";
+  _uid: string;
+  _editable?: string | undefined;
+}
+
+export interface DownloadsSeite {
+  titel: string;
+  intro?: string;
+  component: "downloads_seite";
   _uid: string;
   _editable?: string | undefined;
 }
@@ -140,6 +155,7 @@ export interface UeberUns {
   titel: string;
   intro?: string;
   text: StoryblokRichTextDoc;
+  bilder?: StoryblokMultiasset;
   component: "ueber_uns";
   _uid: string;
   _editable?: string | undefined;
@@ -175,10 +191,12 @@ export interface Zeitblock {
 }
 
 export type ContentType =
+  | AktuellesSeite
   | Album
   | Beitrag
   | Download
   | DownloadKategorie
+  | DownloadsSeite
   | Faq
   | Galerie
   | GlobaleAngaben

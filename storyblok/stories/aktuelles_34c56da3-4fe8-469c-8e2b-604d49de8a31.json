@@ -13,7 +13,7 @@
     "body": [],
     "component": "startseite"
   },
-  "published": false,
+  "published": true,
   "slug": "aktuelles",
   "path": null,
   "full_slug": "aktuelles",
@@ -37,7 +37,7 @@
   "is_scheduled": null,
   "scheduled_dates": null,
   "ideas": [],
-  "current_version_id": 237375024860813,
+  "current_version_id": 237384377300446,
   "variant_type": null,
   "taxonomy_terms": [],
   "experiment_ids": [],

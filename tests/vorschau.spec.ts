@@ -36,7 +36,7 @@ const VERSCHACHTELT: Record<string, string> = {
 	"/downloads": "main section[aria-labelledby], main section[aria-labelledby] li",
 };
 // Seiten ohne eigene Story; dort sind nur die gelisteten Stories bearbeitbar.
-const OHNE_SEITENSTORY = ["/termine", "/aktuelles", "/downloads"];
+const OHNE_SEITENSTORY = ["/termine"];
 
 for (const [pfad, bloks] of Object.entries(VERSCHACHTELT)) {
 	test(`${pfad}: Seite und alle verschachtelten Bloks sind bearbeitbar`, async ({ page }) => {

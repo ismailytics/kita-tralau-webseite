@@ -12,8 +12,7 @@
   "content": {
     "_uid": "c32b1e1f-c845-4e8a-9cf7-f565415373bf",
     "titel": "Formulare",
-    "component": "download_kategorie",
-    "reihenfolge": "1"
+    "component": "download_kategorie"
   },
   "published": true,
   "slug": "kategorie-formulare",
@@ -56,7 +55,7 @@
   "is_scheduled": null,
   "scheduled_dates": null,
   "ideas": [],
-  "current_version_id": 237375180611404,
+  "current_version_id": 237384380970470,
   "variant_type": null,
   "taxonomy_terms": [],
   "experiment_ids": [],

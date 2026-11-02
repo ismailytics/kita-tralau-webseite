@@ -6,6 +6,7 @@ test("Aktuelles listet alle Beiträge, neueste zuerst, und ist in der Navigation
 	await expect(page).toHaveURL(/\/aktuelles\/?$/);
 
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Aktuelles");
+	await expect(page.getByText("Neuigkeiten aus der Kindergruppe Travenbrück.")).toBeVisible();
 	const beitraege = page.getByRole("article");
 	await expect(beitraege.getByRole("heading", { level: 2 })).toHaveText([
 		"Laternelaufen am 11. November",

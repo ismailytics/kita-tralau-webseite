@@ -1,0 +1,38 @@
+{
+  "name": "downloads_seite",
+  "display_name": "Downloads-Seite",
+  "description": "Überschrift und Intro der Seite Downloads. Kategorien und Downloads kommen aus dem Ordner „Downloads“; die Kategorien stehen in der Reihenfolge des Ordners (per Ziehen sortieren).",
+  "created_at": "2026-11-02T18:36:35.064Z",
+  "updated_at": "2026-11-02T18:36:35.064Z",
+  "id": 237383659787178,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Überschrift",
+      "id": "-KxDlshzQVmApw9oQh3Veg"
+    },
+    "intro": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Intro",
+      "id": "o_b6tLWySeO19yGLNR6WlA"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Downloads-Seite",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}
