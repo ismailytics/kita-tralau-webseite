@@ -7,6 +7,11 @@ const SEITEN = [
 	"/aktuelles/laternelaufen",
 	"/aktuelles/neue-schaukel-im-garten",
 	"/aktuelles/willkommen-im-neuen-kitajahr",
+	"/termine",
+	"/vorstand",
+	"/tagesablauf",
+	"/faq",
+	"/downloads",
 ];
 
 for (const pfad of SEITEN) {

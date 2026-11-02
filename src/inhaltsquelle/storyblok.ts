@@ -9,30 +9,38 @@ export async function story<T>(slug: string): Promise<T> {
 	return (await antwort.json()).story.content as T;
 }
 
-// shortcut: nur die erste Seite (100 Stories), Paginierung nachrüsten, wenn ein Ordner mehr hat.
-export async function storiesIn<T>(ordner: string): Promise<{ slug: string; content: T }[]> {
+// Remote-URL der Storyblok-Asset-Domain; astro:assets lädt sie beim Build herunter (image.domains).
+export const bildDatei = (asset: StoryblokAsset): string => asset.filename;
+
+// shortcut: nur die ersten 100 Stories eines Typs, bei mehr paginieren.
+export async function alleStories<T>(komponente: string): Promise<{ uuid: string; slug: string; content: T }[]> {
 	const token = process.env.STORYBLOK_TOKEN;
 	if (!token) throw new Error("Inhaltsquelle Storyblok: STORYBLOK_TOKEN fehlt.");
 	const antwort = await fetch(
-		`https://api.storyblok.com/v2/cdn/stories?starts_with=${ordner}/&per_page=100&version=published&token=${token}`,
+		`https://api.storyblok.com/v2/cdn/stories?content_type=${komponente}&per_page=100&version=published&token=${token}`,
 	);
-	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: Ordner „${ordner}“ → HTTP ${antwort.status}.`);
-	return (await antwort.json()).stories;
+	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: Stories „${komponente}“ → HTTP ${antwort.status}.`);
+	return (await antwort.json()).stories.map((s: { uuid: string; slug: string; content: T }) => ({
+		uuid: s.uuid,
+		slug: s.slug,
+		content: s.content,
+	}));
 }
 
-// Remote-URL der Storyblok-Asset-Domain; astro:assets lädt sie beim Build herunter (image.domains).
-export const bildDatei = (asset: StoryblokAsset): string => asset.filename;
+// Dateien werden beim Build geladen und same-origin ausgeliefert, wie Bilder (ADR-0003).
+export async function datei(asset: StoryblokAsset): Promise<Uint8Array> {
+	const antwort = await fetch(asset.filename);
+	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: Datei ${asset.filename.split("/").pop()} → HTTP ${antwort.status}.`);
+	return new Uint8Array(await antwort.arrayBuffer());
+}
+
+export async function alle<T>(inhaltstyp: string): Promise<T[]> {
+	return (await alleStories<T>(inhaltstyp)).map((s) => s.content);
+}
 
 export async function fullSlug(uuid: string): Promise<string> {
 	const token = process.env.STORYBLOK_TOKEN;
 	const antwort = await fetch(`https://api.storyblok.com/v2/cdn/stories/${uuid}?find_by=uuid&version=published&token=${token}`);
 	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: verlinkte Story ${uuid} → HTTP ${antwort.status}.`);
 	return (await antwort.json()).story.full_slug;
-}
-
-/** Inhalt einer Asset-Datei; wird beim Build geladen und same-origin ausgeliefert (ADR-0003). */
-export async function datei(url: string): Promise<Uint8Array> {
-	const antwort = await fetch(url);
-	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: Datei ${url.split("/").pop()} → HTTP ${antwort.status}.`);
-	return new Uint8Array(await antwort.arrayBuffer());
 }

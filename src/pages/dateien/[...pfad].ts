@@ -1,9 +1,9 @@
 // Verlinkte Asset-Dateien (z. B. PDFs aus dem Rich Text): beim Build geladen, same-origin ausgeliefert (ADR-0003).
 import type { APIRoute, GetStaticPaths } from "astro";
-import { dateien } from "@/inhaltsquelle";
+import { richTextDateien } from "@/inhaltsquelle";
 
 export const getStaticPaths = (async () =>
-	(await dateien()).map(({ pfad, inhalt }) => ({
+	(await richTextDateien()).map(({ pfad, inhalt }) => ({
 		params: { pfad: pfad.replace(/^\/dateien\//, "") },
 		props: { inhalt },
 	}))) satisfies GetStaticPaths;

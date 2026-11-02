@@ -1,0 +1,50 @@
+{
+  "name": "download",
+  "display_name": "Download",
+  "description": "Eine Datei auf der Downloads-Seite (z. B. Formular, Elternbrief, Speiseplan).",
+  "created_at": "2026-11-02T18:01:28.809Z",
+  "updated_at": "2026-11-02T18:01:28.809Z",
+  "id": 237375032566645,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Titel",
+      "id": "EijqhmI4TlGX2wpDDH_ufw"
+    },
+    "datei": {
+      "type": "asset",
+      "pos": 1,
+      "required": true,
+      "display_name": "Datei",
+      "id": "sZrZb6h5TAq8hvBG-B0CBQ"
+    },
+    "kategorie": {
+      "type": "option",
+      "pos": 2,
+      "required": true,
+      "display_name": "Download-Kategorie",
+      "source": "internal_stories",
+      "filter_content_type": [
+        "download_kategorie"
+      ],
+      "id": "hpMa7rSURx6kG4u7KmSqeg"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Download",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

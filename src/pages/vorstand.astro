@@ -1,0 +1,49 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Bild from "@/components/Bild.astro";
+import Mail from "~icons/heroicons/envelope";
+import { vorstand } from "@/inhaltsquelle";
+
+const { titel, intro, mitglieder, beitritt } = await vorstand();
+---
+
+<Layout title="Vorstand" seoDescription={intro || undefined}>
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				{intro && <p>{intro}</p>}
+			</SectionHeading>
+
+			<ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+				{
+					mitglieder.map((m) => (
+						<li class="flex flex-col items-center text-center gap-2 p-6 bg-white rounded-2xl">
+							{m.foto && <Bild bild={m.foto} class="size-32 rounded-full object-cover mb-2" widths={[128, 256]} sizes="128px" />}
+							<h2 class="text-2xl font-bold">{m.name}</h2>
+							<p>{m.rolle}</p>
+							{m.email && (
+								<a href={`mailto:${m.email}`} class="flex items-center gap-2 text-sm text-brand-blue break-all">
+									<Mail class="size-4 shrink-0" aria-hidden="true" />
+									{m.email}
+								</a>
+							)}
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</Section>
+
+	<Section class:list={"bg-brand-blue text-white"}>
+		<Container class:list={"lg:py-12"}>
+			<SectionHeading>
+				<h2 class="text-4xl font-bold tracking-wide">{beitritt.titel}</h2>
+				<p class="whitespace-pre-line">{beitritt.text}</p>
+			</SectionHeading>
+		</Container>
+	</Section>
+</Layout>
