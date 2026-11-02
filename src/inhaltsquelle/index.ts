@@ -36,6 +36,18 @@ export interface Beitrag {
 	datum: Date;
 	teaserbild: Bild;
 	kurztext: string;
+	text: RichText;
+}
+
+/** Fließtext mit aufgelösten Bildern und Links; zeigt nie auf Storyblok (ADR-0003). */
+export type RichText = RichTextKnoten[];
+export interface RichTextKnoten {
+	type: string;
+	text?: string;
+	level?: number;
+	bild?: Bild;
+	marks?: { type: string; href?: string; extern?: boolean }[];
+	content?: RichTextKnoten[];
 }
 
 // Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
@@ -72,18 +84,73 @@ export async function startseite(): Promise<Startseite> {
 	};
 }
 
-/** Aktuelles: alle Beiträge, neueste zuerst. */
-export async function beitraege(): Promise<Beitrag[]> {
+let alleBeitraege: Promise<Beitrag[]> | undefined;
+
+/** Aktuelles: alle Beiträge, neueste zuerst; einmal pro Build geladen (Liste, Detailseiten, Dateien). */
+export function beitraege(): Promise<Beitrag[]> {
+	alleBeitraege ??= ladeBeitraege();
+	return alleBeitraege;
+}
+
+async function ladeBeitraege(): Promise<Beitrag[]> {
 	const stories = await quelle.storiesIn<BeitragStory>("aktuelles");
-	return stories
-		.filter((s) => s.content.component === "beitrag")
-		.map(({ slug, content: c }) => ({
-			slug,
-			titel: c.titel,
-			// Storyblok liefert „YYYY-MM-DD HH:mm“ in UTC.
-			datum: new Date(`${c.datum.replace(" ", "T")}Z`),
-			teaserbild: bild(c.teaserbild),
-			kurztext: c.kurztext,
-		}))
-		.sort((a, b) => b.datum.getTime() - a.datum.getTime());
+	const liste = await Promise.all(
+		stories
+			.filter((s) => s.content.component === "beitrag")
+			.map(async ({ slug, content: c }) => ({
+				slug,
+				titel: c.titel,
+				// Storyblok liefert „YYYY-MM-DD HH:mm“ in UTC.
+				datum: new Date(`${c.datum.replace(" ", "T")}Z`),
+				teaserbild: bild(c.teaserbild),
+				kurztext: c.kurztext,
+				text: await richText(c.text?.content as SbKnoten[]),
+			})),
+	);
+	return liste.sort((a, b) => b.datum.getTime() - a.datum.getTime());
+}
+
+// Storyblok-Rich-Text (ProseMirror-JSON), lose typisiert: die generierten Typen kennen jede Knotenart einzeln.
+type SbKnoten = { type: string; text?: string; attrs?: Record<string, any>; marks?: SbKnoten[]; content?: SbKnoten[] };
+
+/** Asset-Dateien, auf die Inhalte verlinken: eigener Pfad → Storyblok-URL. */
+const dateiLinks = new Map<string, string>();
+
+/** Alle verlinkten Asset-Dateien; der Build legt sie unter ihrem eigenen Pfad ab. */
+export async function dateien(): Promise<{ pfad: string; inhalt: () => Promise<Uint8Array> }[]> {
+	await beitraege();
+	return [...dateiLinks].map(([pfad, url]) => ({ pfad, inhalt: () => quelle.datei(url) }));
+}
+
+async function linkZiel(a: Record<string, any>): Promise<{ href: string; extern?: boolean }> {
+	const anker = a.anchor ? `#${a.anchor}` : "";
+	switch (a.linktype) {
+		case "story": {
+			const slug = await quelle.fullSlug(a.uuid);
+			return { href: (slug === "startseite" ? "/" : `/${slug}`) + anker };
+		}
+		case "asset": {
+			// https://a.storyblok.com/f/<space>/<hash>/<name> → /dateien/<hash>/<name>
+			const pfad = `/dateien/${new URL(a.href).pathname.split("/").slice(-2).join("/")}`;
+			dateiLinks.set(pfad, a.href);
+			return { href: pfad };
+		}
+		case "email":
+			return { href: `mailto:${a.href}` };
+		default:
+			return { href: a.href + anker, extern: a.target === "_blank" };
+	}
+}
+
+async function richText(knoten: SbKnoten[] = []): Promise<RichText> {
+	return Promise.all(
+		knoten.map(async ({ type, text, attrs, marks, content }) => ({
+			type,
+			text,
+			level: attrs?.level,
+			bild: type === "image" ? bild({ id: attrs?.id, filename: attrs?.src, alt: attrs?.alt } as StoryblokAsset) : undefined,
+			marks: marks && (await Promise.all(marks.map(async (m) => ({ type: m.type, ...(m.type === "link" ? await linkZiel(m.attrs ?? {}) : {}) })))),
+			content: content && (await richText(content)),
+		})),
+	);
 }

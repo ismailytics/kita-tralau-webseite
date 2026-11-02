@@ -20,3 +20,20 @@ test("Aktuelles listet alle Beiträge, neueste zuerst, und ist in der Navigation
 		erster.getByRole("img", { name: "Betonröhre zum Durchkriechen auf der Wiese unter dem Kastanienbaum" }),
 	).toBeVisible();
 });
+
+test("Ein Beitrag zeigt Titel, Datum, Teaserbild und den vollständigen Fließtext", async ({ page }) => {
+	await page.goto("/aktuelles");
+	await page.getByRole("link", { name: "Laternelaufen am 11. November" }).click();
+	await expect(page).toHaveURL(/\/aktuelles\/laternelaufen\/?$/);
+
+	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Laternelaufen am 11. November");
+	await expect(page.getByText("28. Oktober 2026")).toBeVisible();
+	await expect(
+		page.getByRole("img", { name: "Betonröhre zum Durchkriechen auf der Wiese unter dem Kastanienbaum" }),
+	).toBeVisible();
+	await expect(page.getByRole("heading", { level: 2, name: "Ablauf" })).toBeVisible();
+	await expect(page.getByRole("listitem").filter({ hasText: "17:30 Uhr: Umzug durchs Dorf" })).toBeVisible();
+	await expect(
+		page.getByRole("img", { name: "Blaue Doppelschaukel auf Holzhackschnitzeln, dahinter ein Drehteller" }),
+	).toBeVisible();
+});

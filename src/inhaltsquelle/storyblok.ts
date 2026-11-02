@@ -22,3 +22,17 @@ export async function storiesIn<T>(ordner: string): Promise<{ slug: string; cont
 
 // Remote-URL der Storyblok-Asset-Domain; astro:assets lädt sie beim Build herunter (image.domains).
 export const bildDatei = (asset: StoryblokAsset): string => asset.filename;
+
+export async function fullSlug(uuid: string): Promise<string> {
+	const token = process.env.STORYBLOK_TOKEN;
+	const antwort = await fetch(`https://api.storyblok.com/v2/cdn/stories/${uuid}?find_by=uuid&version=published&token=${token}`);
+	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: verlinkte Story ${uuid} → HTTP ${antwort.status}.`);
+	return (await antwort.json()).story.full_slug;
+}
+
+/** Inhalt einer Asset-Datei; wird beim Build geladen und same-origin ausgeliefert (ADR-0003). */
+export async function datei(url: string): Promise<Uint8Array> {
+	const antwort = await fetch(url);
+	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: Datei ${url.split("/").pop()} → HTTP ${antwort.status}.`);
+	return new Uint8Array(await antwort.arrayBuffer());
+}
