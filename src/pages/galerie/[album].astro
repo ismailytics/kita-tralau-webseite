@@ -2,8 +2,9 @@
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import Container from "@/components/Container.astro";
-import MainHeading from "@/components/MainHeading.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 import Bild from "@/components/Bild.astro";
+import { getImage } from "astro:assets";
 import { alben, type Album } from "@/inhaltsquelle";
 import { datumLang } from "@/lib/datum";
 
@@ -12,32 +13,70 @@ export async function getStaticPaths() {
 }
 
 const { album } = Astro.props as { album: Album };
+// Große Version für die Lightbox, ebenfalls same-origin (ADR-0003).
+const gross = await Promise.all(
+	album.fotos.map((foto) => getImage({ src: foto.src, width: 1600, inferSize: typeof foto.src === "string" })),
+);
 ---
 
 <Layout title={album.titel}>
 	<Section>
 		<Container>
-			<MainHeading>
+			<SectionHeading>
 				<h1 class="text-5xl font-bold tracking-wide">{album.titel}</h1>
 				<p><time datetime={album.datum}>{datumLang(album.datum)}</time></p>
-			</MainHeading>
+			</SectionHeading>
 
-			<ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				{
-					album.fotos.map((foto) => (
+					album.fotos.map((foto, i) => (
 						<li>
-							<Bild
-								bild={foto}
-								class="aspect-[4/3] w-full rounded-2xl object-cover"
-								widths={[400, 800]}
-								sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-							/>
+							<a href={gross[i].src} data-lightbox class="block">
+									<Bild
+									bild={foto}
+									class="aspect-[4/3] w-full rounded-2xl object-cover hover:opacity-90"
+									widths={[400, 800]}
+									sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+								/>
+							</a>
 						</li>
 					))
 				}
 			</ul>
 
+			<dialog
+				id="lightbox"
+				aria-label="Foto groß"
+				class="m-auto max-h-none max-w-none bg-transparent p-4 backdrop:bg-black/85"
+			>
+				<form method="dialog" class="text-right">
+					<button class="rounded-full bg-white px-4 py-2 font-bold text-brand-foreground">Schließen</button>
+				</form>
+			</dialog>
+
 			<p class="mt-12"><a href="/galerie/" class="underline">Alle Alben</a></p>
 		</Container>
 	</Section>
 </Layout>
+
+<script>
+	// Lightbox: öffnet die große Version im nativen <dialog> (Escape, Fokus-Rückgabe und Schließen-Formular sind eingebaut).
+	const lightbox = document.getElementById("lightbox") as HTMLDialogElement;
+
+	for (const link of document.querySelectorAll<HTMLAnchorElement>("a[data-lightbox]")) {
+		link.addEventListener("click", (e) => {
+			e.preventDefault();
+			// Neues <img> pro Öffnen: kein altes Foto beim Laden, und nie ein Bild ohne Alt-Text im DOM.
+			const gross = Object.assign(new Image(), {
+				src: link.href,
+				alt: link.querySelector("img")?.alt ?? "",
+				className: "mt-4 max-h-[85vh] max-w-[95vw] object-contain",
+			});
+			lightbox.querySelector("img")?.remove();
+			lightbox.append(gross);
+			lightbox.showModal();
+		});
+	}
+	// Klick auf den abgedunkelten Hintergrund schließt.
+	lightbox.addEventListener("click", (e) => e.target === lightbox && lightbox.close());
+</script>

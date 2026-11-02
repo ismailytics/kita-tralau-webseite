@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import Container from "@/components/Container.astro";
-import MainHeading from "@/components/MainHeading.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
 import Bild from "@/components/Bild.astro";
 import { alben, galerie } from "@/inhaltsquelle";
 import { datumLang } from "@/lib/datum";
@@ -14,12 +14,12 @@ const liste = await alben();
 <Layout title={titel} seoDescription={intro}>
 	<Section>
 		<Container>
-			<MainHeading>
+			<SectionHeading>
 				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
 				{intro && <p>{intro}</p>}
-			</MainHeading>
+			</SectionHeading>
 
-			<ul class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+			<ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 				{
 					liste.map((album) => (
 						<li>
