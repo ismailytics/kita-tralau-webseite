@@ -1,0 +1,53 @@
+---
+// Rendert Rich Text der Inhaltsquelle; Bilder über astro:assets, Links sind dort schon auf eigene Pfade aufgelöst.
+import Bild from "@/components/Bild.astro";
+import type { RichTextKnoten } from "@/inhaltsquelle";
+
+type Props = { knoten: RichTextKnoten[] };
+const { knoten } = Astro.props;
+
+const BLOCK: Record<string, string> = {
+	paragraph: "p",
+	bullet_list: "ul",
+	ordered_list: "ol",
+	list_item: "li",
+	blockquote: "blockquote",
+	code_block: "pre",
+};
+const MARK: Record<string, string> = {
+	bold: "strong",
+	italic: "em",
+	strike: "s",
+	underline: "u",
+	code: "code",
+	superscript: "sup",
+	subscript: "sub",
+};
+---
+
+{
+	knoten.map((k) => {
+		if (k.type === "text") {
+			const [mark, ...rest] = k.marks ?? [];
+			if (!mark) return k.text;
+			const innen = <Astro.self knoten={[{ ...k, marks: rest }]} />;
+			if (mark.type === "link")
+				return mark.extern ? (
+					<a href={mark.href} target="_blank" rel="noopener noreferrer">{innen}</a>
+				) : (
+					<a href={mark.href}>{innen}</a>
+				);
+			const Tag = MARK[mark.type];
+			return Tag ? <Tag>{innen}</Tag> : innen;
+		}
+		if (k.type === "image" && k.bild)
+			return <Bild bild={k.bild} class="rounded-lg" widths={[640, 1024]} sizes="(min-width: 768px) 48rem, 100vw" />;
+		if (k.type === "hard_break") return <br />;
+		if (k.type === "horizontal_rule") return <hr />;
+		// h1 ist der Beitragstitel; Überschriften im Fließtext beginnen bei h2.
+		const Tag = k.type === "heading" ? `h${Math.max(k.level ?? 2, 2)}` : BLOCK[k.type];
+		const innen = k.content && <Astro.self knoten={k.content} />;
+		// shortcut: unbekannte Knoten (Tabellen, Emojis, Bloks) rendern nur ihren Inhalt; nachrüsten, wenn die Redaktion sie nutzt.
+		return Tag ? <Tag>{innen}</Tag> : innen;
+	})
+}

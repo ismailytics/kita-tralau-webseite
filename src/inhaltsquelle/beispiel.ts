@@ -4,7 +4,7 @@ import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
 import { VORSCHAU } from "../variante";
 
-type Story = { id: number; uuid: string; full_slug: string; content: { component?: string } };
+type Story = { id: number; uuid: string; slug: string; full_slug: string; content: { component?: string } };
 const stories = import.meta.glob<Story>("/storyblok/stories/*.json", {
 	eager: true,
 	import: "default",
@@ -34,10 +34,16 @@ function inhalt(story: Story): unknown {
 	return markieren(story.content);
 }
 
-export async function alleStories<T>(komponente: string): Promise<{ uuid: string; content: T }[]> {
+export async function alleStories<T>(komponente: string): Promise<{ uuid: string; slug: string; content: T }[]> {
 	return Object.values(stories)
 		.filter((s) => s.content.component === komponente)
-		.map((s) => ({ uuid: s.uuid, content: inhalt(s) as T }));
+		.map((s) => ({ uuid: s.uuid, slug: s.slug, content: inhalt(s) as T }));
+}
+
+export async function fullSlug(uuid: string): Promise<string> {
+	const gefunden = Object.values(stories).find((s) => s.uuid === uuid);
+	if (!gefunden) throw new Error(`Beispielinhalte: verlinkte Story ${uuid} fehlt in storyblok/stories/.`);
+	return gefunden.full_slug;
 }
 
 // Das CLI legt Assets als <name>_<id>.<endung> ab.
@@ -47,8 +53,15 @@ export function bildDatei(asset: StoryblokAsset): ImageMetadata {
 	return datei[1];
 }
 
+const assets = import.meta.glob<{ id: number; filename: string }>("/storyblok/assets/*.json", {
+	eager: true,
+	import: "default",
+});
+
 export async function datei(asset: StoryblokAsset): Promise<Uint8Array> {
-	const name = readdirSync("storyblok/assets").find((n) => n.includes(`_${asset.id}.`) && !n.endsWith(".json"));
+	// Asset-Links im Rich Text tragen nur die URL, keine ID.
+	const id = asset.id ?? Object.values(assets).find((a) => a.filename === asset.filename)?.id;
+	const name = id && readdirSync("storyblok/assets").find((n) => n.includes(`_${id}.`) && !n.endsWith(".json"));
 	if (!name) throw new Error(`Beispielinhalte: Asset ${asset.id} fehlt in storyblok/assets/.`);
 	return readFileSync(`storyblok/assets/${name}`);
 }

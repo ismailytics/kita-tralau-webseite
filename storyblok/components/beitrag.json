@@ -1,0 +1,68 @@
+{
+  "name": "beitrag",
+  "display_name": "Beitrag",
+  "description": "Eine Neuigkeit in Aktuelles. Beiträge liegen im Ordner „aktuelles“ und erscheinen neueste zuerst.",
+  "created_at": "2026-11-02T18:01:05.955Z",
+  "updated_at": "2026-11-02T18:01:05.955Z",
+  "id": 237374938956656,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Titel",
+      "id": "ukqXNTuNST2CpXNkQuZ1bg"
+    },
+    "datum": {
+      "type": "datetime",
+      "pos": 1,
+      "required": true,
+      "disable_time": true,
+      "display_name": "Datum",
+      "description": "Bestimmt die Reihenfolge in Aktuelles.",
+      "id": "SosDxrmjQkSThwVLjBPdoA"
+    },
+    "teaserbild": {
+      "type": "asset",
+      "pos": 2,
+      "required": true,
+      "filetypes": [
+        "images"
+      ],
+      "display_name": "Teaserbild",
+      "description": "Nur Gebäude und Gelände, keine Kinder. Alt-Text im Bild-Dialog ist Pflicht.",
+      "id": "zKr5tERfRH6j8FWASYP6Qw"
+    },
+    "kurztext": {
+      "type": "textarea",
+      "pos": 3,
+      "required": true,
+      "display_name": "Kurztext",
+      "description": "Erscheint in der Liste unter Aktuelles.",
+      "id": "-1C4Tm27R_-86cLrEOfGew"
+    },
+    "text": {
+      "type": "richtext",
+      "pos": 4,
+      "required": true,
+      "display_name": "Text",
+      "description": "Bilder brauchen einen Alt-Text und zeigen keine Kinder.",
+      "id": "ZJK76kG8TkS_KwQTVAkaaQ"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Beitrag",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

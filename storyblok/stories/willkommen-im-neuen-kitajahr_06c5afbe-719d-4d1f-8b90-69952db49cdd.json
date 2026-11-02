@@ -1,0 +1,116 @@
+{
+  "name": "Willkommen im neuen Kitajahr",
+  "parent_id": 237375024785600,
+  "group_id": "71023537-b9f4-4b5e-ae08-c6d735ecd107",
+  "alternates": [],
+  "deleted_at": null,
+  "sort_by_date": null,
+  "tag_list": [],
+  "id": 237375025514689,
+  "uuid": "06c5afbe-719d-4d1f-8b90-69952db49cdd",
+  "is_folder": false,
+  "content": {
+    "_uid": "fc6ae199-0df8-49d8-8489-2de2c841f876",
+    "text": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Nach den Sommerferien starten wir mit drei neuen Kindern ins Kitajahr. Mehr über uns lesen Sie auf der ",
+              "type": "text"
+            },
+            {
+              "text": "Startseite",
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "/",
+                    "uuid": "696ab156-916b-41d9-85b0-6459d2c2707e",
+                    "anchor": null,
+                    "target": "_self",
+                    "linktype": "story"
+                  }
+                }
+              ]
+            },
+            {
+              "text": ".",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    "datum": "2026-08-03 00:00",
+    "titel": "Willkommen im neuen Kitajahr",
+    "kurztext": "Nach den Sommerferien starten wir mit drei neuen Kindern ins Kitajahr.",
+    "component": "beitrag",
+    "teaserbild": {
+      "id": 237372048111712,
+      "alt": "Spielplatz mit Schaukel unter einem großen Kastanienbaum",
+      "name": "",
+      "focus": "",
+      "title": "",
+      "source": "",
+      "filename": "https://a.storyblok.com/f/0/430047c164/spielplatz.jpg",
+      "copyright": "",
+      "fieldtype": "asset",
+      "meta_data": {},
+      "is_external_url": false
+    }
+  },
+  "published": true,
+  "slug": "willkommen-im-neuen-kitajahr",
+  "path": null,
+  "full_slug": "aktuelles/willkommen-im-neuen-kitajahr",
+  "default_root": null,
+  "disble_fe_editor": false,
+  "disable_fe_editor": false,
+  "parent": {
+    "id": 237375024785600,
+    "uuid": "34c56da3-4fe8-469c-8e2b-604d49de8a31",
+    "name": "Aktuelles",
+    "slug": "aktuelles",
+    "disble_fe_editor": false
+  },
+  "is_startpage": false,
+  "unpublished_changes": false,
+  "meta_data": null,
+  "imported_at": null,
+  "pinned": false,
+  "breadcrumbs": [
+    {
+      "id": 237375024785600,
+      "name": "Aktuelles",
+      "parent_id": 0,
+      "disble_fe_editor": false,
+      "disable_fe_editor": false,
+      "path": null,
+      "slug": "aktuelles",
+      "translated_slugs": []
+    }
+  ],
+  "publish_at": null,
+  "expire_at": null,
+  "translated_slugs": [],
+  "localized_paths": [],
+  "position": 0,
+  "translated_stories": [],
+  "can_not_view": false,
+  "is_scheduled": null,
+  "scheduled_dates": null,
+  "ideas": [],
+  "current_version_id": 237375025585806,
+  "variant_type": null,
+  "taxonomy_terms": [],
+  "experiment_ids": [],
+  "release_ids": [],
+  "stage": null,
+  "stages": [],
+  "assigned_users_per_language": {},
+  "favourite_for_user_ids": []
+}
