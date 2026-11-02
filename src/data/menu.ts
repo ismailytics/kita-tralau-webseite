@@ -1,0 +1,65 @@
+import type { MenuItem } from "@/types";
+
+// Feste Navigation (ADR-0006). Neue feste Seiten werden hier ergänzt.
+export const MainMenu: MenuItem[] = [
+	{
+		label: "Start",
+		href: "/",
+		hoverClass: "hover:text-brand-blue",
+		activeClass: "text-brand-blue",
+	},
+	{
+		label: "Über uns",
+		href: "/ueber-uns",
+		hoverClass: "hover:text-brand-green",
+		activeClass: "text-brand-green",
+	},
+	{
+		label: "Aktuelles",
+		href: "/aktuelles",
+		hoverClass: "hover:text-brand-blue",
+		activeClass: "text-brand-blue",
+	},
+	{
+		label: "Termine",
+		href: "/termine",
+		hoverClass: "hover:text-brand-red",
+		activeClass: "text-brand-red",
+	},
+	{
+		label: "Vorstand",
+		href: "/vorstand",
+		hoverClass: "hover:text-brand-red",
+		activeClass: "text-brand-red",
+	},
+	{
+		label: "Tagesablauf",
+		href: "/tagesablauf",
+		hoverClass: "hover:text-brand-green",
+		activeClass: "text-brand-green",
+	},
+	{
+		label: "FAQ",
+		href: "/faq",
+		hoverClass: "hover:text-brand-yellow",
+		activeClass: "text-brand-yellow",
+	},
+	{
+		label: "Galerie",
+		href: "/galerie",
+		hoverClass: "hover:text-brand-blue",
+		activeClass: "text-brand-blue",
+	},
+	{
+		label: "Downloads",
+		href: "/downloads",
+		hoverClass: "hover:text-brand-blue",
+		activeClass: "text-brand-blue",
+	},
+	{
+		label: "Kontakt",
+		href: "/kontakt",
+		hoverClass: "hover:text-brand-blue",
+		activeClass: "text-brand-blue",
+	},
+];

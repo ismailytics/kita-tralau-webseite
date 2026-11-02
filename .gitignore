@@ -1,0 +1,21 @@
+# Build-Ausgabe und generierte Dateien
+dist/
+dist-vorschau/
+.astro/
+node_modules/
+test-results/
+playwright-report/
+
+# Zugangsdaten und Zertifikat der lokalen Vorschau
+.vorschau/
+.env
+.env.*
+
+# Arbeitsverzeichnis des Storyblok-CLI (Logs, Reports, Zwischenstand)
+.storyblok/
+
+.DS_Store
+.playwright-mcp/
+
+# PHP-Abhängigkeiten (composer install)
+vendor/

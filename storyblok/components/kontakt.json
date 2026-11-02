@@ -1,0 +1,102 @@
+{
+  "name": "kontakt",
+  "display_name": "Kontakt",
+  "description": "Die Kontaktseite. Adresse und Öffnungszeiten kommen aus den Globalen Angaben.",
+  "created_at": "2026-11-02T18:02:14.147Z",
+  "updated_at": "2026-11-02T18:02:14.147Z",
+  "id": 237375218275192,
+  "schema": {
+    "intro_titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Intro: Überschrift",
+      "id": "V_IFCXcQQSO4-jxIQiPh6g"
+    },
+    "intro_text": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Intro: Text",
+      "id": "DCdbyjFmS_yMziQ2Z4nHMg"
+    },
+    "kitaportal_titel": {
+      "type": "text",
+      "pos": 2,
+      "required": true,
+      "display_name": "Kitaportal-Hinweis: Überschrift",
+      "id": "bLSsl0rvT-OllNtgoSArVQ"
+    },
+    "kitaportal_text": {
+      "type": "textarea",
+      "pos": 3,
+      "required": true,
+      "display_name": "Kitaportal-Hinweis: Text",
+      "description": "Erklärt, dass die Anmeldung nur über das Kitaportal läuft, nicht über die Website.",
+      "id": "yZQSMemOQiGEzomCf-p7Vw"
+    },
+    "kitaportal_url": {
+      "type": "text",
+      "pos": 4,
+      "required": true,
+      "display_name": "Kitaportal-Hinweis: Adresse des Kitaportals",
+      "description": "Vollständige Adresse mit https://",
+      "id": "ge7RioklQJm1uLFph1G-AA"
+    },
+    "kitaportal_link_text": {
+      "type": "text",
+      "pos": 5,
+      "required": true,
+      "display_name": "Kitaportal-Hinweis: Beschriftung des Links",
+      "id": "rkdDmbfARPq8G6Xm2BUegw"
+    },
+    "karte_bild": {
+      "type": "asset",
+      "pos": 6,
+      "required": true,
+      "filetypes": [
+        "images"
+      ],
+      "display_name": "Karte: Bild",
+      "description": "Statisches Kartenbild (z. B. Ausschnitt aus OpenStreetMap). Alt-Text im Bild-Dialog ist Pflicht.",
+      "id": "Heg8L25NQq2h7PEqtebdVQ"
+    },
+    "karte_quelle": {
+      "type": "text",
+      "pos": 7,
+      "required": true,
+      "display_name": "Karte: Quellenangabe",
+      "description": "Steht unter dem Kartenbild, z. B. „Karte: © OpenStreetMap-Mitwirkende“.",
+      "id": "6yzP-q58SXytScCo85AT1A"
+    },
+    "karte_url": {
+      "type": "text",
+      "pos": 8,
+      "required": true,
+      "display_name": "Karte: Adresse des Kartendienstes",
+      "description": "Link zur Route, z. B. bei OpenStreetMap. Vollständige Adresse mit https://",
+      "id": "_Vj6Co15SNSMq3ECkRXj8A"
+    },
+    "karte_link_text": {
+      "type": "text",
+      "pos": 9,
+      "required": true,
+      "display_name": "Karte: Beschriftung des Links",
+      "id": "Xd9rJcfjQoS8w37faIdk7w"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Kontakt",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

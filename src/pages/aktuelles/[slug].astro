@@ -1,0 +1,32 @@
+---
+import { pfad } from "@/lib/pfad";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import Bild from "@/components/Bild.astro";
+import Datum from "@/components/Datum.astro";
+import RichText from "@/components/RichText.astro";
+import { beitraege, type Beitrag } from "@/inhaltsquelle";
+
+export async function getStaticPaths() {
+	return (await beitraege()).map((beitrag) => ({ params: { slug: beitrag.slug }, props: { beitrag } }));
+}
+
+const { beitrag } = Astro.props as { beitrag: Beitrag };
+---
+
+<Layout title={beitrag.titel} seoDescription={beitrag.kurztext} bild={beitrag.teaserbild} bearbeiten={beitrag.bearbeiten}>
+	<Section>
+		<Container>
+			<article class="max-w-3xl mx-auto flex flex-col gap-y-6">
+				<a href={pfad("/aktuelles")} class="text-brand-blue">← Aktuelles</a>
+				<h1 class="text-5xl font-bold tracking-wide">{beitrag.titel}</h1>
+				<Datum datum={beitrag.datum} class="text-gray-600" />
+				<Bild bild={beitrag.teaserbild} class="w-full rounded-lg" widths={[640, 1024, 1600]} sizes="(min-width: 768px) 48rem, 100vw" loading="eager" />
+				<div class="prose prose-lg max-w-none">
+					<RichText knoten={beitrag.text} />
+				</div>
+			</article>
+		</Container>
+	</Section>
+</Layout>

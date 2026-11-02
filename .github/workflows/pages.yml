@@ -1,0 +1,47 @@
+name: Teilbarer Link (GitHub Pages)
+
+# Öffentliche Ansicht mit Beispielinhalten zum Herumzeigen, nicht der Livebetrieb (ADR-0005: Hosting nur EU).
+# Kontaktformular funktioniert hier nicht (kein PHP).
+on:
+  push:
+    branches: [main, integration/website-v1]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  bauen:
+    runs-on: ubuntu-latest
+    env:
+      INHALTSQUELLE: beispiel
+      BASE_PATH: /kita-tralau-webseite/
+      SITE_URL: https://ismailytics.github.io
+      NOINDEX: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec astro build && node scripts/check-dist.mjs dist
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+  veroeffentlichen:
+    needs: bauen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

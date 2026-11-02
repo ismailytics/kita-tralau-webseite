@@ -1,0 +1,38 @@
+{
+  "name": "aktuelles_seite",
+  "display_name": "Aktuelles-Seite",
+  "description": "Überschrift und Intro der Seite Aktuelles. Die Beiträge kommen automatisch aus dem Ordner „Aktuelles“, neueste zuerst.",
+  "created_at": "2026-11-02T18:36:34.198Z",
+  "updated_at": "2026-11-02T18:36:34.198Z",
+  "id": 237383656240041,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Überschrift",
+      "id": "1wNHxHqITHmBwCCG2eGxIw"
+    },
+    "intro": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Intro",
+      "id": "Ygizg8m1QgqQOofyOZXAtA"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Aktuelles-Seite",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

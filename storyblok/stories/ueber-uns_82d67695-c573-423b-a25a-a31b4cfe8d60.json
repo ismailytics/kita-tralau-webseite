@@ -1,0 +1,230 @@
+{
+  "name": "Über uns",
+  "parent_id": 0,
+  "group_id": "ba35ad3d-a4b0-4b21-930a-dc0d4c4ec683",
+  "alternates": [],
+  "deleted_at": null,
+  "sort_by_date": null,
+  "tag_list": [],
+  "id": 237378440753431,
+  "uuid": "82d67695-c573-423b-a25a-a31b4cfe8d60",
+  "is_folder": false,
+  "content": {
+    "_uid": "c12e0cdb-d651-4204-a7d5-ce675a4eac78",
+    "text": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Platzhaltertext: Wir sind eine kleine, von Eltern getragene Kindergruppe in Tralau.",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "text": "Unser Konzept",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "text": "Viel Zeit draußen im Garten",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "text": "Feste Rituale im Tagesablauf",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "text": "Kleine Gruppe mit vertrauten Bezugspersonen",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "id": 237372048111712,
+                "alt": "Spielplatz mit Schaukel unter einem großen Kastanienbaum",
+                "src": "https://a.storyblok.com/f/0/430047c164/spielplatz.jpg",
+                "title": "",
+                "source": "",
+                "copyright": "",
+                "meta_data": {}
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "text": "Wer wir sind",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Getragen wird die Kita vom Verein, geleitet vom ",
+              "type": "text"
+            },
+            {
+              "text": "Vorstand",
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "vorstand",
+                    "uuid": "079c63af-7a89-4d87-a76e-62fb0311226e",
+                    "anchor": null,
+                    "target": "_self",
+                    "linktype": "story"
+                  }
+                }
+              ]
+            },
+            {
+              "text": ". Wer sich für einen Platz interessiert, findet hier den ",
+              "type": "text"
+            },
+            {
+              "text": "Aufnahmeantrag (PDF)",
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://a.storyblok.com/f/0/6323edf146/aufnahmeantrag.pdf",
+                    "uuid": null,
+                    "anchor": null,
+                    "target": "_self",
+                    "linktype": "asset"
+                  }
+                }
+              ]
+            },
+            {
+              "text": ".",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    "intro": "Platzhaltertext: Hier stellt der Vorstand die Kindergruppe Travenbrück und ihr Konzept vor.",
+    "titel": "Über uns",
+    "bilder": [
+      {
+        "id": 237374962956819,
+        "alt": "Kita-Gebäude mit Laternen und verschneitem Vorplatz unter blauem Himmel",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/0/9a2ec8b949/winter-gebaeude.jpg",
+        "copyright": "CC0, Wikimedia Commons",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      },
+      {
+        "id": 237374983502362,
+        "alt": "Kiesweg zwischen Rasenflächen führt zum hellen Kita-Gebäude mit großen Fenstern",
+        "name": "",
+        "focus": "",
+        "title": "",
+        "source": "",
+        "filename": "https://a.storyblok.com/f/0/e1bad32341/sommer-weg.jpg",
+        "copyright": "CC0, Wikimedia Commons",
+        "fieldtype": "asset",
+        "meta_data": {},
+        "is_external_url": false
+      }
+    ],
+    "component": "ueber_uns"
+  },
+  "published": true,
+  "slug": "ueber-uns",
+  "path": null,
+  "full_slug": "ueber-uns",
+  "default_root": null,
+  "disble_fe_editor": false,
+  "disable_fe_editor": false,
+  "parent": null,
+  "is_startpage": false,
+  "unpublished_changes": false,
+  "meta_data": null,
+  "imported_at": null,
+  "pinned": false,
+  "breadcrumbs": [],
+  "publish_at": null,
+  "expire_at": null,
+  "translated_slugs": [],
+  "localized_paths": [],
+  "position": 0,
+  "translated_stories": [],
+  "can_not_view": false,
+  "is_scheduled": null,
+  "scheduled_dates": null,
+  "ideas": [],
+  "current_version_id": 237384585102898,
+  "variant_type": null,
+  "taxonomy_terms": [],
+  "experiment_ids": [],
+  "release_ids": [],
+  "stage": null,
+  "stages": [],
+  "assigned_users_per_language": {},
+  "favourite_for_user_ids": []
+}

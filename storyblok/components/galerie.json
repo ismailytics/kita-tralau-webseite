@@ -1,0 +1,38 @@
+{
+  "name": "galerie",
+  "display_name": "Galerie",
+  "description": "Die Galerie-Seite. Die Alben kommen automatisch aus dem Ordner „Alben“, neueste zuerst.",
+  "created_at": "2026-11-02T18:00:59.309Z",
+  "updated_at": "2026-11-02T18:00:59.309Z",
+  "id": 237374911734639,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Überschrift",
+      "id": "Z2pBBm3ZQrySDM7QZZKg6Q"
+    },
+    "intro": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Intro",
+      "id": "H01MYYxyToatttfLTiGE3A"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Galerie",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

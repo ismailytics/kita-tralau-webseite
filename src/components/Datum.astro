@@ -1,0 +1,8 @@
+---
+import { datumLang, type Kalendertag } from "@/lib/datum";
+
+type Props = { datum: Kalendertag; class?: string };
+const { datum, class: className } = Astro.props;
+---
+
+<time datetime={datum} class={className}>{datumLang(datum)}</time>

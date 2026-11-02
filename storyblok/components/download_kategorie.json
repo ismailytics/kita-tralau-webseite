@@ -1,0 +1,32 @@
+{
+  "name": "download_kategorie",
+  "display_name": "Download-Kategorie",
+  "description": "Gruppiert Downloads auf der Downloads-Seite, in der Reihenfolge im Ordner (per Ziehen sortieren). Erscheint nur, wenn ihr mindestens ein Download zugeordnet ist.",
+  "created_at": "2026-11-02T18:01:28.813Z",
+  "updated_at": "2026-11-02T18:36:34.196Z",
+  "id": 237375032583030,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Titel",
+      "id": "lHDTovnoRSWRpYU9NQZ4ew"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Download-Kategorie",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

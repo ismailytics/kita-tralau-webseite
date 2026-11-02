@@ -1,0 +1,46 @@
+---
+import { pfad } from "@/lib/pfad";
+import Button from "@/components/buttons/Button.astro";
+
+const feld = "rounded-lg border border-gray-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-brand-blue/40";
+---
+
+<!-- Postet ohne JS direkt an das PHP-Skript; Grenzen wie in public/kontaktanfrage.php (ADR-0004). -->
+<form id="kontaktformular" aria-label="Kontaktformular" method="post" action={pfad("/kontaktanfrage.php")} class="flex flex-col gap-4">
+	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+		<div class="flex flex-col gap-1.5">
+			<label for="kontakt-name" class="text-sm font-bold">Name</label>
+			<input id="kontakt-name" name="name" type="text" required maxlength="100" autocomplete="name" class={feld} />
+		</div>
+		<div class="flex flex-col gap-1.5">
+			<label for="kontakt-email" class="text-sm font-bold">E-Mail</label>
+			<input id="kontakt-email" name="email" type="email" required maxlength="254" autocomplete="email" class={feld} />
+		</div>
+	</div>
+	<div class="flex flex-col gap-1.5">
+		<label for="kontakt-nachricht" class="text-sm font-bold">Nachricht</label>
+		<textarea id="kontakt-nachricht" name="nachricht" rows="6" required maxlength="5000" class:list={[feld, "resize-y"]}
+		></textarea>
+	</div>
+	<!-- Honeypot: für Menschen unsichtbar, Bots füllen es aus. -->
+	<div class="absolute -left-[9999px]" aria-hidden="true">
+		<label for="kontakt-webseite">Bitte leer lassen</label>
+		<input id="kontakt-webseite" name="webseite" type="text" tabindex="-1" autocomplete="off" />
+	</div>
+	<!-- Mindestzeit: ohne JS bleibt das Feld leer, siehe public/kontaktanfrage.php. -->
+	<input type="hidden" name="dauer" value="" />
+	<p class="text-sm">
+		Wir verwenden Ihre Angaben nur, um Ihre Anfrage zu beantworten. Mehr dazu in der
+		<a class="underline" href={pfad("/datenschutz")}>Datenschutzerklärung</a>.
+	</p>
+	<Button type="submit" variant="blue" size="lg" class="w-full sm:w-auto sm:self-start">Nachricht senden</Button>
+</form>
+
+<script>
+	// Mindestzeit (Spam-Schutz): Sekunden zwischen Seitenaufruf und Absenden.
+	const start = performance.now();
+	const formular = document.getElementById("kontaktformular") as HTMLFormElement;
+	formular.addEventListener("submit", () => {
+		formular.dauer.value = String(Math.floor((performance.now() - start) / 1000));
+	});
+</script>

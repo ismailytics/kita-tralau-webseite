@@ -1,0 +1,42 @@
+{
+	"name": "kita-tralau-webseite",
+	"private": true,
+	"type": "module",
+	"packageManager": "pnpm@12.16.1",
+	"engines": {
+		"node": ">=24"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build && node scripts/check-dist.mjs dist && pnpm build:vorschau",
+		"build:vorschau": "VARIANTE=vorschau astro build",
+		"preview": "astro preview",
+		"test": "node --test 'scripts/*.test.mjs' && playwright test",
+		"lint": "biome check .",
+		"check": "astro check",
+		"vorschau": "node scripts/vorschau.mjs",
+		"vorschau:zertifikat": "mkdir -p .vorschau && openssl req -x509 -newkey rsa:2048 -nodes -keyout .vorschau/key.pem -out .vorschau/cert.pem -days 365 -subj /CN=localhost -addext subjectAltName=DNS:localhost",
+		"storyblok:pull": "node scripts/storyblok-pull.mjs",
+		"storyblok:push": "node scripts/storyblok-push.mjs"
+	},
+	"dependencies": {
+		"@tailwindcss/typography": "^0.5.20",
+		"@tailwindcss/vite": "^4.3.3",
+		"@tailwindplus/elements": "^1.0.22",
+		"astro": "7.4.5",
+		"tailwind-merge": "^3.7.0",
+		"tailwind-variants": "^4.0.1",
+		"tailwindcss": "^4.3.3"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.12",
+		"@biomejs/biome": "2.4.9",
+		"@iconify-json/heroicons": "^1.2.3",
+		"@iconify-json/lucide": "^1.2.150",
+		"@playwright/test": "^1.64.1",
+		"@storyblok/js": "^6.4.1",
+		"storyblok": "4.26.0",
+		"typescript": "^6.0.3",
+		"unplugin-icons": "^24.0.0"
+	}
+}

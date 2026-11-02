@@ -1,0 +1,21 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import TerminListe from "@/components/TerminListe.astro";
+import { termine } from "@/inhaltsquelle";
+
+const liste = await termine();
+---
+
+<Layout title="Termine" seoDescription="Termine und Schließzeiten der Kindergruppe Travenbrück.">
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">Termine</h1>
+			</SectionHeading>
+			{liste.length ? <TerminListe termine={liste} /> : <p class="text-center">Zurzeit stehen keine Termine an.</p>}
+		</Container>
+	</Section>
+</Layout>

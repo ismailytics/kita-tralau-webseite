@@ -1,0 +1,56 @@
+{
+  "name": "vorstandsmitglied",
+  "display_name": "Vorstandsmitglied",
+  "description": "Eine Person des Vorstands.",
+  "created_at": "2026-11-02T18:00:49.165Z",
+  "updated_at": "2026-11-02T18:00:49.165Z",
+  "id": 237374870184809,
+  "schema": {
+    "name": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Name",
+      "id": "9_SRA55STnSGRnG7-2mbdw"
+    },
+    "rolle": {
+      "type": "text",
+      "pos": 1,
+      "required": true,
+      "display_name": "Rolle",
+      "description": "z. B. Erste Vorsitzende",
+      "id": "m4DJ5rCESIGl5rEvtQ4tzQ"
+    },
+    "foto": {
+      "type": "asset",
+      "pos": 2,
+      "filetypes": [
+        "images"
+      ],
+      "display_name": "Foto (optional)",
+      "description": "Nur mit Einverständnis der Person. Alt-Text im Bild-Dialog ist Pflicht.",
+      "id": "48BmVrSNTpuZWsXJD1LWhA"
+    },
+    "email": {
+      "type": "text",
+      "pos": 3,
+      "display_name": "Mail (optional)",
+      "id": "vUkvOf5dQXqnSVGvFX_O9A"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": false,
+  "preview_tmpl": null,
+  "is_nestable": true,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Vorstandsmitglied",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

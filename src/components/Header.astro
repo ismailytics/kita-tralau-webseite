@@ -1,0 +1,62 @@
+---
+import { pfad, seitenpfad } from "@/lib/pfad";
+import Bild from "@/components/Bild.astro";
+import { globaleAngaben } from "@/inhaltsquelle";
+import { MainMenu } from "@/data/menu";
+import MobileMenu from "@/components/MobileMenu.astro";
+
+const pathname = seitenpfad(Astro.url.pathname);
+const { bearbeiten, name, logo } = await globaleAngaben();
+---
+
+<header id="main-header" class="sticky top-0 z-50" {...bearbeiten}>
+	<div class="bg-white/90 backdrop-blur-md">
+		<div class="container py-4 flex items-center justify-between gap-x-4">
+			<!-- Logo -->
+			<a href={pfad("/")} class="flex gap-x-4 items-center">
+				<Bild bild={logo} class="size-12" loading="eager" />
+				<span class="font-bold font-fredoka text-2xl md:text-3xl">{name}</span>
+			</a>
+
+			<!-- Menu -->
+			<nav aria-label="Hauptnavigation">
+				<ul class="hidden md:flex gap-6 font-fredoka text-xl tracking-wide font-semibold">
+					{
+						MainMenu.map((item) => (
+							<li>
+								<a
+									href={pfad(item.href)}
+									target={item.target}
+									rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+									class={`transition lowercase ${item.hoverClass ?? ""} ${pathname === item.href ? (item.activeClass ?? "") : ""}`}
+								>
+									{item.label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			<!-- Mobile Menu Trigger -->
+			<button type="button" aria-label="Menü öffnen" command="show-modal" commandfor="mobile-menu" class="md:hidden">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="size-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+					>
+					</path>
+				</svg>
+			</button>
+		</div>
+	</div>
+	<MobileMenu />
+</header>

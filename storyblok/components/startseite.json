@@ -1,0 +1,83 @@
+{
+  "name": "startseite",
+  "display_name": "Startseite",
+  "description": "Die Startseite. „Nächste Termine“ kommt automatisch aus den Terminen.",
+  "created_at": "2026-11-02T17:50:02.492Z",
+  "updated_at": "2026-11-02T17:50:02.492Z",
+  "id": 237372221416269,
+  "schema": {
+    "hero_titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Hero: Überschrift",
+      "id": "Qu0FXGGORmq5m_7UKJ9eJw"
+    },
+    "hero_text": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Hero: Text",
+      "id": "vq1jWC6bRrGLZ1Z_1lVE_A"
+    },
+    "hero_bild": {
+      "type": "asset",
+      "pos": 2,
+      "required": true,
+      "filetypes": [
+        "images"
+      ],
+      "display_name": "Hero: Bild",
+      "description": "Nur Gebäude und Gelände, keine Kinder. Alt-Text im Bild-Dialog ist Pflicht.",
+      "id": "D_YetGH-Sj2YEPVYolvuMg"
+    },
+    "konzept_titel": {
+      "type": "text",
+      "pos": 3,
+      "required": true,
+      "display_name": "Konzept-Teaser: Überschrift",
+      "id": "N6SvYahJRtC0FlD5ljxM2w"
+    },
+    "konzept_text": {
+      "type": "textarea",
+      "pos": 4,
+      "required": true,
+      "display_name": "Konzept-Teaser: Text",
+      "id": "IwgdpSrSQ92mFFSf9sF9Sw"
+    },
+    "kontakt_titel": {
+      "type": "text",
+      "pos": 5,
+      "required": true,
+      "display_name": "Kontakt-CTA: Überschrift",
+      "id": "GrS7IkWUQbCY8F0UpCLHNQ"
+    },
+    "kontakt_text": {
+      "type": "textarea",
+      "pos": 6,
+      "display_name": "Kontakt-CTA: Text",
+      "id": "tWCdEE54SQGrMjqaCRuBsw"
+    },
+    "kontakt_button": {
+      "type": "text",
+      "pos": 7,
+      "required": true,
+      "display_name": "Kontakt-CTA: Beschriftung des Buttons",
+      "id": "DgdD0Y8ATLaqBM7ZXX1Iew"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Startseite",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

@@ -1,0 +1,87 @@
+---
+import MapPin from "~icons/heroicons/map-pin";
+import Phone from "~icons/heroicons/phone";
+import Mail from "~icons/heroicons/envelope";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Button from "@/components/buttons/Button.astro";
+import Bild from "@/components/Bild.astro";
+import FormContact from "@/components/forms/FormContact.astro";
+import { globaleAngaben, kontakt } from "@/inhaltsquelle";
+
+const [{ bearbeiten, intro, kitaportal, karte }, { kontakt: adresse, oeffnungszeiten }] = await Promise.all([
+	kontakt(),
+	globaleAngaben(),
+]);
+---
+
+<Layout title={intro.titel} seoDescription={intro.text} bearbeiten={bearbeiten}>
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{intro.titel}</h1>
+				{intro.text && <p>{intro.text}</p>}
+			</SectionHeading>
+
+			<div class="grid gap-12 lg:grid-cols-5">
+				<div class="space-y-8 lg:col-span-2">
+					<div class="space-y-3">
+						<h2 class="text-2xl font-bold">Adresse</h2>
+						<div class="flex items-start gap-2">
+							<MapPin class="w-5 h-5 mt-1 shrink-0" aria-hidden="true" />
+							<address class="not-italic">{adresse.strasse}<br />{adresse.ort}</address>
+						</div>
+						{
+							adresse.telefon && (
+								<div class="flex items-center gap-2">
+									<Phone class="w-5 h-5 shrink-0" aria-hidden="true" />
+									<a class="underline" href={`tel:${adresse.telefon.replace(/[^\d+]/g, "")}`}>{adresse.telefon}</a>
+								</div>
+							)
+						}
+						{
+							adresse.email && (
+								<div class="flex items-center gap-2">
+									<Mail class="w-5 h-5 shrink-0" aria-hidden="true" />
+									<a class="underline" href={`mailto:${adresse.email}`}>{adresse.email}</a>
+								</div>
+							)
+						}
+					</div>
+					<div class="space-y-3">
+						<h2 class="text-2xl font-bold">Öffnungszeiten</h2>
+						{oeffnungszeiten.map((zeile) => <p>{zeile}</p>)}
+					</div>
+				</div>
+
+				<!-- Statisches Kartenbild statt Einbettung (ADR-0002) -->
+				<figure class="space-y-3 lg:col-span-3">
+					<Bild bild={karte.bild} class="w-full h-auto rounded-2xl" widths={[640, 1200]} sizes="(min-width: 1024px) 60vw, 100vw" />
+					<figcaption class="flex flex-wrap justify-between gap-2 text-sm">
+						<span>{karte.quelle}</span>
+						<a class="underline" href={karte.url} rel="noopener noreferrer">{karte.linkText}</a>
+					</figcaption>
+				</figure>
+			</div>
+		</Container>
+	</Section>
+
+	<section aria-labelledby="nachricht-schreiben">
+		<Container class:list={"max-w-3xl"}>
+			<h2 id="nachricht-schreiben" class="text-3xl font-bold tracking-wide mb-6">Nachricht schreiben</h2>
+			<FormContact />
+		</Container>
+	</section>
+
+	<section aria-labelledby="kitaportal" class="bg-brand-blue text-white">
+		<Container class:list={"lg:py-12"}>
+			<SectionHeading>
+				<h2 id="kitaportal" class="text-4xl font-bold tracking-wide">{kitaportal.titel}</h2>
+				<p class="max-w-2xl mx-auto">{kitaportal.text}</p>
+				<Button href={kitaportal.url} variant="white" rel="noopener noreferrer">{kitaportal.linkText}</Button>
+			</SectionHeading>
+		</Container>
+	</section>
+</Layout>

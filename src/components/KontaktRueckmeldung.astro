@@ -1,0 +1,23 @@
+---
+// Seiten, auf die public/kontaktanfrage.php nach dem Absenden weiterleitet.
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Button from "@/components/buttons/Button.astro";
+
+type Props = { titel: string };
+const { titel } = Astro.props;
+---
+
+<Layout title={titel} noindex>
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				<p><slot /></p>
+				<Button href="/kontakt#kontaktformular" variant="blue">Zurück zum Kontaktformular</Button>
+			</SectionHeading>
+		</Container>
+	</Section>
+</Layout>

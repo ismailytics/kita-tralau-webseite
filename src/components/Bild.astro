@@ -1,0 +1,10 @@
+---
+import { Image } from "astro:assets";
+import type { Bild } from "@/inhaltsquelle";
+
+type Props = { bild: Bild; class?: string; widths?: number[]; sizes?: string; loading?: "eager" | "lazy" };
+const { bild, ...rest } = Astro.props;
+---
+
+{/* inferSize nur für Remote-URLs; lokale Bilder kennen ihre Größe schon. */}
+{typeof bild.src === "string" ? <Image src={bild.src} alt={bild.alt} inferSize {...rest} /> : <Image src={bild.src} alt={bild.alt} {...rest} />}

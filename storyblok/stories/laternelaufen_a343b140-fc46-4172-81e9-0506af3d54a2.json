@@ -1,0 +1,236 @@
+{
+  "name": "Laternelaufen am 11. November",
+  "parent_id": 237375024785600,
+  "group_id": "fff5f0ed-dd9f-4e10-9521-f02b6b77cf06",
+  "alternates": [],
+  "deleted_at": null,
+  "sort_by_date": null,
+  "tag_list": [],
+  "id": 237375026956483,
+  "uuid": "a343b140-fc46-4172-81e9-0506af3d54a2",
+  "is_folder": false,
+  "content": {
+    "_uid": "982bda72-9380-43ba-88f6-fc85331ee9f1",
+    "text": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Am Martinstag ziehen wir mit Laternen durch Tralau. Alle Familien sind eingeladen.",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "text": "Ablauf",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "text": "17 Uhr: Treffen im Kita-Garten",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "text": "17:30 Uhr: Umzug durchs Dorf",
+                      "type": "text"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Treffpunkt ist an der ",
+              "type": "text"
+            },
+            {
+              "text": "neuen Schaukel",
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "aktuelles/neue-schaukel-im-garten",
+                    "uuid": "ff473915-f605-456a-9830-8565f5734cd7",
+                    "anchor": null,
+                    "target": "_self",
+                    "linktype": "story"
+                  }
+                }
+              ]
+            },
+            {
+              "text": ". Wer mag, liest vorher etwas über das ",
+              "type": "text"
+            },
+            {
+              "text": "Laternelaufen",
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://de.wikipedia.org/wiki/Laternelaufen",
+                    "uuid": null,
+                    "anchor": null,
+                    "target": "_blank",
+                    "linktype": "url"
+                  }
+                }
+              ]
+            },
+            {
+              "text": ".",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "id": 237374845938168,
+                "alt": "Blaue Doppelschaukel auf Holzhackschnitzeln, dahinter ein Drehteller",
+                "src": "https://a.storyblok.com/f/0/d9a407c324/schaukel.jpg",
+                "title": "",
+                "source": "",
+                "copyright": "",
+                "meta_data": {}
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Alle Infos stehen auch im ",
+              "type": "text"
+            },
+            {
+              "text": "Elternbrief (PDF)",
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://a.storyblok.com/f/0/63889dac24/elternbrief-beispiel.pdf",
+                    "uuid": null,
+                    "anchor": null,
+                    "target": "_self",
+                    "linktype": "asset"
+                  }
+                }
+              ]
+            },
+            {
+              "text": ".",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    "datum": "2026-10-28 00:00",
+    "titel": "Laternelaufen am 11. November",
+    "kurztext": "Am Martinstag ziehen wir mit Laternen durch Tralau. Alle Familien sind eingeladen.",
+    "component": "beitrag",
+    "teaserbild": {
+      "id": 237374852909562,
+      "alt": "Betonröhre zum Durchkriechen auf der Wiese unter dem Kastanienbaum",
+      "name": "",
+      "focus": "",
+      "title": "",
+      "source": "",
+      "filename": "https://a.storyblok.com/f/0/39b6c593ee/roehre.jpg",
+      "copyright": "",
+      "fieldtype": "asset",
+      "meta_data": {},
+      "is_external_url": false
+    }
+  },
+  "published": true,
+  "slug": "laternelaufen",
+  "path": null,
+  "full_slug": "aktuelles/laternelaufen",
+  "default_root": null,
+  "disble_fe_editor": false,
+  "disable_fe_editor": false,
+  "parent": {
+    "id": 237375024785600,
+    "uuid": "34c56da3-4fe8-469c-8e2b-604d49de8a31",
+    "name": "Aktuelles",
+    "slug": "aktuelles",
+    "disble_fe_editor": false
+  },
+  "is_startpage": false,
+  "unpublished_changes": false,
+  "meta_data": null,
+  "imported_at": null,
+  "pinned": false,
+  "breadcrumbs": [
+    {
+      "id": 237375024785600,
+      "name": "Aktuelles",
+      "parent_id": 0,
+      "disble_fe_editor": false,
+      "disable_fe_editor": false,
+      "path": null,
+      "slug": "aktuelles",
+      "translated_slugs": []
+    }
+  ],
+  "publish_at": null,
+  "expire_at": null,
+  "translated_slugs": [],
+  "localized_paths": [],
+  "position": -20,
+  "translated_stories": [],
+  "can_not_view": false,
+  "is_scheduled": null,
+  "scheduled_dates": null,
+  "ideas": [],
+  "current_version_id": 237375027015314,
+  "variant_type": null,
+  "taxonomy_terms": [],
+  "experiment_ids": [],
+  "release_ids": [],
+  "stage": null,
+  "stages": [],
+  "assigned_users_per_language": {},
+  "favourite_for_user_ids": []
+}

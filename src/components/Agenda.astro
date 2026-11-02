@@ -1,0 +1,21 @@
+---
+import LucideClock from "~icons/lucide/clock";
+import type { Zeitblock } from "@/inhaltsquelle";
+
+type Props = { zeitbloecke: Zeitblock[] };
+const { zeitbloecke } = Astro.props;
+---
+
+<ol class="max-w-2xl mx-auto">
+	{
+		zeitbloecke.map((block) => (
+			<li class="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-1 py-4 border-b border-gray-400/50 last:border-b-0" {...block.bearbeiten}>
+				<span class="flex items-center gap-2 sm:w-36 shrink-0 font-bold text-sm">
+					<LucideClock class="size-4 text-brand-blue" aria-hidden="true" />
+					{block.uhrzeit}
+				</span>
+				<span>{block.beschreibung}</span>
+			</li>
+		))
+	}
+</ol>

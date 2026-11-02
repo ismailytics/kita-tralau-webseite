@@ -1,0 +1,6 @@
+---
+import RechtstextSeite from "@/components/RechtstextSeite.astro";
+import { rechtstext } from "@/inhaltsquelle";
+---
+
+<RechtstextSeite rechtstext={await rechtstext("impressum")} />

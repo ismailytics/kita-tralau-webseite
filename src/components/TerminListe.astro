@@ -1,0 +1,29 @@
+---
+import type { Termin } from "@/inhaltsquelle";
+import { terminDatum } from "@/lib/datum";
+
+interface Props {
+	termine: Termin[];
+	/** Überschriftenebene der Termintitel, passend zur umgebenden Seite. */
+	ebene?: "h2" | "h3";
+}
+
+const { termine, ebene: Titel = "h2" } = Astro.props;
+---
+
+<ol class="max-w-2xl mx-auto text-left">
+	{
+		termine.map((t) => (
+			<li class="py-4 border-b border-gray-400/50 last:border-b-0" {...t.bearbeiten}>
+				<p class="text-sm font-bold text-brand-blue">
+					<time datetime={t.datum}>
+						{terminDatum(t.datum, t.enddatum)}
+					</time>
+					{t.uhrzeit && ` · ${t.uhrzeit}`}
+				</p>
+				<Titel class="text-xl font-bold">{t.titel}</Titel>
+				{t.kurztext && <p>{t.kurztext}</p>}
+			</li>
+		))
+	}
+</ol>

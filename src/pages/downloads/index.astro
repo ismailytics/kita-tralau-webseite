@@ -1,0 +1,39 @@
+---
+import { pfad } from "@/lib/pfad";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import { downloadKategorien, listenseite } from "@/inhaltsquelle";
+
+const [{ bearbeiten, titel, intro }, kategorien] = await Promise.all([listenseite("downloads/"), downloadKategorien()]);
+---
+
+<Layout title={titel} seoDescription={intro || undefined} bearbeiten={bearbeiten}>
+	<Section>
+		<Container class:list={"flex flex-col gap-y-12"}>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				{intro && <p>{intro}</p>}
+			</SectionHeading>
+			{
+				kategorien.map((k, i) => (
+					<section aria-labelledby={`kategorie-${i}`} class="flex flex-col gap-y-4" {...k.bearbeiten}>
+						<h2 id={`kategorie-${i}`} class="text-3xl font-bold tracking-wide">
+							{k.titel}
+						</h2>
+						<ul class="flex flex-col gap-y-2">
+							{k.downloads.map((d) => (
+								<li {...d.bearbeiten}>
+									<a href={pfad(d.datei)} class="underline hover:text-brand-blue">
+										{d.titel}
+									</a>
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			}
+		</Container>
+	</Section>
+</Layout>

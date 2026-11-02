@@ -1,0 +1,15 @@
+---
+import type { MainHeadingProps as Props } from "@/types";
+
+const { align = "center", class: className = "" } = Astro.props;
+const alignClasses = {
+	left: "items-start text-left mr-auto",
+	center: "items-center text-center mx-auto",
+	right: "items-end text-right ml-auto",
+};
+const classes = `${alignClasses[align] ?? alignClasses.center} ${className}`.trim();
+---
+
+<div class={`flex flex-col justify-center gap-y-10 max-w-4xl min-h-[60svh] text-balance ${classes}`}>
+	<slot />
+</div>

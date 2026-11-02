@@ -4,4 +4,4 @@ Domain, Hoster, SMTP und den Produktiv-Space vom Verein gibt es noch nicht. Bis 
 
 ## Consequences
 
-Das Repo ist die Quelle für Komponenten-Schemas und Beispielinhalte: Beide werden per Storyblok-CLI aus dem Test-Space gezogen, committet und bei der Übergabe in den Produktiv-Space geschoben. Die Beispielinhalte dienen zugleich als Test-Fixtures. Beispielbilder müssen deshalb frei lizenziert sein und dürfen keine Kinder zeigen. Das CLI überträgt keine Löschungen; die macht man im Produktiv-Space von Hand.
+Das Repo ist die Quelle für Komponenten-Schemas und Beispielinhalte: Beide werden per Storyblok-CLI aus dem Test-Space gezogen, committet und bei der Übergabe in den Produktiv-Space geschoben. Wer nicht in der Storyblok-Oberfläche modellieren kann (z. B. ein AFK-Agent), schreibt Schemas und Beispielinhalte als JSON ins Repo, schiebt sie in den Test-Space und zieht sie zurück, damit das Format kanonisch bleibt. Die Beispielinhalte dienen zugleich als Test-Fixtures. Beispielbilder müssen deshalb frei lizenziert sein und dürfen keine Kinder zeigen. Das CLI überträgt keine Löschungen; die macht man im Produktiv-Space von Hand.

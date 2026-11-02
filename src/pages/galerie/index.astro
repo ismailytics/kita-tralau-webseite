@@ -1,0 +1,45 @@
+---
+import { pfad } from "@/lib/pfad";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Bild from "@/components/Bild.astro";
+import { alben, listenseite } from "@/inhaltsquelle";
+import Datum from "@/components/Datum.astro";
+
+const { bearbeiten, titel, intro } = await listenseite("galerie");
+const liste = await alben();
+---
+
+<Layout title={titel} seoDescription={intro} bearbeiten={bearbeiten}>
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				{intro && <p>{intro}</p>}
+			</SectionHeading>
+
+			<ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+				{
+					liste.map((album) => (
+						<li {...album.bearbeiten}>
+							<a href={pfad(`/galerie/${album.slug}/`)} class="group block">
+								<Bild
+									bild={album.fotos[0]}
+									class="aspect-[4/3] w-full rounded-2xl object-cover group-hover:opacity-90"
+									widths={[400, 800]}
+									sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+								/>
+								<h2 class="mt-4 text-2xl font-bold group-hover:underline">{album.titel}</h2>
+								<p class="text-brand-foreground/70">
+									<Datum datum={album.datum} /> · {album.fotos.length} {album.fotos.length === 1 ? "Foto" : "Fotos"}
+								</p>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</Section>
+</Layout>

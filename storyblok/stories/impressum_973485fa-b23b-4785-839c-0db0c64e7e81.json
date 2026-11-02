@@ -1,0 +1,154 @@
+{
+  "name": "Impressum",
+  "parent_id": 0,
+  "group_id": "9245cbae-7b76-4fab-97d4-65627effe926",
+  "alternates": [],
+  "deleted_at": null,
+  "sort_by_date": null,
+  "tag_list": [],
+  "id": 237378440773912,
+  "uuid": "973485fa-b23b-4785-839c-0db0c64e7e81",
+  "is_folder": false,
+  "content": {
+    "_uid": "17dd0637-31f4-4531-9897-7c3dfb5e96a6",
+    "text": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Platzhaltertext: Der Vorstand ersetzt diesen Beispielinhalt vor der Veröffentlichung durch den geprüften Text.",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "text": "Angaben gemäß § 5 DDG",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Kindergruppe Travenbrück e.V.",
+              "type": "text"
+            },
+            {
+              "type": "hard_break"
+            },
+            {
+              "text": "Musterstraße 1, 23843 Tralau",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "text": "Vertreten durch",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Den Vorstand des Vereins (Namen folgen).",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 2
+          },
+          "content": [
+            {
+              "text": "Kontakt",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "text": "Schreiben Sie uns über die ",
+              "type": "text"
+            },
+            {
+              "text": "Kontaktseite",
+              "type": "text",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "kontakt",
+                    "uuid": "1c669125-f3de-4fc2-a1a3-7c79097cc167",
+                    "anchor": null,
+                    "target": "_self",
+                    "linktype": "story"
+                  }
+                }
+              ]
+            },
+            {
+              "text": ".",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    "titel": "Impressum",
+    "component": "rechtstext"
+  },
+  "published": true,
+  "slug": "impressum",
+  "path": null,
+  "full_slug": "impressum",
+  "default_root": null,
+  "disble_fe_editor": false,
+  "disable_fe_editor": false,
+  "parent": null,
+  "is_startpage": false,
+  "unpublished_changes": false,
+  "meta_data": null,
+  "imported_at": null,
+  "pinned": false,
+  "breadcrumbs": [],
+  "publish_at": null,
+  "expire_at": null,
+  "translated_slugs": [],
+  "localized_paths": [],
+  "position": 0,
+  "translated_stories": [],
+  "can_not_view": false,
+  "is_scheduled": null,
+  "scheduled_dates": null,
+  "ideas": [],
+  "current_version_id": 237378443513415,
+  "variant_type": null,
+  "taxonomy_terms": [],
+  "experiment_ids": [],
+  "release_ids": [],
+  "stage": null,
+  "stages": [],
+  "assigned_users_per_language": {},
+  "favourite_for_user_ids": []
+}
