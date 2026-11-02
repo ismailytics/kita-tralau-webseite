@@ -30,7 +30,7 @@
   },
   "published": true,
   "slug": "aufnahmeantrag",
-  "path": null,
+  "path": "downloads/",
   "full_slug": "downloads/aufnahmeantrag",
   "default_root": null,
   "disble_fe_editor": false,
