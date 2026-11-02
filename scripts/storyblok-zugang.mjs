@@ -9,8 +9,7 @@ export function storyblokZugang(welcherSpace = "") {
 	}
 	// Das CLI liest STORYBLOK_TOKEN als Management-Token; im Projekt ist STORYBLOK_TOKEN der Preview-Token.
 	const env = { ...process.env, STORYBLOK_LOGIN: "env", STORYBLOK_TOKEN: pat, STORYBLOK_REGION: "eu" };
-	/** Storyblok-CLI mit Arbeitsverzeichnis `dir` (Dateien unter <dir>/<typ>/<space-oder-from>/) gegen den Space. */
-	const cli = (dir, ...args) =>
-		execFileSync("pnpm", ["exec", "storyblok", "--no-ui-enabled", "-p", dir, ...args, "-s", space], { env, stdio: "inherit" });
+	/** Storyblok-CLI gegen den Space; Dateien liegen unter <-p dir>/<typ>/<space oder --from>/. */
+	const cli = (...args) => execFileSync("pnpm", ["exec", "storyblok", ...args, "-s", space], { env, stdio: "inherit" });
 	return { pat, space, cli };
 }

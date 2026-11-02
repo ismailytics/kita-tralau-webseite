@@ -7,7 +7,7 @@ import { storyblokZugang } from "./storyblok-zugang.mjs";
 
 const { space, cli: storyblok } = storyblokZugang();
 const tmp = mkdtempSync(join(tmpdir(), "storyblok-pull-"));
-const cli = (...args) => storyblok(tmp, ...args);
+const cli = (...args) => storyblok("--no-ui-enabled", "-p", tmp, ...args);
 
 cli("components", "pull", "--sf");
 cli("datasources", "pull", "--sf");

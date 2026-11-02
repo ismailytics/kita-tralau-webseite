@@ -14,6 +14,10 @@ export const assetZuordnung = (lokal, ziel) =>
 		return treffer ? [{ old_id: asset.id, new_id: treffer.id, old_filename: asset.filename, new_filename: treffer.filename }] : [];
 	});
 
+// Das CLI biegt nur Asset-Felder über das Manifest um, nicht Bilder und Datei-Links im Rich Text; die URLs dort ersetzen wir selbst.
+export const assetUrlsUmschreiben = (text, manifest) =>
+	manifest.reduce((t, e) => t.replaceAll(e.old_filename, e.new_filename), text);
+
 const zielAssets = async (space, pat) => {
 	const assets = [];
 	for (let page = 1; ; page++) {
@@ -42,7 +46,7 @@ if (import.meta.main) {
 	const vorhanden = ["datasources", "components", "assets", "stories"].filter((dir) => existsSync(join("storyblok", dir)));
 	for (const dir of vorhanden) cpSync(join("storyblok", dir), quelle(dir), { recursive: true });
 
-	const cli = (...args) => storyblok(tmp, ...args, "--from", "beispiel");
+	const cli = (...args) => storyblok("-p", tmp, ...args, "--from", "beispiel");
 
 	try {
 		for (const typ of ["datasources", "components"].filter((dir) => vorhanden.includes(dir))) {
@@ -65,11 +69,16 @@ if (import.meta.main) {
 				if (zuordnung.length < lokal.length) cli("assets", "push", "--target", "space", ...(dryRun ? ["--dry-run"] : []));
 			}
 			if (vorhanden.includes("stories")) {
-				// Storyblok gibt Ordnern Platzhalter-Inhalt des Standard-Inhaltstyps; der scheitert an der Schema-Validierung.
+				// Nach dem Asset-Push stehen dort auch die neu angelegten Assets.
+				const manifestDatei = join(quelle("assets"), "manifest.jsonl");
+				const manifest = existsSync(manifestDatei)
+					? readFileSync(manifestDatei, "utf8").split("\n").filter(Boolean).map((z) => JSON.parse(z))
+					: [];
 				for (const d of readdirSync(quelle("stories")).filter((d) => d.endsWith(".json"))) {
 					const pfad = join(quelle("stories"), d);
-					const story = JSON.parse(readFileSync(pfad, "utf8"));
-					if (story.is_folder) writeFileSync(pfad, JSON.stringify({ ...story, content: undefined }));
+					const story = JSON.parse(assetUrlsUmschreiben(readFileSync(pfad, "utf8"), manifest));
+					// Storyblok gibt Ordnern Platzhalter-Inhalt des Standard-Inhaltstyps; der scheitert an der Schema-Validierung.
+					writeFileSync(pfad, JSON.stringify(story.is_folder ? { ...story, content: undefined } : story));
 				}
 				cli("stories", "push", "--publish", ...(dryRun ? ["--dry-run"] : []));
 			}
