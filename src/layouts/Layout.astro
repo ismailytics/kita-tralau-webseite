@@ -4,11 +4,19 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Vorschau from "@/components/Vorschau.astro";
 import { VORSCHAU } from "@/variante";
-import { globaleAngaben } from "@/inhaltsquelle";
+import { getImage } from "astro:assets";
+import { globaleAngaben, startseite, type Bild } from "@/inhaltsquelle";
 import type { LayoutProps as Props } from "@/types";
 
-const { title, seoDescription, noindex = VORSCHAU, bearbeiten } = Astro.props;
-const { name } = await globaleAngaben();
+const { title, seoDescription, noindex = VORSCHAU, bearbeiten, bild } = Astro.props;
+const { name, logo } = await globaleAngaben();
+
+// Teilen-Vorschau und Favicon same-origin über astro:assets (ADR-0003), Meta-URLs absolut auf die eigene Domain.
+const skaliert = (b: Bild, format: "png" | "jpg", width: number, height?: number) =>
+	getImage({ src: b.src, width, height, format, ...(typeof b.src === "string" && { inferSize: true }) });
+const teilenBild = bild ?? (await startseite()).hero.bild;
+const [og, icon, appleIcon] = await Promise.all([skaliert(teilenBild, "jpg", 1200), skaliert(logo, "png", 96, 96), skaliert(logo, "png", 180, 180)]);
+const absolut = (pfad: string) => new URL(pfad, Astro.site).href;
 ---
 
 <!doctype html>
@@ -16,13 +24,22 @@ const { name } = await globaleAngaben();
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="theme-color" content="#fef08a" />
+		<meta name="theme-color" content="#ffffff" />
 		{seoDescription && <meta name="description" content={seoDescription} />}
 		{noindex && <meta name="robots" content="noindex,nofollow" />}
 
-		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="shortcut icon" href="/favicon.ico" />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="de_DE" />
+		<meta property="og:site_name" content={name} />
+		<meta property="og:title" content={title ?? name} />
+		{seoDescription && <meta property="og:description" content={seoDescription} />}
+		<meta property="og:url" content={absolut(Astro.url.pathname)} />
+		<meta property="og:image" content={absolut(og.src)} />
+		<meta property="og:image:alt" content={teilenBild.alt} />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="icon" type="image/png" href={icon.src} sizes="96x96" />
+		<link rel="apple-touch-icon" href={appleIcon.src} />
 
 		<title>{title ? `${title} | ${name}` : name}</title>
 	</head>

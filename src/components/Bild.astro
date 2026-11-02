@@ -7,4 +7,5 @@ type Props = { bild: Bild; class?: string; widths?: number[]; sizes?: string; lo
 const { bild, ...rest } = Astro.props;
 ---
 
-<Image src={bild.src} alt={bild.alt} inferSize={typeof bild.src === "string"} {...rest} />
+{/* inferSize nur für Remote-URLs setzen; `false` landet sonst als Attribut im HTML. */}
+<Image src={bild.src} alt={bild.alt} {...(typeof bild.src === "string" && { inferSize: true })} {...rest} />

@@ -26,6 +26,11 @@ Seiten holen Inhalte nur über `src/inhaltsquelle/`. Die Umgebungsvariable `INHA
 | `storyblok` | veröffentlichte Inhalte aus dem Space | `STORYBLOK_TOKEN` (Preview- oder Public-Token) |
 
 Bilder laufen in beiden Fällen über `astro:assets` und landen same-origin in `dist/` (ADR-0003).
+Storyblok-Bilder bekommen beim Build einen Hash ihres Inhalts an die URL (`?v=…`). Ersetzt die Redaktion ein Bild bei gleicher URL,
+ändert sich so der Dateiname unter `/_astro/` und der Cache (`immutable`) liefert nicht die alte Version.
+Teilen-Vorschau (OG/Twitter) und Favicon kommen ebenfalls aus `astro:assets`: Favicon aus dem Logo der Globalen Angaben,
+Vorschaubild aus dem Teaserbild eines Beitrags, sonst aus dem Hero-Bild der Startseite. Die absoluten URLs setzt `SITE_URL`
+(z. B. `SITE_URL=https://www.example.org pnpm build`); ohne Angabe der Platzhalter `https://kita-tralau.example`.
 Verlinkte Dateien (z. B. PDFs im Rich Text) lädt der Build ebenfalls herunter und legt sie unter `/dateien/` ab.
 
 ## Vorschau (ADR-0009)

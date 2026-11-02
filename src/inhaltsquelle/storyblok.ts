@@ -1,6 +1,7 @@
 // Storyblok: veröffentlichte Inhalte (in der Vorschau Entwürfe) über die Content Delivery API (Region EU), nur zur Build-Zeit.
 import type { StoryblokAsset } from "../../storyblok/storyblok";
 import { VORSCHAU } from "../variante";
+import { versioniert } from "./versioniert";
 
 const version = VORSCHAU ? "draft" : "published";
 
@@ -12,8 +13,13 @@ export async function story<T>(slug: string): Promise<T> {
 	return (await antwort.json()).story.content as T;
 }
 
-// Remote-URL der Storyblok-Asset-Domain; astro:assets lädt sie beim Build herunter (image.domains).
-export const bildDatei = (asset: StoryblokAsset): string => asset.filename;
+// Remote-URL der Storyblok-Asset-Domain mit Inhalts-Hash; astro:assets lädt sie beim Build herunter (image.domains).
+// shortcut: jedes Bild wird zum Hashen einmal extra geladen, bei sehr vielen Bildern ETag statt Inhalt hashen.
+const versionen = new Map<string, Promise<string>>();
+export function bildDatei(asset: StoryblokAsset): Promise<string> {
+	if (!versionen.has(asset.filename)) versionen.set(asset.filename, versioniert(asset.filename));
+	return versionen.get(asset.filename)!;
+}
 
 // shortcut: nur die ersten 100 Stories eines Typs, bei mehr paginieren.
 export async function alleStories<T>(komponente: string): Promise<{ uuid: string; slug: string; content: T }[]> {

@@ -99,10 +99,10 @@ export interface Kontakt {
 // Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
 const quelle = process.env.INHALTSQUELLE === "storyblok" ? storyblok : beispiel;
 
-function bild(asset: StoryblokAsset): Bild {
+async function bild(asset: StoryblokAsset): Promise<Bild> {
 	if (!asset?.filename) throw new Error("Inhaltsquelle: Bild fehlt.");
 	if (!asset.alt?.trim()) throw new Error(`Inhaltsquelle: Bild ohne Alt-Text (${asset.filename.split("/").pop()}).`);
-	return { src: quelle.bildDatei(asset), alt: asset.alt };
+	return { src: await quelle.bildDatei(asset), alt: asset.alt };
 }
 
 // Wie storyblokEditable aus @storyblok/js, ohne Storyblok-Code in den Prod-Build zu holen.
@@ -118,10 +118,10 @@ let globale: Promise<GlobaleAngaben> | undefined;
 
 /** Globale Angaben; einmal pro Build geladen, weil Header und Footer sie auf jeder Seite brauchen. */
 export function globaleAngaben(): Promise<GlobaleAngaben> {
-	globale ??= quelle.story<GlobaleAngabenStory>("globale-angaben").then((s) => ({
+	globale ??= quelle.story<GlobaleAngabenStory>("globale-angaben").then(async (s) => ({
 		bearbeiten: bearbeiten(s),
 		name: s.name,
-		logo: bild(s.logo),
+		logo: await bild(s.logo),
 		footerText: s.footer_text ?? "",
 		kontakt: { strasse: s.strasse, ort: s.ort, telefon: s.telefon || undefined, email: s.email || undefined },
 		oeffnungszeiten: zeilen(s.oeffnungszeiten),
@@ -129,11 +129,19 @@ export function globaleAngaben(): Promise<GlobaleAngaben> {
 	return globale;
 }
 
-export async function startseite(): Promise<Startseite> {
+let start: Promise<Startseite> | undefined;
+
+/** Startseite; einmal pro Build geladen, weil ihr Hero-Bild auch die Teilen-Vorschau der übrigen Seiten ist. */
+export function startseite(): Promise<Startseite> {
+	start ??= ladeStartseite();
+	return start;
+}
+
+async function ladeStartseite(): Promise<Startseite> {
 	const s = await quelle.story<StartseiteStory>("startseite");
 	return {
 		bearbeiten: bearbeiten(s),
-		hero: { titel: s.hero_titel, text: s.hero_text ?? "", bild: bild(s.hero_bild) },
+		hero: { titel: s.hero_titel, text: s.hero_text ?? "", bild: await bild(s.hero_bild) },
 		konzept: { titel: s.konzept_titel, text: s.konzept_text },
 		kontaktCta: { titel: s.kontakt_titel, text: s.kontakt_text ?? "", button: s.kontakt_button },
 	};
@@ -155,7 +163,7 @@ async function ladeBeitraege(): Promise<Beitrag[]> {
 			titel: c.titel,
 			// Storyblok liefert „YYYY-MM-DD HH:mm“ in UTC.
 			datum: new Date(`${c.datum.replace(" ", "T")}Z`),
-			teaserbild: bild(c.teaserbild),
+			teaserbild: await bild(c.teaserbild),
 			kurztext: c.kurztext,
 			text: await richText(c.text?.content as SbKnoten[]),
 		})),
@@ -201,7 +209,7 @@ async function richText(knoten: SbKnoten[] = []): Promise<RichText> {
 			type,
 			text,
 			level: attrs?.level,
-			bild: type === "image" ? bild({ id: attrs?.id, filename: attrs?.src, alt: attrs?.alt } as StoryblokAsset) : undefined,
+			bild: type === "image" ? await bild({ id: attrs?.id, filename: attrs?.src, alt: attrs?.alt } as StoryblokAsset) : undefined,
 			marks: marks && (await Promise.all(marks.map(async (m) => ({ type: m.type, ...(m.type === "link" ? await linkZiel(m.attrs ?? {}) : {}) })))),
 			content: content && (await richText(content)),
 		})),
@@ -215,9 +223,15 @@ export async function galerie(): Promise<Galerie> {
 
 /** Alle Alben, neueste zuerst. */
 export async function alben(): Promise<Album[]> {
-	return (await quelle.alleStories<AlbumStory>("album"))
-		.map(({ slug, content: s }) => ({ slug, titel: s.titel, datum: s.datum.slice(0, 10), fotos: s.fotos.map(bild) }))
-		.sort((a, b) => b.datum.localeCompare(a.datum));
+	const liste = await Promise.all(
+		(await quelle.alleStories<AlbumStory>("album")).map(async ({ slug, content: s }) => ({
+			slug,
+			titel: s.titel,
+			datum: s.datum.slice(0, 10),
+			fotos: await Promise.all(s.fotos.map(bild)),
+		})),
+	);
+	return liste.sort((a, b) => b.datum.localeCompare(a.datum));
 }
 
 export interface Vorstandsmitglied {
@@ -242,14 +256,14 @@ export async function vorstand(): Promise<Vorstand> {
 		bearbeiten: bearbeiten(s),
 		titel: s.titel,
 		intro: s.intro ?? "",
-		mitglieder: (s.mitglieder ?? []).map((m) => ({
+		mitglieder: await Promise.all((s.mitglieder ?? []).map(async (m) => ({
 			bearbeiten: bearbeiten(m),
 			name: m.name,
 			rolle: m.rolle,
 			// Ein leeres Asset-Feld kommt als Objekt ohne filename.
-			foto: m.foto?.filename ? bild(m.foto) : undefined,
+			foto: m.foto?.filename ? await bild(m.foto) : undefined,
 			email: m.email?.trim() || undefined,
-		})),
+		}))),
 		beitritt: { titel: s.beitritt_titel, text: s.beitritt_text },
 	};
 }
@@ -366,7 +380,7 @@ export async function kontakt(): Promise<Kontakt> {
 	return {
 		intro: { titel: s.intro_titel, text: s.intro_text ?? "" },
 		kitaportal: { titel: s.kitaportal_titel, text: s.kitaportal_text, url: s.kitaportal_url, linkText: s.kitaportal_link_text },
-		karte: { bild: bild(s.karte_bild), quelle: s.karte_quelle, url: s.karte_url, linkText: s.karte_link_text },
+		karte: { bild: await bild(s.karte_bild), quelle: s.karte_quelle, url: s.karte_url, linkText: s.karte_link_text },
 	};
 }
 
