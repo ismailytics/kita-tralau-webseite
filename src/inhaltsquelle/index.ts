@@ -2,7 +2,12 @@
 // Liefert fertige Daten in Begriffen des Glossars; dahinter Storyblok oder die Beispielinhalte im Repo.
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
-import type { GlobaleAngaben as GlobaleAngabenStory, Startseite as StartseiteStory } from "../../storyblok/types/storyblok-components";
+import type {
+	Album as AlbumStory,
+	Galerie as GalerieStory,
+	GlobaleAngaben as GlobaleAngabenStory,
+	Startseite as StartseiteStory,
+} from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
 import * as storyblok from "./storyblok";
 
@@ -24,6 +29,19 @@ export interface Startseite {
 	hero: { titel: string; text: string; bild: Bild };
 	konzept: { titel: string; text: string };
 	kontaktCta: { titel: string; text: string; button: string };
+}
+
+export interface Galerie {
+	titel: string;
+	intro: string;
+}
+
+export interface Album {
+	slug: string;
+	titel: string;
+	/** Datum des Anlasses als YYYY-MM-DD. */
+	datum: string;
+	fotos: Bild[];
 }
 
 // Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
@@ -58,4 +76,17 @@ export async function startseite(): Promise<Startseite> {
 		konzept: { titel: s.konzept_titel, text: s.konzept_text },
 		kontaktCta: { titel: s.kontakt_titel, text: s.kontakt_text ?? "", button: s.kontakt_button },
 	};
+}
+
+export async function galerie(): Promise<Galerie> {
+	const s = await quelle.story<GalerieStory>("galerie");
+	return { titel: s.titel, intro: s.intro ?? "" };
+}
+
+/** Alle Alben, neueste zuerst. */
+export async function alben(): Promise<Album[]> {
+	const stories = await quelle.stories<AlbumStory>("alben");
+	return stories
+		.map(({ slug, content: s }) => ({ slug, titel: s.titel, datum: s.datum.slice(0, 10), fotos: s.fotos.map(bild) }))
+		.sort((a, b) => b.datum.localeCompare(a.datum));
 }
