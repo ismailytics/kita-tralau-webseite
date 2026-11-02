@@ -8,9 +8,9 @@
 	},
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro build",
+		"build": "astro build && node scripts/check-dist.mjs dist",
 		"preview": "astro preview",
-		"test": "node --test scripts/ && playwright test",
+		"test": "node --test 'scripts/*.test.mjs' && playwright test",
 		"storyblok:pull": "node scripts/storyblok-pull.mjs"
 	},
 	"dependencies": {
