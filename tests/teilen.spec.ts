@@ -17,12 +17,13 @@ for (const { pfad, titel, beschreibung } of [
 	{ pfad: "/", titel: "Kindergruppe Travenbrück e.V.", beschreibung: /./ },
 	{ pfad: "/aktuelles/laternelaufen", titel: "Laternelaufen am 11. November", beschreibung: /./ },
 	{ pfad: "/termine", titel: "Termine", beschreibung: /^Termine und Schließzeiten/ },
+	{ pfad: "/galerie/sommer-2026", titel: "Sommer rund ums Haus" },
 ]) {
 	test(`${pfad}: OG- und Twitter-Meta zeigen auf die eigene Domain`, async ({ page }) => {
 		await page.goto(pfad);
 
 		await expect(meta(page, "og:title")).toHaveAttribute("content", titel);
-		await expect(meta(page, "og:description")).toHaveAttribute("content", beschreibung);
+		if (beschreibung) await expect(meta(page, "og:description")).toHaveAttribute("content", beschreibung);
 		await expect(meta(page, "og:site_name")).toHaveAttribute("content", "Kindergruppe Travenbrück e.V.");
 		await expect(meta(page, "og:url")).toHaveAttribute("content", new RegExp(`^${SITE}${pfad.replace(/\/$/, "")}/?$`));
 		await expect(meta(page, "og:image:alt")).toHaveAttribute("content", /./);
@@ -31,12 +32,15 @@ for (const { pfad, titel, beschreibung } of [
 	});
 }
 
-test("ein Beitrag teilt sein eigenes Teaserbild, nicht das der Startseite", async ({ page }) => {
+test("Beitrag und Album teilen ihr eigenes Bild, nicht das der Startseite", async ({ page }) => {
 	await page.goto("/");
 	const start = await meta(page, "og:image").getAttribute("content");
+	for (const pfad of ["/aktuelles/laternelaufen", "/galerie/sommer-2026"]) {
+		await page.goto(pfad);
+		expect(await meta(page, "og:image").getAttribute("content"), pfad).not.toBe(start);
+	}
 	await page.goto("/aktuelles/laternelaufen");
 	await expect(meta(page, "og:image")).toHaveAttribute("content", /\/roehre_/);
-	expect(await meta(page, "og:image").getAttribute("content")).not.toBe(start);
 });
 
 test("Favicon kommt aus dem Logo der Globalen Angaben, same-origin", async ({ page }) => {

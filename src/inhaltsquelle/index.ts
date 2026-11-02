@@ -221,9 +221,15 @@ export async function galerie(): Promise<Galerie> {
 
 /** Alle Alben, neueste zuerst. */
 export async function alben(): Promise<Album[]> {
-	return (await quelle.alleStories<AlbumStory>("album"))
-		.map(({ slug, content: s }) => ({ slug, titel: s.titel, datum: s.datum.slice(0, 10), fotos: s.fotos.map(bild) }))
-		.sort((a, b) => b.datum.localeCompare(a.datum));
+	const liste = await Promise.all(
+		(await quelle.alleStories<AlbumStory>("album")).map(async ({ slug, content: s }) => ({
+			slug,
+			titel: s.titel,
+			datum: s.datum.slice(0, 10),
+			fotos: await Promise.all(s.fotos.map(bild)),
+		})),
+	);
+	return liste.sort((a, b) => b.datum.localeCompare(a.datum));
 }
 
 export interface Vorstandsmitglied {
