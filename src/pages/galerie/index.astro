@@ -5,7 +5,7 @@ import Container from "@/components/Container.astro";
 import SectionHeading from "@/components/SectionHeading.astro";
 import Bild from "@/components/Bild.astro";
 import { alben, galerie } from "@/inhaltsquelle";
-import { datumLang } from "@/lib/datum";
+import Datum from "@/components/Datum.astro";
 
 const { titel, intro } = await galerie();
 const liste = await alben();
@@ -32,7 +32,7 @@ const liste = await alben();
 								/>
 								<h2 class="mt-4 text-2xl font-bold group-hover:underline">{album.titel}</h2>
 								<p class="text-brand-foreground/70">
-									<time datetime={album.datum}>{datumLang(album.datum)}</time> · {album.fotos.length} {album.fotos.length === 1 ? "Foto" : "Fotos"}
+									<Datum datum={album.datum} /> · {album.fotos.length} {album.fotos.length === 1 ? "Foto" : "Fotos"}
 								</p>
 							</a>
 						</li>

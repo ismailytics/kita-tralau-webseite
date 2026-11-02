@@ -6,7 +6,7 @@ import SectionHeading from "@/components/SectionHeading.astro";
 import Bild from "@/components/Bild.astro";
 import { getImage } from "astro:assets";
 import { alben, type Album } from "@/inhaltsquelle";
-import { datumLang } from "@/lib/datum";
+import Datum from "@/components/Datum.astro";
 
 export async function getStaticPaths() {
 	return (await alben()).map((album) => ({ params: { album: album.slug }, props: { album } }));
@@ -24,7 +24,7 @@ const gross = await Promise.all(
 		<Container>
 			<SectionHeading>
 				<h1 class="text-5xl font-bold tracking-wide">{album.titel}</h1>
-				<p><time datetime={album.datum}>{datumLang(album.datum)}</time></p>
+				<p><Datum datum={album.datum} /></p>
 			</SectionHeading>
 
 			<ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

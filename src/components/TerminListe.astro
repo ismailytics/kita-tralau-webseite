@@ -1,5 +1,6 @@
 ---
 import type { Termin } from "@/inhaltsquelle";
+import { terminDatum } from "@/lib/datum";
 
 interface Props {
 	termine: Termin[];
@@ -8,8 +9,6 @@ interface Props {
 }
 
 const { termine, ebene: Titel = "h2" } = Astro.props;
-const format = new Intl.DateTimeFormat("de-DE", { weekday: "short", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-const datum = (iso: string) => new Date(`${iso}T00:00:00Z`);
 ---
 
 <ol class="max-w-2xl mx-auto text-left">
@@ -18,7 +17,7 @@ const datum = (iso: string) => new Date(`${iso}T00:00:00Z`);
 			<li class="py-4 border-b border-gray-400/50 last:border-b-0" {...t.bearbeiten}>
 				<p class="text-sm font-bold text-brand-blue">
 					<time datetime={t.datum}>
-						{t.enddatum ? format.formatRange(datum(t.datum), datum(t.enddatum)) : format.format(datum(t.datum))}
+						{terminDatum(t.datum, t.enddatum)}
 					</time>
 					{t.uhrzeit && ` · ${t.uhrzeit}`}
 				</p>

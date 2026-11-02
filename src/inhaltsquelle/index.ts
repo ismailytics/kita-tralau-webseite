@@ -17,6 +17,7 @@ import type {
 	UeberUns as UeberUnsStory,
 	Vorstand as VorstandStory,
 } from "../../storyblok/types/storyblok-components";
+import { type Kalendertag, kalendertag } from "../lib/datum";
 import { einmal } from "../lib/einmal";
 import { VORSCHAU } from "../variante";
 import { bild, quelle } from "./quelle";
@@ -52,7 +53,7 @@ export interface Startseite {
 export interface Beitrag {
 	slug: string;
 	titel: string;
-	datum: Date;
+	datum: Kalendertag;
 	teaserbild: Bild;
 	kurztext: string;
 	text: RichText;
@@ -66,18 +67,18 @@ export interface Galerie {
 export interface Album {
 	slug: string;
 	titel: string;
-	/** Datum des Anlasses als YYYY-MM-DD. */
-	datum: string;
+	/** Datum des Anlasses. */
+	datum: Kalendertag;
 	fotos: Bild[];
 }
 
-/** Ein Termin; Daten als ISO-Datum (JJJJ-MM-TT). */
+/** Ein Termin, optional mit Enddatum. */
 export interface Termin {
 	bearbeiten: Bearbeiten;
 	titel: string;
-	datum: string;
+	datum: Kalendertag;
 	uhrzeit?: string;
-	enddatum?: string;
+	enddatum?: Kalendertag;
 	kurztext?: string;
 }
 
@@ -130,14 +131,13 @@ export const beitraege = einmal(async (): Promise<Beitrag[]> => {
 		stories.map(async ({ slug, content: c }) => ({
 			slug,
 			titel: c.titel,
-			// Storyblok liefert „JJJJ-MM-TT HH:mm“ in UTC.
-			datum: new Date(`${c.datum.replace(" ", "T")}Z`),
+			datum: kalendertag(c.datum) ?? abbrechen(`Inhaltsquelle: Beitrag „${c.titel}“ ohne Datum.`),
 			teaserbild: await bild(c.teaserbild),
 			kurztext: c.kurztext,
 			text: await richText(c.text),
 		})),
 	);
-	return liste.sort((a, b) => b.datum.getTime() - a.datum.getTime());
+	return liste.sort((a, b) => b.datum.localeCompare(a.datum));
 });
 
 export const galerie = einmal(async (): Promise<Galerie> => {
@@ -151,7 +151,7 @@ export const alben = einmal(async (): Promise<Album[]> => {
 		(await quelle.storiesDesTyps<AlbumStory>("album")).map(async ({ slug, content: s }) => ({
 			slug,
 			titel: s.titel,
-			datum: s.datum.slice(0, 10),
+			datum: kalendertag(s.datum) ?? abbrechen(`Inhaltsquelle: Album „${s.titel}“ ohne Datum.`),
 			fotos: await Promise.all(s.fotos.map(bild)),
 		})),
 	);
@@ -234,18 +234,15 @@ export const faq = einmal(async (): Promise<Faq> => {
 	};
 });
 
-// Storyblok liefert Datumsfelder als „JJJJ-MM-TT HH:mm“.
-const tag = (wert?: string) => wert?.slice(0, 10) || undefined;
-
 /** Alle Termine nach Datum aufsteigend; vergangene bleiben stehen, bis die Redaktion sie löscht. */
 export const termine = einmal(async (): Promise<Termin[]> =>
 	(await quelle.storiesDesTyps<TerminStory>("termin"))
 		.map(({ content: t }) => ({
 			bearbeiten: bearbeiten(t),
 			titel: t.titel,
-			datum: tag(t.datum) ?? abbrechen(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
+			datum: kalendertag(t.datum) ?? abbrechen(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
 			uhrzeit: t.uhrzeit || undefined,
-			enddatum: tag(t.enddatum),
+			enddatum: kalendertag(t.enddatum),
 			kurztext: t.kurztext || undefined,
 		}))
 		.sort((a, b) => a.datum.localeCompare(b.datum)),

@@ -1,8 +1,8 @@
 ---
-type Props = { datum: Date; class?: string };
+import { datumLang, type Kalendertag } from "@/lib/datum";
+
+type Props = { datum: Kalendertag; class?: string };
 const { datum, class: className } = Astro.props;
-// UTC, weil die Inhaltsquelle reine Kalenderdaten als Mitternacht UTC liefert.
-const text = new Intl.DateTimeFormat("de-DE", { dateStyle: "long", timeZone: "UTC" }).format(datum);
 ---
 
-<time datetime={datum.toISOString().slice(0, 10)} class={className}>{text}</time>
+<time datetime={datum} class={className}>{datumLang(datum)}</time>
