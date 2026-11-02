@@ -12,3 +12,9 @@ test("Startseite zeigt Hero, Konzept-Teaser und Kontakt-CTA aus den Beispielinha
 	await expect(page.getByRole("heading", { level: 2, name: "Fragen? Sprechen Sie uns an" })).toBeVisible();
 	await expect(page.getByRole("link", { name: "Kontakt aufnehmen" })).toBeVisible();
 });
+
+test("Konzept-CTA führt zu Über uns", async ({ page }) => {
+	await page.goto("/");
+	await page.getByRole("link", { name: "Mehr über uns" }).click();
+	await expect(page).toHaveURL(/\/ueber-uns\/?$/);
+});
