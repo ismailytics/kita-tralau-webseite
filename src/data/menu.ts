@@ -8,4 +8,10 @@ export const MainMenu: MenuItem[] = [
 		hoverClass: "hover:text-brand-blue",
 		activeClass: "text-brand-blue",
 	},
+	{
+		label: "Kontakt",
+		href: "/kontakt/",
+		hoverClass: "hover:text-brand-blue",
+		activeClass: "text-brand-blue",
+	},
 ];

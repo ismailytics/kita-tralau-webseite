@@ -24,12 +24,12 @@ test("Footer zeigt Kontaktdaten und Öffnungszeiten aus den Globalen Angaben", a
 	await expect(footer.getByText("Schließzeiten stehen in den Terminen")).toBeVisible();
 });
 
-test("Kontakt-CTA führt zu den Kontaktdaten", async ({ page }) => {
+test("Kontakt-CTA führt zur Kontaktseite", async ({ page }) => {
 	await page.goto("/");
 	await page.getByRole("link", { name: "Kontakt aufnehmen" }).click();
 
-	await expect(page).toHaveURL(/#kontakt$/);
-	await expect(page.getByRole("heading", { name: "Kontakt", exact: true })).toBeInViewport();
+	await expect(page).toHaveURL(/\/kontakt\/$/);
+	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Kontakt");
 });
 
 test.describe("auf dem Smartphone", () => {

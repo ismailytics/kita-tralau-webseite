@@ -3,6 +3,7 @@
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
 import type { GlobaleAngaben as GlobaleAngabenStory, Startseite as StartseiteStory } from "../../storyblok/types/storyblok-components";
+import type { Kontakt as KontaktStory } from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
 import * as storyblok from "./storyblok";
 
@@ -24,6 +25,12 @@ export interface Startseite {
 	hero: { titel: string; text: string; bild: Bild };
 	konzept: { titel: string; text: string };
 	kontaktCta: { titel: string; text: string; button: string };
+}
+
+export interface Kontakt {
+	intro: { titel: string; text: string };
+	kitaportal: { titel: string; text: string; url: string; linkText: string };
+	karte: { bild: Bild; quelle: string; url: string; linkText: string };
 }
 
 // Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
@@ -57,5 +64,14 @@ export async function startseite(): Promise<Startseite> {
 		hero: { titel: s.hero_titel, text: s.hero_text ?? "", bild: bild(s.hero_bild) },
 		konzept: { titel: s.konzept_titel, text: s.konzept_text },
 		kontaktCta: { titel: s.kontakt_titel, text: s.kontakt_text ?? "", button: s.kontakt_button },
+	};
+}
+
+export async function kontakt(): Promise<Kontakt> {
+	const s = await quelle.story<KontaktStory>("kontakt");
+	return {
+		intro: { titel: s.intro_titel, text: s.intro_text ?? "" },
+		kitaportal: { titel: s.kitaportal_titel, text: s.kitaportal_text, url: s.kitaportal_url, linkText: s.kitaportal_link_text },
+		karte: { bild: bild(s.karte_bild), quelle: s.karte_quelle, url: s.karte_url, linkText: s.karte_link_text },
 	};
 }
