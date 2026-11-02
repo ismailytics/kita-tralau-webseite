@@ -1,0 +1,16 @@
+---
+// PROTOTYP (wegwerfen): fotoähnlicher Platzhalter, bis das echte Foto von Lara Spradau da ist.
+const { class: className = "" } = Astro.props;
+---
+
+<svg
+	class={className}
+	viewBox="0 0 200 200"
+	preserveAspectRatio="xMidYMax slice"
+	role="img"
+	aria-label="Platzhalter für das Foto von Lara Spradau"
+>
+	<rect width="200" height="200" fill="#e6dfd2"></rect>
+	<circle cx="100" cy="82" r="34" fill="#bfb4a2"></circle>
+	<path d="M36 200c0-44 29-68 64-68s64 24 64 68z" fill="#bfb4a2"></path>
+</svg>

@@ -1,0 +1,50 @@
+---
+// PROTOTYP (wegwerfen): schwebende Leiste zum Umschalten zwischen Varianten über ?variant=.
+// Blendet Elemente mit data-prototyp-nur="A C" usw. ein oder aus. Nur im Entwicklungsserver einbinden.
+type Props = { varianten: Record<string, string> };
+const { varianten } = Astro.props;
+---
+
+<div
+	id="prototyp-umschalter"
+	data-varianten={JSON.stringify(varianten)}
+	class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-3 rounded-full bg-black text-white px-4 py-2 shadow-2xl font-mono text-sm"
+>
+	<button type="button" data-richtung="-1" aria-label="Vorherige Variante" class="px-2 text-lg">←</button>
+	<span data-label class="whitespace-nowrap">…</span>
+	<button type="button" data-richtung="1" aria-label="Nächste Variante" class="px-2 text-lg">→</button>
+</div>
+
+<script>
+	const leiste = document.getElementById("prototyp-umschalter") as HTMLElement;
+	const varianten: Record<string, string> = JSON.parse(leiste.dataset.varianten ?? "{}");
+	const schluessel = Object.keys(varianten);
+
+	function zeigen(v: string) {
+		document.querySelectorAll<HTMLElement>("[data-prototyp-nur]").forEach((el) => {
+			el.hidden = !(el.dataset.prototypNur ?? "").split(" ").includes(v);
+		});
+		(leiste.querySelector("[data-label]") as HTMLElement).textContent = `${v} (${varianten[v]})`;
+		const url = new URL(location.href);
+		url.searchParams.set("variant", v);
+		history.replaceState(null, "", url);
+	}
+
+	let aktuell = new URL(location.href).searchParams.get("variant") ?? schluessel[0];
+	if (!schluessel.includes(aktuell)) aktuell = schluessel[0];
+	const weiter = (richtung: number) => {
+		aktuell = schluessel[(schluessel.indexOf(aktuell) + richtung + schluessel.length) % schluessel.length];
+		zeigen(aktuell);
+	};
+
+	leiste.querySelectorAll<HTMLElement>("[data-richtung]").forEach((b) => {
+		b.addEventListener("click", () => weiter(Number(b.dataset.richtung)));
+	});
+	document.addEventListener("keydown", (e) => {
+		const ziel = e.target as HTMLElement;
+		if (ziel.closest("input, textarea, select, [contenteditable]")) return;
+		if (e.key === "ArrowLeft") weiter(-1);
+		if (e.key === "ArrowRight") weiter(1);
+	});
+	zeigen(aktuell);
+</script>

@@ -1,0 +1,30 @@
+---
+// PROTOTYP (wegwerfen) – Variante B „Persönliche Begrüßung“:
+// ersetzt das zentrierte Intro durch großes Foto + Gruß der Kita-Leitung in der Ich-Form.
+import Phone from "~icons/heroicons/phone";
+import Button from "@/components/buttons/Button.astro";
+import Platzhalterfoto from "./Platzhalterfoto.astro";
+
+const { telefon } = Astro.props as { telefon?: string };
+---
+
+<div class="mb-16 grid gap-10 md:grid-cols-[auto_1fr] items-center max-w-4xl mx-auto">
+	<Platzhalterfoto class="w-56 md:w-72 aspect-[4/5] rounded-3xl mx-auto shadow-lg" />
+	<div class="space-y-6">
+		<h1 class="text-5xl font-bold tracking-wide">Kontakt</h1>
+		<blockquote class="text-2xl leading-snug">
+			„Schön, dass Sie uns kennenlernen möchten! Rufen Sie mich an, dann vereinbaren wir einen Termin und ich zeige
+			Ihnen unsere Kita.“
+		</blockquote>
+		<p class="font-bold">Lara Spradau, Kita-Leitung</p>
+		{
+			telefon && (
+				<Button variant="blue" href={`tel:${telefon.replace(/[^\d+]/g, "")}`}>
+					<Phone aria-hidden="true" />
+					{telefon}
+				</Button>
+			)
+		}
+		<p class="text-base">Fragen an den Verein beantwortet der Vorstand unter kitra.ev@web.de.</p>
+	</div>
+</div>

@@ -1,0 +1,37 @@
+---
+// PROTOTYP (wegwerfen) – B3 „Blaues Band mit Bogenfoto“:
+// volle Breite in Markenblau wie die Aufruf-Abschnitte, Foto in Bogenform sitzt auf der Unterkante.
+import Phone from "~icons/heroicons/phone";
+import Button from "@/components/buttons/Button.astro";
+import Platzhalterfoto from "./Platzhalterfoto.astro";
+
+const { telefon } = Astro.props as { telefon?: string };
+---
+
+<section class="bg-brand-blue text-white overflow-hidden">
+	<div class="container grid gap-10 md:grid-cols-2 items-end pt-16">
+		<div class="space-y-6 pb-16 self-center">
+			<p class="uppercase tracking-widest text-sm font-bold text-white/80">Ihre Ansprechpartnerin</p>
+			<h1 class="text-5xl font-bold tracking-wide">Kontakt</h1>
+			<p class="text-xl leading-relaxed">
+				„Schön, dass Sie uns kennenlernen möchten! Rufen Sie mich gern an. Dann vereinbaren wir einen Termin und ich
+				zeige Ihnen unsere Kita.“
+			</p>
+			<p class="font-fredoka text-2xl font-semibold">
+				Lara Spradau <span class="font-normal text-white/80">· Kita-Leitung</span>
+			</p>
+			{
+				telefon && (
+					<Button variant="white" href={`tel:${telefon.replace(/[^\d+]/g, "")}`}>
+						<Phone aria-hidden="true" />
+						{telefon}
+					</Button>
+				)
+			}
+		</div>
+		<div class="relative justify-self-center w-64 md:w-80">
+			<span class="absolute -left-10 top-16 size-56 md:size-72 rounded-full bg-brand-yellow" aria-hidden="true"></span>
+			<Platzhalterfoto class="relative w-full aspect-[4/5] rounded-t-full" />
+		</div>
+	</div>
+</section>

@@ -1,0 +1,46 @@
+---
+// PROTOTYP (wegwerfen) – Variante C „Eigener Abschnitt Kennenlernen“:
+// breites Band zwischen Adresse/Karte und Formular, Foto plus Ablauf bis zur Anmeldung (laut Konzeption).
+import Phone from "~icons/heroicons/phone";
+import Button from "@/components/buttons/Button.astro";
+import Container from "@/components/Container.astro";
+import Platzhalterfoto from "./Platzhalterfoto.astro";
+
+const { telefon } = Astro.props as { telefon?: string };
+---
+
+<section aria-labelledby="kennenlernen" class="bg-brand-green/10">
+	<Container class:list={"lg:py-16"}>
+		<div class="grid gap-10 lg:grid-cols-2 items-center">
+			<figure class="space-y-3">
+				<Platzhalterfoto class="w-full aspect-[4/3] rounded-3xl" />
+				<figcaption class="text-sm">Lara Spradau leitet unsere Kita.</figcaption>
+			</figure>
+			<div class="space-y-6">
+				<h2 id="kennenlernen" class="text-4xl font-bold tracking-wide">Kita kennenlernen</h2>
+				<ol class="space-y-4">
+					<li class="flex gap-4">
+						<span class="size-9 shrink-0 rounded-full bg-brand-green text-white font-bold grid place-items-center">1</span>
+						<span>Sie rufen unsere Kitaleiterin Lara Spradau an und vereinbaren einen Termin.</span>
+					</li>
+					<li class="flex gap-4">
+						<span class="size-9 shrink-0 rounded-full bg-brand-green text-white font-bold grid place-items-center">2</span>
+						<span>Beim Besuch lernen Sie Räume, Gelände und unsere Konzeption kennen und stellen Ihre Fragen.</span>
+					</li>
+					<li class="flex gap-4">
+						<span class="size-9 shrink-0 rounded-full bg-brand-green text-white font-bold grid place-items-center">3</span>
+						<span>Danach melden Sie Ihr Kind schriftlich an.</span>
+					</li>
+				</ol>
+				{
+					telefon && (
+						<Button variant="green" href={`tel:${telefon.replace(/[^\d+]/g, "")}`}>
+							<Phone aria-hidden="true" />
+							Termin vereinbaren: {telefon}
+						</Button>
+					)
+				}
+			</div>
+		</div>
+	</Container>
+</section>

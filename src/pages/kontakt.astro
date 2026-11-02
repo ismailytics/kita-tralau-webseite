@@ -10,6 +10,15 @@ import Button from "@/components/buttons/Button.astro";
 import Bild from "@/components/Bild.astro";
 import FormContact from "@/components/forms/FormContact.astro";
 import { globaleAngaben, kontakt } from "@/inhaltsquelle";
+// PROTOTYP (wegwerfen): Foto der Kita-Leitung als persönliche Begrüßung, drei Fassungen von Variante B
+// über ?variant=B1|B2|B3 (dazu B und „heute“ zum Vergleich), nur im Entwicklungsserver.
+import PrototypUmschalter from "@/components/PrototypUmschalter.astro";
+import VarianteB from "./_prototyp-kontaktleitung/VarianteB.astro";
+import VarianteB1 from "./_prototyp-kontaktleitung/VarianteB1.astro";
+import VarianteB2 from "./_prototyp-kontaktleitung/VarianteB2.astro";
+import VarianteB3 from "./_prototyp-kontaktleitung/VarianteB3.astro";
+
+const PROTOTYP = import.meta.env.DEV;
 
 const [{ bearbeiten, intro, kitaportal, karte }, { kontakt: adresse, oeffnungszeiten }] = await Promise.all([
 	kontakt(),
@@ -18,12 +27,36 @@ const [{ bearbeiten, intro, kitaportal, karte }, { kontakt: adresse, oeffnungsze
 ---
 
 <Layout title={intro.titel} seoDescription={intro.text} bearbeiten={bearbeiten}>
+	{
+		PROTOTYP && (
+			<div data-prototyp-nur="B3">
+				<VarianteB3 telefon={adresse.telefon} />
+			</div>
+		)
+	}
 	<Section>
 		<Container>
-			<SectionHeading>
-				<h1 class="text-5xl font-bold tracking-wide">{intro.titel}</h1>
-				{intro.text && <p>{intro.text}</p>}
-			</SectionHeading>
+			{
+				PROTOTYP && (
+					<>
+						<div data-prototyp-nur="B">
+							<VarianteB telefon={adresse.telefon} />
+						</div>
+						<div data-prototyp-nur="B1">
+							<VarianteB1 telefon={adresse.telefon} />
+						</div>
+						<div data-prototyp-nur="B2">
+							<VarianteB2 telefon={adresse.telefon} />
+						</div>
+					</>
+				)
+			}
+			<div data-prototyp-nur={PROTOTYP ? "heute" : undefined}>
+				<SectionHeading>
+					<h1 class="text-5xl font-bold tracking-wide">{intro.titel}</h1>
+					{intro.text && <p>{intro.text}</p>}
+				</SectionHeading>
+			</div>
 
 			<div class="grid gap-12 lg:grid-cols-5">
 				<div class="space-y-8 lg:col-span-2">
@@ -84,4 +117,17 @@ const [{ bearbeiten, intro, kitaportal, karte }, { kontakt: adresse, oeffnungsze
 			</SectionHeading>
 		</Container>
 	</section>
+	{
+		PROTOTYP && (
+			<PrototypUmschalter
+				varianten={{
+					B1: "Polaroid mit Sprechblase",
+					B2: "Zentriert mit Farbkreis",
+					B3: "Blaues Band mit Bogenfoto",
+					B: "erste Fassung",
+					heute: "ohne Foto",
+				}}
+			/>
+		)
+	}
 </Layout>

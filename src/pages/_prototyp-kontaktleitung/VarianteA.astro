@@ -1,0 +1,26 @@
+---
+// PROTOTYP (wegwerfen) – Variante A „Karte in der Adressspalte“:
+// kleine Personenkarte über Adresse und Öffnungszeiten, neben der Karte.
+import Phone from "~icons/heroicons/phone";
+import Platzhalterfoto from "./Platzhalterfoto.astro";
+
+const { telefon } = Astro.props as { telefon?: string };
+---
+
+<section aria-label="Ihre Ansprechpartnerin" class="flex flex-col items-center text-center gap-2 p-6 bg-white rounded-2xl">
+	<Platzhalterfoto class="size-32 rounded-full mb-2" />
+	<h2 class="text-2xl font-bold">Lara Spradau</h2>
+	<p>Kita-Leitung</p>
+	<p class="text-sm">
+		Für eine Besichtigung und die Anmeldung vereinbaren Sie gern einen Termin mit mir. Ich zeige Ihnen unsere
+		Einrichtung und beantworte Ihre Fragen.
+	</p>
+	{
+		telefon && (
+			<a class="flex items-center gap-2 text-brand-blue" href={`tel:${telefon.replace(/[^\d+]/g, "")}`}>
+				<Phone class="size-4 shrink-0" aria-hidden="true" />
+				{telefon}
+			</a>
+		)
+	}
+</section>
