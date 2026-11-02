@@ -11,7 +11,8 @@
 		"build": "astro build && node scripts/check-dist.mjs dist",
 		"preview": "astro preview",
 		"test": "node --test 'scripts/*.test.mjs' && playwright test",
-		"storyblok:pull": "node scripts/storyblok-pull.mjs"
+		"storyblok:pull": "node scripts/storyblok-pull.mjs",
+		"storyblok:push": "node scripts/storyblok-push.mjs"
 	},
 	"dependencies": {
 		"@tailwindcss/typography": "^0.5.20",
