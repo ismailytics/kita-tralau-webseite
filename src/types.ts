@@ -16,7 +16,7 @@ export interface LayoutProps {
 	noindex?: boolean;
 	/** Klick-zum-Bearbeiten für den Inhalt der Seite (Inhaltsquelle). */
 	bearbeiten?: Bearbeiten;
-	/** Bild der Teilen-Vorschau (OG/Twitter); ohne Angabe das Hero-Bild der Startseite. */
+	/** Teilen-Bild (OG/Twitter); ohne Angabe das Hero-Bild der Startseite. */
 	bild?: Bild;
 }
 

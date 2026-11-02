@@ -54,8 +54,8 @@ Seiten holen Inhalte nur über `src/inhaltsquelle/`. Die Umgebungsvariable `INHA
 Bilder laufen in beiden Fällen über `astro:assets` und landen same-origin in `dist/` (ADR-0003).
 Storyblok-Bilder bekommen beim Build einen Hash ihres Inhalts an die URL (`?v=…`). Ersetzt die Redaktion ein Bild bei gleicher URL,
 ändert sich so der Dateiname unter `/_astro/` und der Cache (`immutable`) liefert nicht die alte Version.
-Teilen-Vorschau (OG/Twitter) und Favicon kommen ebenfalls aus `astro:assets`: Favicon aus dem Logo der Globalen Angaben,
-Vorschaubild aus dem Teaserbild eines Beitrags, sonst aus dem Hero-Bild der Startseite. Die absoluten URLs setzt `SITE_URL`
+Teilen-Bild (OG/Twitter) und Favicon kommen ebenfalls aus `astro:assets`: Favicon aus dem Logo der Globalen Angaben,
+das Bild aus dem Teaserbild eines Beitrags bzw. dem ersten Foto eines Albums, sonst aus dem Hero-Bild der Startseite. Die absoluten URLs setzt `SITE_URL`
 (z. B. `SITE_URL=https://www.example.org pnpm build`); ohne Angabe der Platzhalter `https://kita-tralau.example`.
 Verlinkte Dateien (z. B. PDFs im Rich Text) lädt der Build ebenfalls herunter und legt sie unter `/dateien/` ab.
 
@@ -102,7 +102,8 @@ pnpm storyblok:push --nur-schemas  # nur Datasources und Komponenten
 - Assets, die es im Ziel-Space schon gibt (gleiche ID, sonst gleicher Dateiname), werden nicht erneut hochgeladen; die Stories verweisen auf sie.
   Grund: CLI 4.26 legt beim Ersetzen eines Assets ein neues an, jeder Lauf gäbe sonst Duplikate.
 - Ein voller Push überschreibt die Stories mit den Beispielinhalten. Nach der Übergabe, wenn die Redaktion Inhalte gepflegt hat, Schema-Änderungen nur mit `--nur-schemas` schieben.
-- Löschungen werden nicht übertragen: Gelöschte Komponenten, Felder, Stories oder Assets entfernt man im Ziel-Space von Hand.
+- Asset-URLs in Stories zeigen danach auf die Assets im Ziel-Space, auch Bilder und Datei-Links im Rich Text.
+- Löschungen werden nicht übertragen: Gelöschte Komponenten, Stories oder Assets entfernt man im Ziel-Space von Hand. Gelöschte Felder verschwinden mit dem Komponenten-Push aus dem Schema.
 - Komponenten und Datasources kennen im CLI keinen Dry-Run; `--dry-run` listet sie nur auf.
 
 ## Lizenzen

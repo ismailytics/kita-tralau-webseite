@@ -38,6 +38,7 @@ const bauen = () => {
 };
 
 // Fingerabdruck aller Entwürfe; cv umgeht den CDN-Cache.
+// shortcut: nur die ersten 100 Stories, Änderungen an weiteren lösen keinen Neubau aus; bei mehr Stories paginieren.
 const entwuerfe = async () => {
 	const url = `https://api.storyblok.com/v2/cdn/stories?version=draft&per_page=100&token=${token}&cv=${Date.now()}`;
 	const antwort = await fetch(url);

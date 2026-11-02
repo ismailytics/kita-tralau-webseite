@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-// Teilen-Vorschau und Favicon: absolute URLs auf die eigene Domain (SITE_URL), Bilder aus dem Build (ADR-0003).
+// Teilen-Bild und Favicon: absolute URLs auf die eigene Domain (SITE_URL), Bilder aus dem Build (ADR-0003).
 const SITE = process.env.SITE_URL ?? "https://kita-tralau.example";
 
 const meta = (page: Page, name: string) => page.locator(`meta[property="${name}"], meta[name="${name}"]`);

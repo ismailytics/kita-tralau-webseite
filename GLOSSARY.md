@@ -57,6 +57,10 @@ Eine Person des Vorstands, wie sie auf der Vorstandsseite gezeigt wird (Name, Ro
 **Zeitblock**:
 Ein Abschnitt im Tagesablauf mit Uhrzeit und Beschreibung.
 
+**Teilen-Bild**:
+Das Bild, das Messenger und soziale Netzwerke beim Teilen eines Links auf die Website zeigen.
+_Avoid_: Teilen-Vorschau (Vorschau meint die Ansicht der Redaktion)
+
 **Beispielinhalt**:
 Platzhalterinhalt, der zeigt, wie ein Seitentyp gefüllt aussieht, und den die Redaktion durch echte Inhalte ersetzt.
 _Avoid_: Dummy, Lorem
