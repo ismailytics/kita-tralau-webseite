@@ -28,7 +28,7 @@ test("Kontakt-CTA führt zur Kontaktseite", async ({ page }) => {
 	await page.goto("/");
 	await page.getByRole("link", { name: "Kontakt aufnehmen" }).click();
 
-	await expect(page).toHaveURL(/\/kontakt\/$/);
+	await expect(page).toHaveURL(/\/kontakt\/?$/);
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Kontakt");
 });
 

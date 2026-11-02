@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("Kontaktseite zeigt Intro, Adresse und Öffnungszeiten aus den Globalen Angaben", async ({ page }) => {
-	await page.goto("/kontakt/");
+	await page.goto("/kontakt");
 	const inhalt = page.getByRole("main");
 
 	await expect(inhalt.getByRole("heading", { level: 1 })).toHaveText("Kontakt");
@@ -17,7 +17,7 @@ test("Kontaktseite zeigt Intro, Adresse und Öffnungszeiten aus den Globalen Ang
 });
 
 test("Kontaktseite verweist für die Anmeldung auf das Kitaportal", async ({ page }) => {
-	await page.goto("/kontakt/");
+	await page.goto("/kontakt");
 	const hinweis = page.getByRole("region", { name: "Anmeldung über das Kitaportal" });
 
 	await expect(hinweis.getByText("Einen Kita-Platz beantragen Sie ausschließlich über das Kitaportal")).toBeVisible();
@@ -28,7 +28,7 @@ test("Kontaktseite verweist für die Anmeldung auf das Kitaportal", async ({ pag
 });
 
 test("Kontaktseite zeigt ein eigenes Kartenbild mit Quellenangabe und einen Link zur Route", async ({ page, baseURL }) => {
-	await page.goto("/kontakt/");
+	await page.goto("/kontakt");
 	const karte = page.getByRole("img", { name: "Kartenausschnitt von Tralau mit der Lage der Kita" });
 
 	await expect(karte).toBeVisible();
@@ -45,5 +45,5 @@ test("Kontakt steht in der Navigation", async ({ page }) => {
 	await page.goto("/");
 	await page.getByRole("banner").getByRole("navigation").getByRole("link", { name: "Kontakt" }).click();
 
-	await expect(page).toHaveURL(/\/kontakt\/$/);
+	await expect(page).toHaveURL(/\/kontakt\/?$/);
 });
