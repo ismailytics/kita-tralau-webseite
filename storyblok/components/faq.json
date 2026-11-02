@@ -1,0 +1,50 @@
+{
+  "name": "faq",
+  "display_name": "FAQ",
+  "description": "Die Seite mit häufigen Fragen.",
+  "created_at": "2026-11-02T18:00:50.134Z",
+  "updated_at": "2026-11-02T18:00:50.134Z",
+  "id": 237374874153836,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Überschrift",
+      "id": "wkvigpIsRqWfqNBy9B4now"
+    },
+    "intro": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Einleitung",
+      "id": "EIVexmxHTpyqTNyyOh4Sng"
+    },
+    "fragen": {
+      "type": "bloks",
+      "pos": 2,
+      "display_name": "Fragen",
+      "description": "Reihenfolge hier = Reihenfolge auf der Seite.",
+      "restrict_type": "",
+      "restrict_components": true,
+      "component_whitelist": [
+        "faq_frage"
+      ],
+      "id": "gRkGBvTqT3aLDNThMtuLVw"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "FAQ",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

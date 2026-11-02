@@ -1,0 +1,40 @@
+{
+  "name": "zeitblock",
+  "display_name": "Zeitblock",
+  "description": "Ein Abschnitt im Tagesablauf.",
+  "created_at": "2026-11-02T18:00:50.087Z",
+  "updated_at": "2026-11-02T18:00:50.087Z",
+  "id": 237374873961322,
+  "schema": {
+    "uhrzeit": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Uhrzeit",
+      "description": "z. B. 8:30 – 9:00",
+      "id": "FXLTdSPQTCuAcPI85Gj5vA"
+    },
+    "beschreibung": {
+      "type": "text",
+      "pos": 1,
+      "required": true,
+      "display_name": "Beschreibung",
+      "id": "7_ykjx7JQ1mZ_MCj5Xeo6w"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": false,
+  "preview_tmpl": null,
+  "is_nestable": true,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Zeitblock",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}
