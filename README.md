@@ -37,8 +37,23 @@ pnpm storyblok:pull
 ```
 
 Das Skript ersetzt die Space-ID durch `0` und entfernt Autor- und Vorschau-Felder aus den Stories.
-Neue Komponenten werden als JSON unter `storyblok/components/` angelegt, mit dem Storyblok-CLI in den Space geschoben und danach zurückgezogen.
-Das CLI überträgt keine Löschungen; die macht man im Ziel-Space von Hand.
+Neue Komponenten werden als JSON unter `storyblok/components/` angelegt, mit `pnpm storyblok:push` in den Test-Space geschoben und danach mit `pnpm storyblok:pull` zurückgezogen, damit das Format kanonisch bleibt.
+
+### Push in einen Ziel-Space (Übergabe, Schema-Änderungen)
+
+```bash
+# STORYBLOK_PERSONAL_ACCESS_TOKEN und STORYBLOK_SPACE_ID des Ziel-Space setzen (Region EU), dann:
+pnpm storyblok:push --dry-run      # zeigt, was passieren würde, schreibt nichts
+pnpm storyblok:push                # Datasources → Komponenten (mit Gruppen und Presets) → Assets → Stories (veröffentlicht)
+pnpm storyblok:push --nur-schemas  # nur Datasources und Komponenten
+```
+
+- Upsert: Komponenten und Stories (gefunden über den Slug) werden angelegt oder aktualisiert. Wiederholtes Ausführen ändert nichts weiter.
+- Assets, die es im Ziel-Space schon gibt (gleiche ID, sonst gleicher Dateiname), werden nicht erneut hochgeladen; die Stories verweisen auf sie.
+  Grund: CLI 4.26 legt beim Ersetzen eines Assets ein neues an, jeder Lauf gäbe sonst Duplikate.
+- Ein voller Push überschreibt die Stories mit den Beispielinhalten. Nach der Übergabe, wenn die Redaktion Inhalte gepflegt hat, Schema-Änderungen nur mit `--nur-schemas` schieben.
+- Löschungen werden nicht übertragen: Gelöschte Komponenten, Felder, Stories oder Assets entfernt man im Ziel-Space von Hand.
+- Komponenten und Datasources kennen im CLI keinen Dry-Run; `--dry-run` listet sie nur auf.
 
 ## Lizenzen
 
