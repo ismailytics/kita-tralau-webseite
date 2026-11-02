@@ -11,19 +11,62 @@ import Bild from "@/components/Bild.astro";
 import FormContact from "@/components/forms/FormContact.astro";
 import { globaleAngaben, kontakt } from "@/inhaltsquelle";
 
-const [{ bearbeiten, intro, kitaportal, karte }, { kontakt: adresse, oeffnungszeiten }] = await Promise.all([
-	kontakt(),
-	globaleAngaben(),
-]);
+const [{ bearbeiten, intro, kitaportal, karte, ansprechpartnerin }, { kontakt: adresse, oeffnungszeiten }] =
+	await Promise.all([kontakt(), globaleAngaben()]);
 ---
 
 <Layout title={intro.titel} seoDescription={intro.text} bearbeiten={bearbeiten}>
 	<Section>
 		<Container>
-			<SectionHeading>
-				<h1 class="text-5xl font-bold tracking-wide">{intro.titel}</h1>
-				{intro.text && <p>{intro.text}</p>}
-			</SectionHeading>
+			{
+				ansprechpartnerin ? (
+					<div class="mb-20 flex flex-col items-center text-center gap-6 max-w-2xl mx-auto">
+						<h1 class="text-5xl font-bold tracking-wide">{intro.titel}</h1>
+						<section aria-label="Ihre Ansprechpartnerin" class="flex flex-col items-center gap-6">
+							{ansprechpartnerin.foto && (
+								<div class="relative my-4">
+									<span class="absolute -right-4 -top-3 size-48 md:size-56 rounded-full bg-brand-yellow" aria-hidden="true" />
+									<span class="absolute -left-5 bottom-2 size-10 rounded-full bg-brand-red" aria-hidden="true" />
+									<span class="absolute -right-8 bottom-10 size-6 rounded-full bg-brand-green" aria-hidden="true" />
+									<Bild
+										bild={ansprechpartnerin.foto}
+										class="relative size-48 md:size-56 rounded-full object-cover ring-8 ring-white shadow-lg"
+										widths={[224, 448]}
+										sizes="224px"
+										loading="eager"
+									/>
+									{ansprechpartnerin.rolle && (
+										<span class="absolute left-1/2 -bottom-4 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand-blue text-white text-base font-bold px-4 py-1.5 shadow">
+											{ansprechpartnerin.rolle}
+										</span>
+									)}
+								</div>
+							)}
+							<h2 class="text-3xl font-semibold mt-2">{ansprechpartnerin.name}</h2>
+							{!ansprechpartnerin.foto && ansprechpartnerin.rolle && <p class="-mt-4">{ansprechpartnerin.rolle}</p>}
+							{ansprechpartnerin.text && <p class="text-xl leading-relaxed text-balance">{ansprechpartnerin.text}</p>}
+							<div class="flex flex-wrap gap-3 justify-center">
+								{adresse.telefon && (
+									<Button variant="blue" href={`tel:${adresse.telefon.replace(/[^\d+]/g, "")}`}>
+										<Phone aria-hidden="true" />
+										{adresse.telefon}
+									</Button>
+								)}
+								<Button variant="outline" href="#nachricht-schreiben">
+									<Mail aria-hidden="true" />
+									Nachricht schreiben
+								</Button>
+							</div>
+						</section>
+						{intro.text && <p class="text-base text-brand-foreground/70">{intro.text}</p>}
+					</div>
+				) : (
+					<SectionHeading>
+						<h1 class="text-5xl font-bold tracking-wide">{intro.titel}</h1>
+						{intro.text && <p>{intro.text}</p>}
+					</SectionHeading>
+				)
+			}
 
 			<div class="grid gap-12 lg:grid-cols-5">
 				<div class="space-y-8 lg:col-span-2">

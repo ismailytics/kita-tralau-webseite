@@ -93,6 +93,7 @@ export interface Kontakt {
 	intro: { titel: string; text: string };
 	kitaportal: { titel: string; text: string; url: string; linkText: string };
 	karte: { bild: Bild; quelle: string; url: string; linkText: string };
+	ansprechpartnerin?: { name: string; rolle: string; foto?: Bild; text: string };
 }
 
 // Wie storyblokEditable aus @storyblok/js, ohne Storyblok-Code in den Prod-Build zu holen.
@@ -188,6 +189,9 @@ export interface Vorstand {
 	beitritt: { titel: string; text: string };
 }
 
+// Ein leeres Asset-Feld kommt als Objekt ohne filename.
+const optionalesBild = async (a?: Parameters<typeof bild>[0]) => (a?.filename ? await bild(a) : undefined);
+
 export const vorstand = einmal(async (): Promise<Vorstand> => {
 	const s = await quelle.story<VorstandStory>("vorstand");
 	return {
@@ -199,8 +203,7 @@ export const vorstand = einmal(async (): Promise<Vorstand> => {
 				bearbeiten: bearbeiten(m),
 				name: m.name,
 				rolle: m.rolle,
-				// Ein leeres Asset-Feld kommt als Objekt ohne filename.
-				foto: m.foto?.filename ? await bild(m.foto) : undefined,
+				foto: await optionalesBild(m.foto),
 				email: m.email?.trim() || undefined,
 			})),
 		),
@@ -317,6 +320,14 @@ export const kontakt = einmal(async (): Promise<Kontakt> => {
 			linkText: s.kitaportal_link_text,
 		},
 		karte: { bild: await bild(s.karte_bild), quelle: s.karte_quelle, url: s.karte_url, linkText: s.karte_link_text },
+		ansprechpartnerin: s.ansprechpartnerin_name?.trim()
+			? {
+					name: s.ansprechpartnerin_name.trim(),
+					rolle: s.ansprechpartnerin_rolle?.trim() ?? "",
+					foto: await optionalesBild(s.ansprechpartnerin_foto),
+					text: s.ansprechpartnerin_text?.trim() ?? "",
+				}
+			: undefined,
 	};
 });
 

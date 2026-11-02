@@ -13,7 +13,7 @@
     "_uid": "2cb1dab9-f79a-4a6d-9e41-3a94b8710817",
     "component": "kontakt",
     "karte_url": "https://www.openstreetmap.org/directions?to=53.83585%2C10.29638#map=16/53.83585/10.29638",
-    "intro_text": "Wir freuen uns, Sie kennenzulernen. Rufen Sie uns an, schreiben Sie uns oder vereinbaren Sie einen Termin mit unserer Kitaleiterin Frau Spradau. Fragen an den Verein beantwortet der Vorstand unter kitra.ev@web.de.",
+    "intro_text": "Wir freuen uns, Sie kennenzulernen. Fragen an den Verein beantwortet der Vorstand unter kitra.ev@web.de.",
     "karte_bild": {
       "id": 237375220226643,
       "alt": "Kartenausschnitt von Tralau mit der Lage der Kita",
@@ -28,7 +28,23 @@
     "karte_link_text": "Route in OpenStreetMap öffnen",
     "kitaportal_text": "Einen Kita-Platz beantragen Sie ausschließlich über das Kitaportal Schleswig-Holstein, nicht über diese Website oder per E-Mail. Dort sehen Sie auch, ob ein Platz frei ist.",
     "kitaportal_titel": "Anmeldung über das Kitaportal",
-    "kitaportal_link_text": "Zum Kitaportal"
+    "kitaportal_link_text": "Zum Kitaportal",
+    "ansprechpartnerin_name": "Lara Spradau",
+    "ansprechpartnerin_rolle": "Kita-Leitung",
+    "ansprechpartnerin_foto": {
+      "id": 237390000000021,
+      "alt": "Platzhalter für das Foto von Lara Spradau",
+      "name": "",
+      "focus": "",
+      "title": "",
+      "source": "",
+      "filename": "https://a.storyblok.com/f/0/fe775491cb/portraet-platzhalter.svg",
+      "copyright": "",
+      "fieldtype": "asset",
+      "meta_data": {},
+      "is_external_url": false
+    },
+    "ansprechpartnerin_text": "Schön, dass Sie uns kennenlernen möchten! Rufen Sie mich gern an. Dann vereinbaren wir einen Termin und ich zeige Ihnen unsere Kita."
   },
   "published": true,
   "slug": "kontakt",

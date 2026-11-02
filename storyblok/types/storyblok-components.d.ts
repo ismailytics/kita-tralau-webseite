@@ -96,6 +96,10 @@ export interface GlobaleAngaben {
 export interface Kontakt {
   intro_titel: string;
   intro_text?: string;
+  ansprechpartnerin_name?: string;
+  ansprechpartnerin_rolle?: string;
+  ansprechpartnerin_foto?: StoryblokAsset;
+  ansprechpartnerin_text?: string;
   kitaportal_titel: string;
   kitaportal_text: string;
   kitaportal_url: string;

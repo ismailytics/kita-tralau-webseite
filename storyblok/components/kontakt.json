@@ -17,18 +17,50 @@
       "type": "textarea",
       "pos": 1,
       "display_name": "Intro: Text",
-      "id": "DCdbyjFmS_yMziQ2Z4nHMg"
+      "id": "DCdbyjFmS_yMziQ2Z4nHMg",
+      "description": "Mit Ansprechpartnerin klein unter den Buttons, sonst unter der Überschrift."
+    },
+    "ansprechpartnerin_name": {
+      "type": "text",
+      "pos": 2,
+      "display_name": "Ansprechpartnerin: Name",
+      "description": "Optional. Mit Namen begrüßt die Kontaktseite persönlich, ohne Namen zeigt sie nur Überschrift und Intro-Text.",
+      "id": "b2582_MrhEm8AO8cr_1zXQ"
+    },
+    "ansprechpartnerin_rolle": {
+      "type": "text",
+      "pos": 3,
+      "display_name": "Ansprechpartnerin: Rolle",
+      "description": "z. B. Kita-Leitung",
+      "id": "qElgedrkZJJIuNzARQLSbw"
+    },
+    "ansprechpartnerin_foto": {
+      "type": "asset",
+      "pos": 4,
+      "filetypes": [
+        "images"
+      ],
+      "display_name": "Ansprechpartnerin: Foto (optional)",
+      "description": "Nur mit Einverständnis der Person. Wird rund zugeschnitten. Alt-Text im Bild-Dialog ist Pflicht.",
+      "id": "pcpOZnZUecsGb91G6wSjgg"
+    },
+    "ansprechpartnerin_text": {
+      "type": "textarea",
+      "pos": 5,
+      "display_name": "Ansprechpartnerin: Gruß",
+      "description": "Ein bis zwei Sätze in der Ich-Form. Die Telefonnummer kommt aus den Globalen Angaben.",
+      "id": "YTJjFpBCa7plA2l0VkqTmQ"
     },
     "kitaportal_titel": {
       "type": "text",
-      "pos": 2,
+      "pos": 6,
       "required": true,
       "display_name": "Kitaportal-Hinweis: Überschrift",
       "id": "bLSsl0rvT-OllNtgoSArVQ"
     },
     "kitaportal_text": {
       "type": "textarea",
-      "pos": 3,
+      "pos": 7,
       "required": true,
       "display_name": "Kitaportal-Hinweis: Text",
       "description": "Erklärt, dass die Anmeldung nur über das Kitaportal läuft, nicht über die Website.",
@@ -36,7 +68,7 @@
     },
     "kitaportal_url": {
       "type": "text",
-      "pos": 4,
+      "pos": 8,
       "required": true,
       "display_name": "Kitaportal-Hinweis: Adresse des Kitaportals",
       "description": "Vollständige Adresse mit https://",
@@ -44,14 +76,14 @@
     },
     "kitaportal_link_text": {
       "type": "text",
-      "pos": 5,
+      "pos": 9,
       "required": true,
       "display_name": "Kitaportal-Hinweis: Beschriftung des Links",
       "id": "rkdDmbfARPq8G6Xm2BUegw"
     },
     "karte_bild": {
       "type": "asset",
-      "pos": 6,
+      "pos": 10,
       "required": true,
       "filetypes": [
         "images"
@@ -62,7 +94,7 @@
     },
     "karte_quelle": {
       "type": "text",
-      "pos": 7,
+      "pos": 11,
       "required": true,
       "display_name": "Karte: Quellenangabe",
       "description": "Steht unter dem Kartenbild, z. B. „Karte: © OpenStreetMap-Mitwirkende“.",
@@ -70,7 +102,7 @@
     },
     "karte_url": {
       "type": "text",
-      "pos": 8,
+      "pos": 12,
       "required": true,
       "display_name": "Karte: Adresse des Kartendienstes",
       "description": "Link zur Route, z. B. bei OpenStreetMap. Vollständige Adresse mit https://",
@@ -78,7 +110,7 @@
     },
     "karte_link_text": {
       "type": "text",
-      "pos": 9,
+      "pos": 13,
       "required": true,
       "display_name": "Karte: Beschriftung des Links",
       "id": "Xd9rJcfjQoS8w37faIdk7w"

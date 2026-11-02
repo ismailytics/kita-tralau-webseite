@@ -8,12 +8,30 @@ test("Kontaktseite zeigt Intro, Adresse und Öffnungszeiten aus den Globalen Ang
 	await expect(inhalt.getByText("Wir freuen uns, Sie kennenzulernen.")).toBeVisible();
 	await expect(inhalt.getByText("Schulstraße 27")).toBeVisible();
 	await expect(inhalt.getByText("23843 Travenbrück-Tralau")).toBeVisible();
-	await expect(inhalt.getByRole("link", { name: "04531 7351" })).toHaveAttribute("href", "tel:045317351");
+	// Die Begrüßung der Ansprechpartnerin steht davor und nennt dieselbe Nummer.
+	await expect(inhalt.getByRole("link", { name: "04531 7351" }).last()).toHaveAttribute("href", "tel:045317351");
 	await expect(inhalt.getByRole("link", { name: "kindergruppe.travenbrueck@gmx.de" })).toHaveAttribute(
 		"href",
 		"mailto:kindergruppe.travenbrueck@gmx.de",
 	);
 	await expect(inhalt.getByText("Montag bis Freitag: 7:30 – 16:00 Uhr")).toBeVisible();
+});
+
+test("Kontaktseite begrüßt mit der Ansprechpartnerin: Foto, Rolle, Gruß, Anrufen und Nachricht schreiben", async ({
+	page,
+}) => {
+	await page.goto("/kontakt");
+	const begruessung = page.getByRole("region", { name: "Ihre Ansprechpartnerin" });
+
+	await expect(begruessung.getByRole("heading", { level: 2 })).toHaveText("Lara Spradau");
+	await expect(begruessung.getByText("Kita-Leitung")).toBeVisible();
+	await expect(begruessung.getByRole("img", { name: "Platzhalter für das Foto von Lara Spradau" })).toBeVisible();
+	await expect(begruessung.getByText(/^Schön, dass Sie uns kennenlernen möchten!/)).toBeVisible();
+	await expect(begruessung.getByRole("link", { name: "04531 7351" })).toHaveAttribute("href", "tel:045317351");
+
+	await begruessung.getByRole("link", { name: "Nachricht schreiben" }).click();
+	await expect(page).toHaveURL(/#nachricht-schreiben$/);
+	await expect(page.getByRole("heading", { name: "Nachricht schreiben" })).toBeInViewport();
 });
 
 test("Kontaktseite verweist für die Anmeldung auf das Kitaportal", async ({ page }) => {
