@@ -1,0 +1,62 @@
+{
+  "name": "termin",
+  "display_name": "Termin",
+  "description": "Ein Termin der Kita. Erscheint in der Terminliste und, wenn er zu den ersten gehört, unter „Nächste Termine“ auf der Startseite. Vergangene Termine bitte selbst löschen.",
+  "created_at": "2026-11-02T18:00:17.196Z",
+  "updated_at": "2026-11-02T18:00:17.196Z",
+  "id": 237374739239783,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Titel",
+      "id": "ZWdIQFICRV-ZbyXaxyLyiw"
+    },
+    "datum": {
+      "type": "datetime",
+      "pos": 1,
+      "required": true,
+      "disable_time": true,
+      "display_name": "Datum",
+      "description": "Bei mehrtägigen Terminen der erste Tag.",
+      "id": "xn6MCD43Q0GLmpaM7ctcBg"
+    },
+    "uhrzeit": {
+      "type": "text",
+      "pos": 2,
+      "display_name": "Uhrzeit",
+      "description": "Optional, wird so angezeigt, wie sie hier steht, z. B. „17:00 Uhr“ oder „14:00 – 17:00 Uhr“.",
+      "id": "LpvhejHDT8m7-tNLBOUGAg"
+    },
+    "enddatum": {
+      "type": "datetime",
+      "pos": 3,
+      "disable_time": true,
+      "display_name": "Enddatum",
+      "description": "Nur bei mehrtägigen Terminen: der letzte Tag.",
+      "id": "JERE0gurRzOA3R7Ew6Lfqg"
+    },
+    "kurztext": {
+      "type": "textarea",
+      "pos": 4,
+      "display_name": "Kurztext",
+      "id": "obX1xzAWRSubX03FfBrkCA"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Termin",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

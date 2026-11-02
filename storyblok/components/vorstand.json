@@ -1,0 +1,64 @@
+{
+  "name": "vorstand",
+  "display_name": "Vorstand",
+  "description": "Die Vorstandsseite.",
+  "created_at": "2026-11-02T18:00:50.133Z",
+  "updated_at": "2026-11-02T18:00:50.133Z",
+  "id": 237374874149739,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Überschrift",
+      "id": "CL1w9KDOSCuD_4iqncPeYg"
+    },
+    "intro": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Einleitung",
+      "id": "SK4Deb8NQCKGn9s8f_8hRQ"
+    },
+    "mitglieder": {
+      "type": "bloks",
+      "pos": 2,
+      "display_name": "Vorstandsmitglieder",
+      "description": "Reihenfolge hier = Reihenfolge auf der Seite.",
+      "restrict_type": "",
+      "restrict_components": true,
+      "component_whitelist": [
+        "vorstandsmitglied"
+      ],
+      "id": "fnoLWe3HTj6k18COHlOb7A"
+    },
+    "beitritt_titel": {
+      "type": "text",
+      "pos": 3,
+      "required": true,
+      "display_name": "Beitritt: Überschrift",
+      "id": "T5vv8aPDSquFXNAcgH4Q2g"
+    },
+    "beitritt_text": {
+      "type": "textarea",
+      "pos": 4,
+      "required": true,
+      "display_name": "Beitritt: Text",
+      "id": "HA6iMRX4RCmmufx0Uk7PhA"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Vorstand",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

@@ -1,0 +1,89 @@
+{
+  "name": "Tagesablauf",
+  "parent_id": 0,
+  "group_id": "23fc5227-7eee-4d0b-b2c1-ff4a34ed1cc7",
+  "alternates": [],
+  "deleted_at": null,
+  "sort_by_date": null,
+  "tag_list": [],
+  "id": 237374967105724,
+  "uuid": "3fc49699-5a6b-438a-9175-a38ab3a6cd65",
+  "is_folder": false,
+  "content": {
+    "_uid": "4509a89c-166b-4e82-baa0-73df8b228987",
+    "intro": "So sieht ein typischer Tag bei uns aus. Feste Zeiten geben den Kindern Sicherheit, dazwischen bleibt viel Raum zum Spielen.",
+    "titel": "Unser Tagesablauf",
+    "component": "tagesablauf",
+    "zeitbloecke": [
+      {
+        "_uid": "ad075f62-70bc-4afc-88cc-7aab5a3209bd",
+        "uhrzeit": "7:30 – 8:30",
+        "component": "zeitblock",
+        "beschreibung": "Ankommen und Freispiel"
+      },
+      {
+        "_uid": "a10692b5-da9c-4737-bdab-338c97cda565",
+        "uhrzeit": "8:30 – 9:00",
+        "component": "zeitblock",
+        "beschreibung": "Gemeinsames Frühstück"
+      },
+      {
+        "_uid": "a3b1f530-6c57-4f8f-833c-ce9fd16dc1ae",
+        "uhrzeit": "9:00 – 9:30",
+        "component": "zeitblock",
+        "beschreibung": "Morgenkreis"
+      },
+      {
+        "_uid": "716311e2-fb92-4eb0-829e-ced6bdcacd37",
+        "uhrzeit": "9:30 – 11:30",
+        "component": "zeitblock",
+        "beschreibung": "Spielen im Garten, Ausflüge und Projekte"
+      },
+      {
+        "_uid": "18f4fe3d-5fc2-4b9d-a651-7cc764e8a9a5",
+        "uhrzeit": "11:30 – 12:30",
+        "component": "zeitblock",
+        "beschreibung": "Mittagessen"
+      },
+      {
+        "_uid": "8431507a-cb62-4de0-95ce-369b335f09e0",
+        "uhrzeit": "12:30 – 14:00",
+        "component": "zeitblock",
+        "beschreibung": "Ruhezeit, Freispiel und Abholen"
+      }
+    ]
+  },
+  "published": true,
+  "slug": "tagesablauf",
+  "path": null,
+  "full_slug": "tagesablauf",
+  "default_root": null,
+  "disble_fe_editor": false,
+  "disable_fe_editor": false,
+  "parent": null,
+  "is_startpage": false,
+  "unpublished_changes": false,
+  "meta_data": null,
+  "imported_at": null,
+  "pinned": false,
+  "breadcrumbs": [],
+  "publish_at": null,
+  "expire_at": null,
+  "translated_slugs": [],
+  "localized_paths": [],
+  "position": -20,
+  "translated_stories": [],
+  "can_not_view": false,
+  "is_scheduled": null,
+  "scheduled_dates": null,
+  "ideas": [],
+  "current_version_id": 237374967524892,
+  "variant_type": null,
+  "taxonomy_terms": [],
+  "experiment_ids": [],
+  "release_ids": [],
+  "stage": null,
+  "stages": [],
+  "assigned_users_per_language": {},
+  "favourite_for_user_ids": []
+}
