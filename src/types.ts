@@ -11,6 +11,8 @@ export interface LayoutProps {
 	title?: string;
 	seoDescription?: string;
 	noindex?: boolean;
+	/** Klick-zum-Bearbeiten für den Inhalt der Seite (Inhaltsquelle). */
+	bearbeiten?: Record<string, string>;
 }
 
 export interface ContainerProps {

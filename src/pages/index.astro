@@ -8,10 +8,10 @@ import Button from "@/components/buttons/Button.astro";
 import Bild from "@/components/Bild.astro";
 import { startseite } from "@/inhaltsquelle";
 
-const { hero, konzept, kontaktCta } = await startseite();
+const { bearbeiten, hero, konzept, kontaktCta } = await startseite();
 ---
 
-<Layout seoDescription={hero.text}>
+<Layout seoDescription={hero.text} bearbeiten={bearbeiten}>
 	<Section class="relative">
 		<Bild
 			bild={hero.bild}

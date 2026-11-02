@@ -9,10 +9,10 @@ const rmTrailingSlash = (path: string): string => {
 };
 
 const pathname = rmTrailingSlash(Astro.url.pathname);
-const { name, logo } = await globaleAngaben();
+const { bearbeiten, name, logo } = await globaleAngaben();
 ---
 
-<header id="main-header" class="sticky top-0 z-50">
+<header id="main-header" class="sticky top-0 z-50" {...bearbeiten}>
 	<div class="bg-white/90 backdrop-blur-md">
 		<div class="container py-4 flex items-center justify-between gap-x-4">
 			<!-- Logo -->

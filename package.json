@@ -8,9 +8,12 @@
 	},
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro build && node scripts/check-dist.mjs dist",
+		"build": "astro build && node scripts/check-dist.mjs dist && pnpm build:vorschau",
+		"build:vorschau": "VARIANTE=vorschau astro build",
 		"preview": "astro preview",
 		"test": "node --test 'scripts/*.test.mjs' && playwright test",
+		"vorschau": "node scripts/vorschau.mjs",
+		"vorschau:zertifikat": "mkdir -p .vorschau && openssl req -x509 -newkey rsa:2048 -nodes -keyout .vorschau/key.pem -out .vorschau/cert.pem -days 365 -subj /CN=localhost -addext subjectAltName=DNS:localhost",
 		"storyblok:pull": "node scripts/storyblok-pull.mjs"
 	},
 	"dependencies": {

@@ -1,11 +1,13 @@
 # Build-Ausgabe und generierte Dateien
 dist/
+dist-vorschau/
 .astro/
 node_modules/
 test-results/
 playwright-report/
 
-# Zugangsdaten
+# Zugangsdaten und Zertifikat der lokalen Vorschau
+.vorschau/
 .env
 .env.*
 

@@ -9,8 +9,8 @@ Fachbegriffe: `GLOSSARY.md`. Entscheidungen: `docs/adr/`.
 nvm use            # Node 24 aus .nvmrc
 corepack enable    # pnpm in der Version aus package.json
 pnpm install
-pnpm build         # Build mit den Beispielinhalten aus storyblok/ + Check auf Storyblok-Reste in dist/
-pnpm test          # Unit-Test des Checks + Playwright gegen dist/
+pnpm build         # Prod nach dist/ (+ Check auf Storyblok-Reste) und Vorschau nach dist-vorschau/, mit den Beispielinhalten
+pnpm test          # Unit-Tests der Skripte + Playwright gegen dist/ und dist-vorschau/
 pnpm dev           # Entwicklungsserver
 ```
 
@@ -26,6 +26,24 @@ Seiten holen Inhalte nur über `src/inhaltsquelle/`. Die Umgebungsvariable `INHA
 | `storyblok` | veröffentlichte Inhalte aus dem Space | `STORYBLOK_TOKEN` (Preview- oder Public-Token) |
 
 Bilder laufen in beiden Fällen über `astro:assets` und landen same-origin in `dist/` (ADR-0003).
+
+## Vorschau (ADR-0009)
+
+`VARIANTE=vorschau` baut die Vorschau für die Redaktion nach `dist-vorschau/`: Entwürfe statt veröffentlichter Inhalte, Storyblok-Bridge,
+`data-blok`-Attribute für Klick-zum-Bearbeiten, `noindex` und keine Hash-CSP (die Bridge fügt Stylesheets ein).
+Jeder Vorschau-Build legt `build-id.txt` ab. Die Seite fragt sie alle 2 s ab und lädt bei neuer ID neu. Nach dem Speichern im Editor
+zeigt sie bis dahin den Hinweis „wird aktualisiert“. Beide Varianten bekommen beim Build eine `.htaccess` aus `scripts/htaccess.mjs`
+(`frame-ancestors`, `X-Robots-Tag` für die Vorschau, Cache-Header).
+
+Lokal mit dem Visual Editor des Test-Space (Location `https://localhost:4443/`):
+
+```bash
+pnpm vorschau:zertifikat   # einmalig: selbstsigniertes Zertifikat nach .vorschau/
+# STORYBLOK_TOKEN (Preview-Token) setzen, dann:
+pnpm vorschau              # baut aus den Entwürfen, HTTPS auf https://localhost:4443/, baut bei jeder Draft-Änderung neu
+```
+
+**Wichtig:** `https://localhost:4443/` einmal direkt im Browser öffnen und das Zertifikat akzeptieren. Sonst bleibt das Editor-Iframe leer.
 
 ## Storyblok-Schemas und Beispielinhalte (ADR-0008)
 
