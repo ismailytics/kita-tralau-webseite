@@ -15,6 +15,7 @@ import type {
 } from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
 import * as storyblok from "./storyblok";
+import { VORSCHAU } from "../variante";
 
 /** Ein Bild, das beim Build über astro:assets same-origin ausgeliefert wird (ADR-0003). */
 export interface Bild {
@@ -22,7 +23,11 @@ export interface Bild {
 	alt: string;
 }
 
+/** HTML-Attribute für Klick-zum-Bearbeiten im Visual Editor; außerhalb der Vorschau leer. */
+export type Bearbeiten = Record<string, string>;
+
 export interface GlobaleAngaben {
+	bearbeiten: Bearbeiten;
 	name: string;
 	logo: Bild;
 	footerText: string;
@@ -31,6 +36,7 @@ export interface GlobaleAngaben {
 }
 
 export interface Startseite {
+	bearbeiten: Bearbeiten;
 	hero: { titel: string; text: string; bild: Bild };
 	konzept: { titel: string; text: string };
 	kontaktCta: { titel: string; text: string; button: string };
@@ -38,6 +44,7 @@ export interface Startseite {
 
 /** Ein Termin; Daten als ISO-Datum (JJJJ-MM-TT). */
 export interface Termin {
+	bearbeiten: Bearbeiten;
 	titel: string;
 	datum: string;
 	uhrzeit?: string;
@@ -60,6 +67,13 @@ function bild(asset: StoryblokAsset): Bild {
 	return { src: quelle.bildDatei(asset), alt: asset.alt };
 }
 
+// Wie storyblokEditable aus @storyblok/js, ohne Storyblok-Code in den Prod-Build zu holen.
+function bearbeiten(blok: { _editable?: string }): Bearbeiten {
+	if (!VORSCHAU || !blok._editable) return {};
+	const c = JSON.parse(blok._editable.replace(/^<!--#storyblok#/, "").replace(/-->$/, ""));
+	return { "data-blok-c": JSON.stringify(c), "data-blok-uid": `${c.id}-${c.uid}` };
+}
+
 const zeilen = (text = "") => text.split("\n").map((z) => z.trim()).filter(Boolean);
 
 let globale: Promise<GlobaleAngaben> | undefined;
@@ -67,6 +81,7 @@ let globale: Promise<GlobaleAngaben> | undefined;
 /** Globale Angaben; einmal pro Build geladen, weil Header und Footer sie auf jeder Seite brauchen. */
 export function globaleAngaben(): Promise<GlobaleAngaben> {
 	globale ??= quelle.story<GlobaleAngabenStory>("globale-angaben").then((s) => ({
+		bearbeiten: bearbeiten(s),
 		name: s.name,
 		logo: bild(s.logo),
 		footerText: s.footer_text ?? "",
@@ -79,6 +94,7 @@ export function globaleAngaben(): Promise<GlobaleAngaben> {
 export async function startseite(): Promise<Startseite> {
 	const s = await quelle.story<StartseiteStory>("startseite");
 	return {
+		bearbeiten: bearbeiten(s),
 		hero: { titel: s.hero_titel, text: s.hero_text ?? "", bild: bild(s.hero_bild) },
 		konzept: { titel: s.konzept_titel, text: s.konzept_text },
 		kontaktCta: { titel: s.kontakt_titel, text: s.kontakt_text ?? "", button: s.kontakt_button },
@@ -86,6 +102,7 @@ export async function startseite(): Promise<Startseite> {
 }
 
 export interface Vorstandsmitglied {
+	bearbeiten: Bearbeiten;
 	name: string;
 	rolle: string;
 	foto?: Bild;
@@ -93,6 +110,7 @@ export interface Vorstandsmitglied {
 }
 
 export interface Vorstand {
+	bearbeiten: Bearbeiten;
 	titel: string;
 	intro: string;
 	mitglieder: Vorstandsmitglied[];
@@ -102,9 +120,11 @@ export interface Vorstand {
 export async function vorstand(): Promise<Vorstand> {
 	const s = await quelle.story<VorstandStory>("vorstand");
 	return {
+		bearbeiten: bearbeiten(s),
 		titel: s.titel,
 		intro: s.intro ?? "",
 		mitglieder: (s.mitglieder ?? []).map((m) => ({
+			bearbeiten: bearbeiten(m),
 			name: m.name,
 			rolle: m.rolle,
 			// Ein leeres Asset-Feld kommt als Objekt ohne filename.
@@ -116,11 +136,13 @@ export async function vorstand(): Promise<Vorstand> {
 }
 
 export interface Zeitblock {
+	bearbeiten: Bearbeiten;
 	uhrzeit: string;
 	beschreibung: string;
 }
 
 export interface Tagesablauf {
+	bearbeiten: Bearbeiten;
 	titel: string;
 	intro: string;
 	zeitbloecke: Zeitblock[];
@@ -129,24 +151,27 @@ export interface Tagesablauf {
 export async function tagesablauf(): Promise<Tagesablauf> {
 	const s = await quelle.story<TagesablaufStory>("tagesablauf");
 	return {
+		bearbeiten: bearbeiten(s),
 		titel: s.titel,
 		intro: s.intro ?? "",
-		zeitbloecke: (s.zeitbloecke ?? []).map((z) => ({ uhrzeit: z.uhrzeit, beschreibung: z.beschreibung })),
+		zeitbloecke: (s.zeitbloecke ?? []).map((z) => ({ bearbeiten: bearbeiten(z), uhrzeit: z.uhrzeit, beschreibung: z.beschreibung })),
 	};
 }
 
 export interface Faq {
+	bearbeiten: Bearbeiten;
 	titel: string;
 	intro: string;
-	fragen: { frage: string; antwort: string }[];
+	fragen: { bearbeiten: Bearbeiten; frage: string; antwort: string }[];
 }
 
 export async function faq(): Promise<Faq> {
 	const s = await quelle.story<FaqStory>("faq");
 	return {
+		bearbeiten: bearbeiten(s),
 		titel: s.titel,
 		intro: s.intro ?? "",
-		fragen: (s.fragen ?? []).map((f) => ({ frage: f.frage, antwort: f.antwort })),
+		fragen: (s.fragen ?? []).map((f) => ({ bearbeiten: bearbeiten(f), frage: f.frage, antwort: f.antwort })),
 	};
 }
 
@@ -161,6 +186,7 @@ export async function termine(): Promise<Termin[]> {
 	const alle = await quelle.alle<TerminStory>("termin");
 	return alle
 		.map((t) => ({
+			bearbeiten: bearbeiten(t),
 			titel: t.titel,
 			datum: tag(t.datum) ?? fehler(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
 			uhrzeit: t.uhrzeit || undefined,

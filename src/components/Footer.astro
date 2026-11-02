@@ -5,10 +5,10 @@ import Mail from "~icons/heroicons/envelope";
 import Bild from "@/components/Bild.astro";
 import { globaleAngaben } from "@/inhaltsquelle";
 
-const { name, logo, footerText, kontakt, oeffnungszeiten } = await globaleAngaben();
+const { bearbeiten, name, logo, footerText, kontakt, oeffnungszeiten } = await globaleAngaben();
 ---
 
-<footer class="bg-brand-foreground text-white py-12 px-4">
+<footer class="bg-brand-foreground text-white py-12 px-4" {...bearbeiten}>
 	<div class="container">
 		<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8">
 			<div class="lg:col-span-2">

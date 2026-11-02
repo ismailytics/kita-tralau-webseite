@@ -6,10 +6,10 @@ import SectionHeading from "@/components/SectionHeading.astro";
 import Faq from "@/components/Faq.astro";
 import { faq } from "@/inhaltsquelle";
 
-const { titel, intro, fragen } = await faq();
+const { bearbeiten, titel, intro, fragen } = await faq();
 ---
 
-<Layout title="FAQ" seoDescription={intro || undefined}>
+<Layout title="FAQ" seoDescription={intro || undefined} bearbeiten={bearbeiten}>
 	<Section>
 		<Container>
 			<SectionHeading>

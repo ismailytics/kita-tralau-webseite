@@ -15,7 +15,7 @@ const datum = (iso: string) => new Date(`${iso}T00:00:00Z`);
 <ol class="max-w-2xl mx-auto text-left">
 	{
 		termine.map((t) => (
-			<li class="py-4 border-b border-gray-400/50 last:border-b-0">
+			<li class="py-4 border-b border-gray-400/50 last:border-b-0" {...t.bearbeiten}>
 				<p class="text-sm font-bold text-brand-blue">
 					<time datetime={t.datum}>
 						{t.enddatum ? format.formatRange(datum(t.datum), datum(t.enddatum)) : format.format(datum(t.datum))}

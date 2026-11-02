@@ -8,8 +8,8 @@ const { fragen } = Astro.props;
 
 <div class="space-y-4 max-w-3xl mx-auto">
 	{
-		fragen.map(({ frage, antwort }) => (
-			<details class="group border border-brand-foreground/15 rounded-2xl overflow-hidden">
+		fragen.map(({ bearbeiten, frage, antwort }) => (
+			<details class="group border border-brand-foreground/15 rounded-2xl overflow-hidden" {...bearbeiten}>
 				<summary class="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between p-5 text-left text-brand-foreground font-bold hover:bg-brand-foreground/5 transition-colors">
 					{frage}
 					<svg

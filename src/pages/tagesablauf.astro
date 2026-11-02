@@ -6,10 +6,10 @@ import SectionHeading from "@/components/SectionHeading.astro";
 import Agenda from "@/components/Agenda.astro";
 import { tagesablauf } from "@/inhaltsquelle";
 
-const { titel, intro, zeitbloecke } = await tagesablauf();
+const { bearbeiten, titel, intro, zeitbloecke } = await tagesablauf();
 ---
 
-<Layout title="Tagesablauf" seoDescription={intro || undefined}>
+<Layout title="Tagesablauf" seoDescription={intro || undefined} bearbeiten={bearbeiten}>
 	<Section>
 		<Container>
 			<SectionHeading>

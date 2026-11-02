@@ -2,8 +2,10 @@
 import { readdirSync, readFileSync } from "node:fs";
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
+import { VORSCHAU } from "../variante";
 
-const stories = import.meta.glob<{ full_slug: string; uuid: string; content: { component?: string } }>("/storyblok/stories/*.json", {
+type Story = { id: number; uuid: string; full_slug: string; content: { component?: string } };
+const stories = import.meta.glob<Story>("/storyblok/stories/*.json", {
 	eager: true,
 	import: "default",
 });
@@ -15,13 +17,27 @@ const dateien = import.meta.glob<ImageMetadata>("/storyblok/assets/*.{jpg,jpeg,p
 export async function story<T>(slug: string): Promise<T> {
 	const gefunden = Object.values(stories).find((s) => s.full_slug === slug);
 	if (!gefunden) throw new Error(`Beispielinhalte: Story „${slug}“ fehlt in storyblok/stories/.`);
-	return gefunden.content as T;
+	return inhalt(gefunden) as T;
+}
+
+// In der Vorschau wie die Draft-API: `_editable` an jedem Blok, auch verschachtelten, für Klick-zum-Bearbeiten.
+function inhalt(story: Story): unknown {
+	if (!VORSCHAU) return story.content;
+	const markieren = (wert: unknown): unknown => {
+		if (Array.isArray(wert)) return wert.map(markieren);
+		if (!wert || typeof wert !== "object") return wert;
+		const blok = Object.fromEntries(Object.entries(wert).map(([k, v]) => [k, markieren(v)]));
+		if (!blok._uid || !blok.component) return blok;
+		const editable = JSON.stringify({ name: blok.component, space: "0", uid: blok._uid, id: String(story.id) });
+		return { ...blok, _editable: `<!--#storyblok#${editable}-->` };
+	};
+	return markieren(story.content);
 }
 
 export async function alleStories<T>(komponente: string): Promise<{ uuid: string; content: T }[]> {
 	return Object.values(stories)
 		.filter((s) => s.content.component === komponente)
-		.map((s) => ({ uuid: s.uuid, content: s.content as T }));
+		.map((s) => ({ uuid: s.uuid, content: inhalt(s) as T }));
 }
 
 // Das CLI legt Assets als <name>_<id>.<endung> ab.

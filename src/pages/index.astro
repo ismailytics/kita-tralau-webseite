@@ -9,11 +9,11 @@ import Bild from "@/components/Bild.astro";
 import TerminListe from "@/components/TerminListe.astro";
 import { startseite, termine } from "@/inhaltsquelle";
 
-const { hero, konzept, kontaktCta } = await startseite();
+const { bearbeiten, hero, konzept, kontaktCta } = await startseite();
 const naechsteTermine = (await termine()).slice(0, 3);
 ---
 
-<Layout seoDescription={hero.text}>
+<Layout seoDescription={hero.text} bearbeiten={bearbeiten}>
 	<Section class="relative">
 		<Bild
 			bild={hero.bild}

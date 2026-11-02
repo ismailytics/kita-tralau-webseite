@@ -1,0 +1,30 @@
+---
+// Nur in der Vorschau (ADR-0009): Storyblok-Bridge, Hinweis nach dem Speichern, Neuladen sobald ein neuer Build ausgeliefert wird.
+import { BUILD_ID } from "@/variante";
+---
+
+<script is:inline src="https://app.storyblok.com/f/storyblok-v2-latest.js"></script>
+<div
+	id="vorschau-hinweis"
+	role="status"
+	data-build-id={BUILD_ID}
+	hidden
+	class="fixed inset-x-0 top-0 z-[100] bg-brand-yellow py-3 text-center font-bold shadow-lg"
+>
+	Gespeichert – die Vorschau wird aktualisiert und lädt gleich von selbst neu …
+</div>
+
+<script>
+	const hinweis = document.getElementById("vorschau-hinweis")!;
+
+	setInterval(async () => {
+		const antwort = await fetch("/build-id.txt", { cache: "no-store" }).catch(() => undefined);
+		if (antwort?.ok && (await antwort.text()).trim() !== hinweis.dataset.buildId) location.reload();
+	}, 2000);
+
+	type Bridge = { on(events: string[], cb: () => void): void };
+	const { StoryblokBridge } = window as unknown as { StoryblokBridge: new () => Bridge };
+	new StoryblokBridge().on(["change", "published"], () => {
+		hinweis.hidden = false;
+	});
+</script>
