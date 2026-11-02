@@ -11,6 +11,8 @@ const SEITEN = [
 	"/vorstand",
 	"/tagesablauf",
 	"/faq",
+	"/galerie",
+	"/galerie/winter-2026",
 	"/downloads",
 	"/kontakt",
 	"/ueber-uns",
