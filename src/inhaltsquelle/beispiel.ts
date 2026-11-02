@@ -2,7 +2,7 @@
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
 
-const stories = import.meta.glob<{ full_slug: string; content: unknown }>("/storyblok/stories/*.json", {
+const stories = import.meta.glob<{ slug: string; full_slug: string; content: unknown }>("/storyblok/stories/*.json", {
 	eager: true,
 	import: "default",
 });
@@ -15,6 +15,12 @@ export async function story<T>(slug: string): Promise<T> {
 	const gefunden = Object.values(stories).find((s) => s.full_slug === slug);
 	if (!gefunden) throw new Error(`Beispielinhalte: Story „${slug}“ fehlt in storyblok/stories/.`);
 	return gefunden.content as T;
+}
+
+export async function storiesIn<T>(ordner: string): Promise<{ slug: string; content: T }[]> {
+	return Object.values(stories)
+		.filter((s) => s.full_slug.startsWith(`${ordner}/`))
+		.map((s) => ({ slug: s.slug, content: s.content as T }));
 }
 
 // Das CLI legt Assets als <name>_<id>.<endung> ab.

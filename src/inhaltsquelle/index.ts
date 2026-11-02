@@ -2,7 +2,11 @@
 // Liefert fertige Daten in Begriffen des Glossars; dahinter Storyblok oder die Beispielinhalte im Repo.
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
-import type { GlobaleAngaben as GlobaleAngabenStory, Startseite as StartseiteStory } from "../../storyblok/types/storyblok-components";
+import type {
+	Beitrag as BeitragStory,
+	GlobaleAngaben as GlobaleAngabenStory,
+	Startseite as StartseiteStory,
+} from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
 import * as storyblok from "./storyblok";
 
@@ -24,6 +28,14 @@ export interface Startseite {
 	hero: { titel: string; text: string; bild: Bild };
 	konzept: { titel: string; text: string };
 	kontaktCta: { titel: string; text: string; button: string };
+}
+
+export interface Beitrag {
+	slug: string;
+	titel: string;
+	datum: Date;
+	teaserbild: Bild;
+	kurztext: string;
 }
 
 // Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
@@ -58,4 +70,20 @@ export async function startseite(): Promise<Startseite> {
 		konzept: { titel: s.konzept_titel, text: s.konzept_text },
 		kontaktCta: { titel: s.kontakt_titel, text: s.kontakt_text ?? "", button: s.kontakt_button },
 	};
+}
+
+/** Aktuelles: alle Beiträge, neueste zuerst. */
+export async function beitraege(): Promise<Beitrag[]> {
+	const stories = await quelle.storiesIn<BeitragStory>("aktuelles");
+	return stories
+		.filter((s) => s.content.component === "beitrag")
+		.map(({ slug, content: c }) => ({
+			slug,
+			titel: c.titel,
+			// Storyblok liefert „YYYY-MM-DD HH:mm“ in UTC.
+			datum: new Date(`${c.datum.replace(" ", "T")}Z`),
+			teaserbild: bild(c.teaserbild),
+			kurztext: c.kurztext,
+		}))
+		.sort((a, b) => b.datum.getTime() - a.datum.getTime());
 }

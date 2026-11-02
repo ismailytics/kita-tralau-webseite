@@ -1,0 +1,32 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import Bild from "@/components/Bild.astro";
+import Datum from "@/components/Datum.astro";
+import { beitraege } from "@/inhaltsquelle";
+
+const liste = await beitraege();
+---
+
+<Layout title="Aktuelles" seoDescription="Neuigkeiten aus der Kindergruppe Travenbrück.">
+	<Section>
+		<Container>
+			<h1 class="text-5xl font-bold tracking-wide text-center mb-12">Aktuelles</h1>
+			<div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+				{
+					liste.map((b) => (
+						<article class="flex flex-col gap-y-3">
+							<Bild bild={b.teaserbild} class="aspect-[4/3] w-full object-cover rounded-lg" widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
+							<Datum datum={b.datum} class="text-sm text-gray-600" />
+							<h2 class="text-2xl font-bold">
+								<a href={`/aktuelles/${b.slug}`} class="hover:text-brand-blue">{b.titel}</a>
+							</h2>
+							<p>{b.kurztext}</p>
+						</article>
+					))
+				}
+			</div>
+		</Container>
+	</Section>
+</Layout>
