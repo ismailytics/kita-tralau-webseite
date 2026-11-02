@@ -20,7 +20,9 @@ export async function story<T>(slug: string): Promise<T> {
 }
 
 // shortcut: nur die ersten 100 Stories eines Typs, bei mehr paginieren.
-export async function storiesDesTyps<T>(inhaltstyp: string): Promise<Pick<Story<T>, "uuid" | "slug" | "position" | "content">[]> {
+export async function storiesDesTyps<T>(
+	inhaltstyp: string,
+): Promise<Pick<Story<T>, "uuid" | "slug" | "position" | "content">[]> {
 	const { stories } = await cdn<{ stories: Story<T>[] }>("stories", { content_type: inhaltstyp, per_page: "100" });
 	return stories.map(({ uuid, slug, position, content }) => ({ uuid, slug, position, content }));
 }

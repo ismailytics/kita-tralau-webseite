@@ -15,7 +15,17 @@ export interface RichTextKnoten {
 }
 
 // ProseMirror-JSON, nur mit den Attributen, die hier gebraucht werden; die generierten Typen kennen jede Knotenart einzeln.
-type SbAttrs = { level?: number; id?: number; src?: string; alt?: string; linktype?: string; href?: string; uuid?: string; anchor?: string; target?: string };
+type SbAttrs = {
+	level?: number;
+	id?: number;
+	src?: string;
+	alt?: string;
+	linktype?: string;
+	href?: string;
+	uuid?: string;
+	anchor?: string;
+	target?: string;
+};
 type SbKnoten = { type: string; text?: string; attrs?: SbAttrs; marks?: SbKnoten[]; content?: SbKnoten[] };
 
 const dateien = new Map<string, string>();
@@ -53,11 +63,19 @@ async function knoten(liste: SbKnoten[] = []): Promise<RichText> {
 			type,
 			text,
 			level: attrs?.level,
-			bild: type === "image" ? await bild({ id: attrs?.id, filename: attrs?.src, alt: attrs?.alt } as StoryblokAsset) : undefined,
-			marks: marks && (await Promise.all(marks.map(async (m) => ({ type: m.type, ...(m.type === "link" ? await linkZiel(m.attrs ?? {}) : {}) })))),
+			bild:
+				type === "image"
+					? await bild({ id: attrs?.id, filename: attrs?.src, alt: attrs?.alt } as StoryblokAsset)
+					: undefined,
+			marks:
+				marks &&
+				(await Promise.all(
+					marks.map(async (m) => ({ type: m.type, ...(m.type === "link" ? await linkZiel(m.attrs ?? {}) : {}) })),
+				)),
 			content: content && (await knoten(content)),
 		})),
 	);
 }
 
-export const richText = (feld?: { content?: unknown }): Promise<RichText> => knoten(feld?.content as SbKnoten[] | undefined);
+export const richText = (feld?: { content?: unknown }): Promise<RichText> =>
+	knoten(feld?.content as SbKnoten[] | undefined);

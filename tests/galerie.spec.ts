@@ -6,7 +6,9 @@ test("Galerie steht in der Navigation und zeigt alle Alben, neueste zuerst", asy
 
 	await expect(page).toHaveURL(/\/galerie\/?$/);
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Galerie");
-	await expect(page.getByText("Aus Rücksicht auf die Kinder zeigen unsere Alben nur Gebäude und Gelände.")).toBeVisible();
+	await expect(
+		page.getByText("Aus Rücksicht auf die Kinder zeigen unsere Alben nur Gebäude und Gelände."),
+	).toBeVisible();
 	await expect(page.getByRole("main").getByRole("heading", { level: 2 })).toHaveText([
 		"Sommer rund ums Haus",
 		"Winter auf dem Gelände",
@@ -24,12 +26,19 @@ test("ein Album zeigt Titel, Datum und alle Fotos mit Alt-Text", async ({ page }
 	await expect(page.getByText("20. Januar 2026")).toBeVisible();
 	const fotos = page.getByRole("main").getByRole("img");
 	await expect(fotos).toHaveCount(2);
-	await expect(page.getByRole("img", { name: "Kita-Gebäude mit Laternen und verschneitem Vorplatz unter blauem Himmel" })).toBeVisible();
-	await expect(page.getByRole("img", { name: "Eingangsseite der Kita im Schnee, davor ein umzäunter Spielbereich" })).toBeVisible();
+	await expect(
+		page.getByRole("img", { name: "Kita-Gebäude mit Laternen und verschneitem Vorplatz unter blauem Himmel" }),
+	).toBeVisible();
+	await expect(
+		page.getByRole("img", { name: "Eingangsseite der Kita im Schnee, davor ein umzäunter Spielbereich" }),
+	).toBeVisible();
 	await expect(page.getByRole("link", { name: "Alle Alben" })).toHaveAttribute("href", "/galerie/");
 });
 
-test("Lightbox zeigt ein Foto groß, per Tastatur bedienbar, ohne fremde Requests und CSP-Verletzung", async ({ page, baseURL }) => {
+test("Lightbox zeigt ein Foto groß, per Tastatur bedienbar, ohne fremde Requests und CSP-Verletzung", async ({
+	page,
+	baseURL,
+}) => {
 	const fremd: string[] = [];
 	const konsole: string[] = [];
 	page.on("request", (r) => {

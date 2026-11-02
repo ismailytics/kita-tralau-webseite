@@ -3,7 +3,14 @@ import { readFileSync } from "node:fs";
 import type { ImageMetadata } from "astro";
 import { VORSCHAU } from "../variante";
 
-type Story = { id: number; uuid: string; slug: string; full_slug: string; position: number; content: { component?: string } };
+type Story = {
+	id: number;
+	uuid: string;
+	slug: string;
+	full_slug: string;
+	position: number;
+	content: { component?: string };
+};
 const storyDateien = Object.values(
 	import.meta.glob<Story>("/storyblok/stories/*.json", { eager: true, import: "default" }),
 );
@@ -35,7 +42,9 @@ function inhalt(story: Story): unknown {
 	return markieren(story.content);
 }
 
-export async function storiesDesTyps<T>(inhaltstyp: string): Promise<{ uuid: string; slug: string; position: number; content: T }[]> {
+export async function storiesDesTyps<T>(
+	inhaltstyp: string,
+): Promise<{ uuid: string; slug: string; position: number; content: T }[]> {
 	return storyDateien
 		.filter((s) => s.content.component === inhaltstyp)
 		.map((s) => ({ uuid: s.uuid, slug: s.slug, position: s.position, content: inhalt(s) as T }));

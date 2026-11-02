@@ -15,7 +15,11 @@ const { name, logo } = await globaleAngaben();
 const skaliert = (b: Bild, format: "png" | "jpg", width: number, height?: number) =>
 	getImage({ src: b.src, width, height, format, ...(typeof b.src === "string" && { inferSize: true }) });
 const teilenBild = bild ?? (await startseite()).hero.bild;
-const [og, icon, appleIcon] = await Promise.all([skaliert(teilenBild, "jpg", 1200), skaliert(logo, "png", 96, 96), skaliert(logo, "png", 180, 180)]);
+const [og, icon, appleIcon] = await Promise.all([
+	skaliert(teilenBild, "jpg", 1200),
+	skaliert(logo, "png", 96, 96),
+	skaliert(logo, "png", 180, 180),
+]);
 const absolut = (pfad: string) => new URL(pfad, Astro.site).href;
 ---
 

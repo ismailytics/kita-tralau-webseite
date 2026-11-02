@@ -11,7 +11,9 @@ import { storyblokZugang } from "./storyblok-zugang.mjs";
 export const assetZuordnung = (lokal, ziel) =>
 	lokal.flatMap((asset) => {
 		const treffer = ziel.find((z) => z.id === asset.id) ?? ziel.find((z) => z.short_filename === asset.short_filename);
-		return treffer ? [{ old_id: asset.id, new_id: treffer.id, old_filename: asset.filename, new_filename: treffer.filename }] : [];
+		return treffer
+			? [{ old_id: asset.id, new_id: treffer.id, old_filename: asset.filename, new_filename: treffer.filename }]
+			: [];
 	});
 
 // Das CLI biegt nur Asset-Felder über das Manifest um, nicht Bilder und Datei-Links im Rich Text; die URLs dort ersetzen wir selbst.
@@ -43,7 +45,9 @@ if (import.meta.main) {
 	// Das CLI erwartet <dir>/<typ>/<from>/; „beispiel“ ist der Quellname (im Repo steht statt der Space-ID 0).
 	const tmp = mkdtempSync(join(tmpdir(), "storyblok-push-"));
 	const quelle = (dir) => join(tmp, dir, "beispiel");
-	const vorhanden = ["datasources", "components", "assets", "stories"].filter((dir) => existsSync(join("storyblok", dir)));
+	const vorhanden = ["datasources", "components", "assets", "stories"].filter((dir) =>
+		existsSync(join("storyblok", dir)),
+	);
 	for (const dir of vorhanden) cpSync(join("storyblok", dir), quelle(dir), { recursive: true });
 
 	const cli = (...args) => storyblok("-p", tmp, ...args, "--from", "beispiel");
@@ -57,22 +61,31 @@ if (import.meta.main) {
 		if (!nurSchemas) {
 			if (vorhanden.includes("assets")) {
 				const dateien = readdirSync(quelle("assets"));
-				const lokal = dateien.filter((d) => d.endsWith(".json")).map((d) => JSON.parse(readFileSync(join(quelle("assets"), d), "utf8")));
+				const lokal = dateien
+					.filter((d) => d.endsWith(".json"))
+					.map((d) => JSON.parse(readFileSync(join(quelle("assets"), d), "utf8")));
 				const zuordnung = assetZuordnung(lokal, await zielAssets(space, pat));
 				// Das Manifest leitet die Asset-Verweise der Stories auf die vorhandenen Assets um.
-				writeFileSync(join(quelle("assets"), "manifest.jsonl"), zuordnung.map((e) => `${JSON.stringify(e)}\n`).join(""));
+				writeFileSync(
+					join(quelle("assets"), "manifest.jsonl"),
+					zuordnung.map((e) => `${JSON.stringify(e)}\n`).join(""),
+				);
 				// Vorhandene Assets nicht erneut pushen: CLI 4.26 legt beim „Ersetzen“ ein neues Asset an, jeder Lauf gäbe Duplikate.
 				// Dadurch bleiben dort Bild und Alt-Text der Redaktion erhalten.
 				const vorhandeneIds = new Set(zuordnung.map((e) => String(e.old_id)));
 				for (const d of dateien) if (vorhandeneIds.has(d.match(/_(\d+)\.\w+$/)?.[1])) rmSync(join(quelle("assets"), d));
 				console.log(`Assets: ${zuordnung.length} schon im Ziel-Space, ${lokal.length - zuordnung.length} neu.`);
-				if (zuordnung.length < lokal.length) cli("assets", "push", "--target", "space", ...(dryRun ? ["--dry-run"] : []));
+				if (zuordnung.length < lokal.length)
+					cli("assets", "push", "--target", "space", ...(dryRun ? ["--dry-run"] : []));
 			}
 			if (vorhanden.includes("stories")) {
 				// Nach dem Asset-Push stehen dort auch die neu angelegten Assets.
 				const manifestDatei = join(quelle("assets"), "manifest.jsonl");
 				const manifest = existsSync(manifestDatei)
-					? readFileSync(manifestDatei, "utf8").split("\n").filter(Boolean).map((z) => JSON.parse(z))
+					? readFileSync(manifestDatei, "utf8")
+							.split("\n")
+							.filter(Boolean)
+							.map((z) => JSON.parse(z))
 					: [];
 				for (const d of readdirSync(quelle("stories")).filter((d) => d.endsWith(".json"))) {
 					const pfad = join(quelle("stories"), d);

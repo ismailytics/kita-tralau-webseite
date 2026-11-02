@@ -55,9 +55,9 @@ for (const pfad of SEITEN) {
 
 		test("alle Bilder haben einen Alt-Text", async ({ page }) => {
 			await page.goto(pfad);
-			const ohneAlt = await page.locator("img").evaluateAll((imgs) =>
-				imgs.filter((i) => !i.getAttribute("alt")?.trim()).map((i) => i.getAttribute("src")),
-			);
+			const ohneAlt = await page
+				.locator("img")
+				.evaluateAll((imgs) => imgs.filter((i) => !i.getAttribute("alt")?.trim()).map((i) => i.getAttribute("src")));
 			expect(ohneAlt).toEqual([]);
 		});
 
@@ -69,7 +69,8 @@ for (const pfad of SEITEN) {
 
 			expect(ebenen.filter((e) => e === 1)).toHaveLength(1);
 			expect(ebenen[0]).toBe(1);
-			for (let i = 1; i < ebenen.length; i++) expect(ebenen[i], `h${ebenen[i - 1]} → h${ebenen[i]}`).toBeLessThanOrEqual(ebenen[i - 1] + 1);
+			for (let i = 1; i < ebenen.length; i++)
+				expect(ebenen[i], `h${ebenen[i - 1]} → h${ebenen[i]}`).toBeLessThanOrEqual(ebenen[i - 1] + 1);
 		});
 	});
 }

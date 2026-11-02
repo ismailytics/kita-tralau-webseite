@@ -9,11 +9,17 @@ test("Über uns ist in der Navigation und zeigt Titel, Intro, Fließtext und Bil
 	await expect(page.getByText(/^Platzhaltertext: Hier stellt der Vorstand/)).toBeVisible();
 	await expect(page.getByRole("heading", { level: 2, name: "Unser Konzept" })).toBeVisible();
 	await expect(page.getByRole("listitem").filter({ hasText: "Viel Zeit draußen im Garten" })).toBeVisible();
-	await expect(page.getByRole("img", { name: "Spielplatz mit Schaukel unter einem großen Kastanienbaum" })).toBeVisible();
+	await expect(
+		page.getByRole("img", { name: "Spielplatz mit Schaukel unter einem großen Kastanienbaum" }),
+	).toBeVisible();
 	const bilder = page.getByRole("main").getByRole("list").last().getByRole("img");
 	await expect(bilder).toHaveCount(2);
-	await expect(bilder.first()).toHaveAccessibleName("Kita-Gebäude mit Laternen und verschneitem Vorplatz unter blauem Himmel");
-	await expect(bilder.last()).toHaveAccessibleName("Kiesweg zwischen Rasenflächen führt zum hellen Kita-Gebäude mit großen Fenstern");
+	await expect(bilder.first()).toHaveAccessibleName(
+		"Kita-Gebäude mit Laternen und verschneitem Vorplatz unter blauem Himmel",
+	);
+	await expect(bilder.last()).toHaveAccessibleName(
+		"Kiesweg zwischen Rasenflächen führt zum hellen Kita-Gebäude mit großen Fenstern",
+	);
 });
 
 test("Links und Bilder im Fließtext von Über uns zeigen auf die eigene Domain", async ({ page, baseURL, request }) => {

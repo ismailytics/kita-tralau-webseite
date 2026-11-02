@@ -6,10 +6,10 @@
 	--font-fredoka: "Fredoka", "sans-serif";
 	--color-brand-foreground: #20293c;
 	--color-brand-background: #fffbf0;
-    --color-brand-blue: #1d89ed;
-    --color-brand-red: #dd4c34;
-    --color-brand-green: #3db66d;
-    --color-brand-yellow: #e7af38;
+	--color-brand-blue: #1d89ed;
+	--color-brand-red: #dd4c34;
+	--color-brand-green: #3db66d;
+	--color-brand-yellow: #e7af38;
 }
 
 @utility container {

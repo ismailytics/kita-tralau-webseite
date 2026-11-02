@@ -27,7 +27,10 @@ test("Kontaktseite verweist für die Anmeldung auf das Kitaportal", async ({ pag
 	);
 });
 
-test("Kontaktseite zeigt ein eigenes Kartenbild mit Quellenangabe und einen Link zur Route", async ({ page, baseURL }) => {
+test("Kontaktseite zeigt ein eigenes Kartenbild mit Quellenangabe und einen Link zur Route", async ({
+	page,
+	baseURL,
+}) => {
 	await page.goto("/kontakt");
 	const karte = page.getByRole("img", { name: "Kartenausschnitt von Tralau mit der Lage der Kita" });
 

@@ -18,20 +18,22 @@ export default defineConfig({
 	// SVG-Rasterung für Favicon und Teilen-Bild aus einem SVG-Logo; SVGs kommen nur aus dem Space der Redaktion.
 	image: { domains: ["a.storyblok.com"], dangerouslyProcessSVG: true },
 	// Die Vorschau lädt die Bridge von app.storyblok.com, die Stylesheets einfügt; Hash-CSP würde das blockieren.
-	security: vorschau ? {} : {
-		csp: {
-			// Meta-Tag mit Hashes für Skripte und Styles; alles andere nur same-origin (ADR-0002).
-			directives: [
-				"default-src 'self'",
-				"img-src 'self'",
-				"font-src 'self'",
-				"connect-src 'self'",
-				"form-action 'self'",
-				"base-uri 'self'",
-				"object-src 'none'",
-			],
-		},
-	},
+	security: vorschau
+		? {}
+		: {
+				csp: {
+					// Meta-Tag mit Hashes für Skripte und Styles; alles andere nur same-origin (ADR-0002).
+					directives: [
+						"default-src 'self'",
+						"img-src 'self'",
+						"font-src 'self'",
+						"connect-src 'self'",
+						"form-action 'self'",
+						"base-uri 'self'",
+						"object-src 'none'",
+					],
+				},
+			},
 	integrations: [
 		{
 			name: "variante",

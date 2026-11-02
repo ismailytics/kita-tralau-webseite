@@ -43,7 +43,10 @@ test("Links und Bilder im Fließtext zeigen auf die eigene Domain", async ({ pag
 	await page.goto("/aktuelles/laternelaufen");
 	const text = page.locator(".prose");
 
-	await expect(text.getByRole("link", { name: "neuen Schaukel" })).toHaveAttribute("href", "/aktuelles/neue-schaukel-im-garten");
+	await expect(text.getByRole("link", { name: "neuen Schaukel" })).toHaveAttribute(
+		"href",
+		"/aktuelles/neue-schaukel-im-garten",
+	);
 	await expect(text.getByRole("link", { name: "Laternelaufen" })).toHaveAttribute(
 		"href",
 		"https://de.wikipedia.org/wiki/Laternelaufen",

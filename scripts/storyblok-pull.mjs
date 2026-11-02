@@ -16,7 +16,17 @@ cli("assets", "pull");
 cli("types", "generate", "--strict");
 
 // Felder, die nur Rauschen sind oder Personen bzw. Vorschau-Hashes enthalten.
-const STORY_NOISE = ["preview_token", "last_author", "last_author_id", "user_ids", "space_role_ids", "created_at", "updated_at", "published_at", "first_published_at"];
+const STORY_NOISE = [
+	"preview_token",
+	"last_author",
+	"last_author_id",
+	"user_ids",
+	"space_role_ids",
+	"created_at",
+	"updated_at",
+	"published_at",
+	"first_published_at",
+];
 
 for (const dir of ["components", "datasources", "stories", "assets", "types"]) {
 	const src = join(tmp, dir, space);

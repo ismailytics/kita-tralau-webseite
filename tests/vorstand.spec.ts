@@ -9,7 +9,9 @@ test("Navigation führt zu Vorstand, Tagesablauf und FAQ", async ({ page }) => {
 	await expect(nav.getByRole("link", { name: "FAQ" })).toHaveAttribute("href", "/faq");
 });
 
-test("Vorstandsseite zeigt Intro, Vorstandsmitglieder in Storyblok-Reihenfolge und Beitritts-Text", async ({ page }) => {
+test("Vorstandsseite zeigt Intro, Vorstandsmitglieder in Storyblok-Reihenfolge und Beitritts-Text", async ({
+	page,
+}) => {
 	await page.goto("/vorstand");
 
 	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Der Vorstand");
@@ -20,7 +22,9 @@ test("Vorstandsseite zeigt Intro, Vorstandsmitglieder in Storyblok-Reihenfolge u
 		"Maria Platzhalter",
 	]);
 	await expect(page.getByRole("heading", { level: 2, name: "Mitglied werden" })).toBeVisible();
-	await expect(page.getByText("Alle Eltern, deren Kinder bei uns betreut werden, sind Mitglied im Verein.")).toBeVisible();
+	await expect(
+		page.getByText("Alle Eltern, deren Kinder bei uns betreut werden, sind Mitglied im Verein."),
+	).toBeVisible();
 });
 
 test("Vorstandsmitglied mit Foto und Mail zeigt beides", async ({ page }) => {

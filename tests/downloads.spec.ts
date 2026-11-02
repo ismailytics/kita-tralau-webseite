@@ -9,7 +9,9 @@ test("Downloads-Seite ist in der Navigation", async ({ page }) => {
 	await expect(page.getByText(/^Formulare, Elternbriefe und weitere Unterlagen/)).toBeVisible();
 });
 
-test("zeigt Downloads nach Download-Kategorie gruppiert in der Reihenfolge der Redaktion, leere Kategorien nicht", async ({ page }) => {
+test("zeigt Downloads nach Download-Kategorie gruppiert in der Reihenfolge der Redaktion, leere Kategorien nicht", async ({
+	page,
+}) => {
 	await page.goto("/downloads");
 
 	await expect(page.getByRole("main").getByRole("heading", { level: 2 })).toHaveText(["Formulare", "Elternbriefe"]);

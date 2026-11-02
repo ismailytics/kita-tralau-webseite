@@ -23,9 +23,13 @@ test("Unbekanntes Asset bleibt ohne Zuordnung und wird angelegt", () => {
 });
 
 test("Asset-URLs im Rich Text (Bild-src, Datei-Link) zeigen nach dem Umschreiben auf den Ziel-Space", () => {
-	const story = JSON.stringify({ text: { content: [{ attrs: { src: lokal.filename } }, { attrs: { href: lokal.filename } }] } });
+	const story = JSON.stringify({
+		text: { content: [{ attrs: { src: lokal.filename } }, { attrs: { href: lokal.filename } }] },
+	});
 	const ziel = "https://a.storyblok.com/f/42/abc/logo.svg";
-	const ergebnis = assetUrlsUmschreiben(story, [{ old_id: 1, new_id: 1, old_filename: lokal.filename, new_filename: ziel }]);
+	const ergebnis = assetUrlsUmschreiben(story, [
+		{ old_id: 1, new_id: 1, old_filename: lokal.filename, new_filename: ziel },
+	]);
 	assert.equal(ergebnis.includes("/f/0/"), false);
 	assert.equal(ergebnis.split(ziel).length - 1, 2);
 });

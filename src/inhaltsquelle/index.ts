@@ -102,7 +102,11 @@ function bearbeiten(blok: { _editable?: string }): Bearbeiten {
 	return { "data-blok-c": JSON.stringify(c), "data-blok-uid": `${c.id}-${c.uid}` };
 }
 
-const zeilen = (text = "") => text.split("\n").map((z) => z.trim()).filter(Boolean);
+const zeilen = (text = "") =>
+	text
+		.split("\n")
+		.map((z) => z.trim())
+		.filter(Boolean);
 const abbrechen = (meldung: string): never => {
 	throw new Error(meldung);
 };
@@ -223,7 +227,11 @@ export const tagesablauf = einmal(async (): Promise<Tagesablauf> => {
 		bearbeiten: bearbeiten(s),
 		titel: s.titel,
 		intro: s.intro ?? "",
-		zeitbloecke: (s.zeitbloecke ?? []).map((z) => ({ bearbeiten: bearbeiten(z), uhrzeit: z.uhrzeit, beschreibung: z.beschreibung })),
+		zeitbloecke: (s.zeitbloecke ?? []).map((z) => ({
+			bearbeiten: bearbeiten(z),
+			uhrzeit: z.uhrzeit,
+			beschreibung: z.beschreibung,
+		})),
 	};
 });
 
@@ -245,17 +253,18 @@ export const faq = einmal(async (): Promise<Faq> => {
 });
 
 /** Alle Termine nach Datum aufsteigend; vergangene bleiben stehen, bis die Redaktion sie löscht. */
-export const termine = einmal(async (): Promise<Termin[]> =>
-	(await quelle.storiesDesTyps<TerminStory>("termin"))
-		.map(({ content: t }) => ({
-			bearbeiten: bearbeiten(t),
-			titel: t.titel,
-			datum: kalendertag(t.datum) ?? abbrechen(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
-			uhrzeit: t.uhrzeit || undefined,
-			enddatum: kalendertag(t.enddatum),
-			kurztext: t.kurztext || undefined,
-		}))
-		.sort((a, b) => a.datum.localeCompare(b.datum)),
+export const termine = einmal(
+	async (): Promise<Termin[]> =>
+		(await quelle.storiesDesTyps<TerminStory>("termin"))
+			.map(({ content: t }) => ({
+				bearbeiten: bearbeiten(t),
+				titel: t.titel,
+				datum: kalendertag(t.datum) ?? abbrechen(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
+				uhrzeit: t.uhrzeit || undefined,
+				enddatum: kalendertag(t.enddatum),
+				kurztext: t.kurztext || undefined,
+			}))
+			.sort((a, b) => a.datum.localeCompare(b.datum)),
 );
 
 /** Ein Download; `datei` ist der same-origin Pfad, unter dem die Datei beim Build abgelegt wird. */
@@ -301,7 +310,12 @@ export const kontakt = einmal(async (): Promise<Kontakt> => {
 	return {
 		bearbeiten: bearbeiten(s),
 		intro: { titel: s.intro_titel, text: s.intro_text ?? "" },
-		kitaportal: { titel: s.kitaportal_titel, text: s.kitaportal_text, url: s.kitaportal_url, linkText: s.kitaportal_link_text },
+		kitaportal: {
+			titel: s.kitaportal_titel,
+			text: s.kitaportal_text,
+			url: s.kitaportal_url,
+			linkText: s.kitaportal_link_text,
+		},
 		karte: { bild: await bild(s.karte_bild), quelle: s.karte_quelle, url: s.karte_url, linkText: s.karte_link_text },
 	};
 });
@@ -341,6 +355,12 @@ export const rechtstext = einmal(async (slug: "impressum" | "datenschutz"): Prom
 export async function dateien(): Promise<{ pfad: string; inhalt: () => Promise<Uint8Array> }[]> {
 	// shortcut: sammelt nur Dateien der hier geladenen Inhalte; ein neuer Inhaltstyp mit Rich Text oder Datei muss hier dazu,
 	// sonst fehlt seine Datei im Build (404). Bei vielen Typen die Dateien beim Rendern der Seiten sammeln.
-	await Promise.all([beitraege(), ueberUns(), rechtstext("impressum"), rechtstext("datenschutz"), downloadKategorien()]);
+	await Promise.all([
+		beitraege(),
+		ueberUns(),
+		rechtstext("impressum"),
+		rechtstext("datenschutz"),
+		downloadKategorien(),
+	]);
 	return verlinkteDateien();
 }
