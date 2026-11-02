@@ -1,4 +1,5 @@
 ---
+import { pfad } from "@/lib/pfad";
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import Container from "@/components/Container.astro";
@@ -24,7 +25,7 @@ const [{ bearbeiten, titel, intro }, liste] = await Promise.all([listenseite("ak
 							<Bild bild={b.teaserbild} class="aspect-[4/3] w-full object-cover rounded-lg" widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
 							<Datum datum={b.datum} class="text-sm text-gray-600" />
 							<h2 class="text-2xl font-bold">
-								<a href={`/aktuelles/${b.slug}`} class="hover:text-brand-blue">{b.titel}</a>
+								<a href={pfad(`/aktuelles/${b.slug}`)} class="hover:text-brand-blue">{b.titel}</a>
 							</h2>
 							<p>{b.kurztext}</p>
 						</article>

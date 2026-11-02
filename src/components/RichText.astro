@@ -1,4 +1,5 @@
 ---
+import { pfad } from "@/lib/pfad";
 import Bild from "@/components/Bild.astro";
 import type { RichTextKnoten } from "@/inhaltsquelle";
 
@@ -32,9 +33,9 @@ const MARK: Record<string, string> = {
 			const innen = <Astro.self knoten={[{ ...k, marks: rest }]} />;
 			if (mark.type === "link")
 				return mark.extern ? (
-					<a href={mark.href} target="_blank" rel="noopener noreferrer">{innen}</a>
+					<a href={pfad(mark.href ?? "")} target="_blank" rel="noopener noreferrer">{innen}</a>
 				) : (
-					<a href={mark.href}>{innen}</a>
+					<a href={pfad(mark.href ?? "")}>{innen}</a>
 				);
 			const Tag = MARK[mark.type];
 			return Tag ? <Tag>{innen}</Tag> : innen;

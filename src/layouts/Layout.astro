@@ -8,7 +8,7 @@ import { getImage } from "astro:assets";
 import { globaleAngaben, startseite, type Bild } from "@/inhaltsquelle";
 import type { LayoutProps as Props } from "@/types";
 
-const { title, seoDescription, noindex = VORSCHAU, bearbeiten, bild } = Astro.props;
+const { title, seoDescription, noindex = VORSCHAU || process.env.NOINDEX === "1", bearbeiten, bild } = Astro.props;
 const { name, logo } = await globaleAngaben();
 
 // Teilen-Bild und Favicon same-origin über astro:assets (ADR-0003), Meta-URLs absolut auf die eigene Domain.

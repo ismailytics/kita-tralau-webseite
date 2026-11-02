@@ -13,6 +13,8 @@ export default defineConfig({
 	output: "static",
 	// Absolute URLs des Teilen-Bildes (OG/Twitter). Die Domain des Vereins steht noch nicht fest.
 	site: process.env.SITE_URL ?? "https://kita-tralau.example",
+	// Unterordner beim Teilen über GitHub Pages; beim Hoster des Vereins bleibt es „/“.
+	base: process.env.BASE_PATH ?? "/",
 	outDir: vorschau ? "dist-vorschau" : "dist",
 	// Remote-Bilder nur von der Storyblok-Asset-Domain; sie werden beim Build heruntergeladen (ADR-0003).
 	// SVG-Rasterung für Favicon und Teilen-Bild aus einem SVG-Logo; SVGs kommen nur aus dem Space der Redaktion.

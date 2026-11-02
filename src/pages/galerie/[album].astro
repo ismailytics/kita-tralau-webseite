@@ -1,4 +1,5 @@
 ---
+import { pfad } from "@/lib/pfad";
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import Container from "@/components/Container.astro";
@@ -54,7 +55,7 @@ const gross = await Promise.all(
 				</form>
 			</dialog>
 
-			<p class="mt-12"><a href="/galerie/" class="underline">Alle Alben</a></p>
+			<p class="mt-12"><a href={pfad("/galerie/")} class="underline">Alle Alben</a></p>
 		</Container>
 	</Section>
 </Layout>

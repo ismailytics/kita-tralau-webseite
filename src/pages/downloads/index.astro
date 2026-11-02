@@ -1,4 +1,5 @@
 ---
+import { pfad } from "@/lib/pfad";
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import Container from "@/components/Container.astro";
@@ -24,7 +25,7 @@ const [{ bearbeiten, titel, intro }, kategorien] = await Promise.all([listenseit
 						<ul class="flex flex-col gap-y-2">
 							{k.downloads.map((d) => (
 								<li {...d.bearbeiten}>
-									<a href={d.datei} class="underline hover:text-brand-blue">
+									<a href={pfad(d.datei)} class="underline hover:text-brand-blue">
 										{d.titel}
 									</a>
 								</li>
