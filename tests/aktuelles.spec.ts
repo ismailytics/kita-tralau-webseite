@@ -37,3 +37,32 @@ test("Ein Beitrag zeigt Titel, Datum, Teaserbild und den vollständigen Fließte
 		page.getByRole("img", { name: "Blaue Doppelschaukel auf Holzhackschnitzeln, dahinter ein Drehteller" }),
 	).toBeVisible();
 });
+
+test("Links und Bilder im Fließtext zeigen auf die eigene Domain", async ({ page, baseURL, request }) => {
+	await page.goto("/aktuelles/laternelaufen");
+	const text = page.locator(".prose");
+
+	await expect(text.getByRole("link", { name: "neuen Schaukel" })).toHaveAttribute("href", "/aktuelles/neue-schaukel-im-garten");
+	await expect(text.getByRole("link", { name: "Laternelaufen" })).toHaveAttribute(
+		"href",
+		"https://de.wikipedia.org/wiki/Laternelaufen",
+	);
+
+	const pdf = await text.getByRole("link", { name: "Elternbrief (PDF)" }).getAttribute("href");
+	expect(pdf).toMatch(/^\/dateien\/.+\.pdf$/);
+	const antwort = await request.get(pdf as string);
+	expect(antwort.ok()).toBe(true);
+	expect((await antwort.body()).subarray(0, 5).toString()).toBe("%PDF-");
+
+	const bild = text.getByRole("img", { name: "Blaue Doppelschaukel auf Holzhackschnitzeln, dahinter ein Drehteller" });
+	await expect(bild).toHaveJSProperty("complete", true);
+	expect(await bild.evaluate((i: HTMLImageElement) => i.currentSrc)).toMatch(new RegExp(`^${baseURL}/_astro/`));
+
+	await page.getByRole("link", { name: "neuen Schaukel" }).click();
+	await expect(page.getByRole("heading", { level: 1 })).toHaveText("Neue Schaukel im Garten");
+});
+
+test("Interne Story-Links auf die Startseite werden zu /", async ({ page }) => {
+	await page.goto("/aktuelles/willkommen-im-neuen-kitajahr");
+	await expect(page.locator(".prose").getByRole("link", { name: "Startseite" })).toHaveAttribute("href", "/");
+});

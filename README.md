@@ -26,6 +26,7 @@ Seiten holen Inhalte nur über `src/inhaltsquelle/`. Die Umgebungsvariable `INHA
 | `storyblok` | veröffentlichte Inhalte aus dem Space | `STORYBLOK_TOKEN` (Preview- oder Public-Token) |
 
 Bilder laufen in beiden Fällen über `astro:assets` und landen same-origin in `dist/` (ADR-0003).
+Verlinkte Dateien (z. B. PDFs im Rich Text) lädt der Build ebenfalls herunter und legt sie unter `/dateien/` ab.
 
 ## Storyblok-Schemas und Beispielinhalte (ADR-0008)
 
