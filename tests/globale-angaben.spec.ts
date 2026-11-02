@@ -48,3 +48,16 @@ test.describe("auf dem Smartphone", () => {
 		await expect(menue).toBeHidden();
 	});
 });
+
+test.describe("auf einem großen Bildschirm", () => {
+	test.use({ viewport: { width: 1920, height: 2000 } });
+
+	test("sitzt der Footer unten und der letzte Abschnitt schließt ohne Lücke an", async ({ page }) => {
+		await page.goto("/vorstand");
+		const footer = await page.getByRole("contentinfo").boundingBox();
+		const letzter = await page.locator("main > *").last().boundingBox();
+
+		expect((footer?.y ?? 0) + (footer?.height ?? 0)).toBeCloseTo(2000, 0);
+		expect((letzter?.y ?? 0) + (letzter?.height ?? 0)).toBeCloseTo(footer?.y ?? -1, 0);
+	});
+});

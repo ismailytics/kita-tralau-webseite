@@ -58,7 +58,9 @@ const absolut = (pfad: string) => new URL(pfad, Astro.site).href;
 	<body>
 		<Header />
 		{VORSCHAU && <Vorschau />}
-		<main class="grow" {...bearbeiten}>
+		<!-- Auf kurzen Seiten füllt der erste Abschnitt den Rest des Fensters: Der Footer sitzt unten,
+		     ein farbiger letzter Abschnitt (z. B. „Mitglied werden“) schließt trotzdem direkt an ihn an. -->
+		<main class="grow flex flex-col [&>:first-child]:grow" {...bearbeiten}>
 			<slot />
 		</main>
 		<Footer />
