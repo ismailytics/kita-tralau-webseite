@@ -2,8 +2,15 @@
 // Liefert fertige Daten in Begriffen des Glossars; dahinter Storyblok oder die Beispielinhalte im Repo.
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
-import type { GlobaleAngaben as GlobaleAngabenStory, Startseite as StartseiteStory } from "../../storyblok/types/storyblok-components";
-import type { Download as DownloadStory, DownloadKategorie as DownloadKategorieStory } from "../../storyblok/types/storyblok-components";
+import type {
+	Download as DownloadStory,
+	DownloadKategorie as DownloadKategorieStory,
+	Faq as FaqStory,
+	GlobaleAngaben as GlobaleAngabenStory,
+	Startseite as StartseiteStory,
+	Tagesablauf as TagesablaufStory,
+	Vorstand as VorstandStory,
+} from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
 import * as storyblok from "./storyblok";
 
@@ -58,6 +65,71 @@ export async function startseite(): Promise<Startseite> {
 		hero: { titel: s.hero_titel, text: s.hero_text ?? "", bild: bild(s.hero_bild) },
 		konzept: { titel: s.konzept_titel, text: s.konzept_text },
 		kontaktCta: { titel: s.kontakt_titel, text: s.kontakt_text ?? "", button: s.kontakt_button },
+	};
+}
+
+export interface Vorstandsmitglied {
+	name: string;
+	rolle: string;
+	foto?: Bild;
+	email?: string;
+}
+
+export interface Vorstand {
+	titel: string;
+	intro: string;
+	mitglieder: Vorstandsmitglied[];
+	beitritt: { titel: string; text: string };
+}
+
+export async function vorstand(): Promise<Vorstand> {
+	const s = await quelle.story<VorstandStory>("vorstand");
+	return {
+		titel: s.titel,
+		intro: s.intro ?? "",
+		mitglieder: (s.mitglieder ?? []).map((m) => ({
+			name: m.name,
+			rolle: m.rolle,
+			// Ein leeres Asset-Feld kommt als Objekt ohne filename.
+			foto: m.foto?.filename ? bild(m.foto) : undefined,
+			email: m.email?.trim() || undefined,
+		})),
+		beitritt: { titel: s.beitritt_titel, text: s.beitritt_text },
+	};
+}
+
+export interface Zeitblock {
+	uhrzeit: string;
+	beschreibung: string;
+}
+
+export interface Tagesablauf {
+	titel: string;
+	intro: string;
+	zeitbloecke: Zeitblock[];
+}
+
+export async function tagesablauf(): Promise<Tagesablauf> {
+	const s = await quelle.story<TagesablaufStory>("tagesablauf");
+	return {
+		titel: s.titel,
+		intro: s.intro ?? "",
+		zeitbloecke: (s.zeitbloecke ?? []).map((z) => ({ uhrzeit: z.uhrzeit, beschreibung: z.beschreibung })),
+	};
+}
+
+export interface Faq {
+	titel: string;
+	intro: string;
+	fragen: { frage: string; antwort: string }[];
+}
+
+export async function faq(): Promise<Faq> {
+	const s = await quelle.story<FaqStory>("faq");
+	return {
+		titel: s.titel,
+		intro: s.intro ?? "",
+		fragen: (s.fragen ?? []).map((f) => ({ frage: f.frage, antwort: f.antwort })),
 	};
 }
 

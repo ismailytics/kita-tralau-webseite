@@ -1,0 +1,50 @@
+{
+  "name": "tagesablauf",
+  "display_name": "Tagesablauf",
+  "description": "Die Seite Tagesablauf.",
+  "created_at": "2026-11-02T18:00:50.642Z",
+  "updated_at": "2026-11-02T18:00:50.642Z",
+  "id": 237374876234605,
+  "schema": {
+    "titel": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Überschrift",
+      "id": "aTNBegBFRbCQht2bJLPq_g"
+    },
+    "intro": {
+      "type": "textarea",
+      "pos": 1,
+      "display_name": "Einleitung",
+      "id": "2VnGKsoDSHichQaK0j7ICA"
+    },
+    "zeitbloecke": {
+      "type": "bloks",
+      "pos": 2,
+      "display_name": "Zeitblöcke",
+      "description": "Reihenfolge hier = Reihenfolge auf der Seite.",
+      "restrict_type": "",
+      "restrict_components": true,
+      "component_whitelist": [
+        "zeitblock"
+      ],
+      "id": "yDz7lQsATIuAZEIkQ2U91w"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": true,
+  "preview_tmpl": null,
+  "is_nestable": false,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Tagesablauf",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

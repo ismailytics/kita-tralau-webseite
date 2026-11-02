@@ -32,13 +32,6 @@ export interface SectionHeadingProps {
     class?: string;
 }
 
-export interface FaqItemProps {
-	id: string;
-	question: string;
-	answer: string;
-	open?: boolean;
-}
-
 import type { HTMLAttributes } from "astro/types";
 
 export interface VideoProps extends HTMLAttributes<"video"> {

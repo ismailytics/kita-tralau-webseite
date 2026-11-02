@@ -9,7 +9,7 @@ test("Downloads-Seite ist in der Navigation", async ({ page }) => {
 });
 
 test("zeigt Downloads nach Download-Kategorie gruppiert in der Reihenfolge der Redaktion, leere Kategorien nicht", async ({ page }) => {
-	await page.goto("/downloads/");
+	await page.goto("/downloads");
 
 	await expect(page.getByRole("main").getByRole("heading", { level: 2 })).toHaveText(["Formulare", "Elternbriefe"]);
 	await expect(page.getByRole("heading", { name: "Speisepläne" })).toHaveCount(0);
@@ -20,7 +20,7 @@ test("zeigt Downloads nach Download-Kategorie gruppiert in der Reihenfolge der R
 });
 
 test("Download-Links zeigen auf die eigene Domain und liefern die Datei", async ({ page, request, baseURL }) => {
-	await page.goto("/downloads/");
+	await page.goto("/downloads");
 	const links = page.getByRole("main").getByRole("link");
 	await expect(links).toHaveCount(3);
 
