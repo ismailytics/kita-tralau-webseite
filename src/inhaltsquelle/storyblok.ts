@@ -1,55 +1,39 @@
-// Storyblok: veröffentlichte Inhalte (in der Vorschau Entwürfe) über die Content Delivery API (Region EU), nur zur Build-Zeit.
+// Storyblok: veröffentlichte Inhalte (in der Vorschau Entwürfe) über die Content Delivery API, nur zur Build-Zeit.
 import type { StoryblokAsset } from "../../storyblok/storyblok";
+import { einmal } from "../lib/einmal";
 import { VORSCHAU } from "../variante";
-import { versioniert } from "./versioniert";
+import { abrufen, dateiInhalt, versioniert } from "./abruf";
+
+type Story<T> = { uuid: string; slug: string; full_slug: string; position: number; content: T };
 
 const version = VORSCHAU ? "draft" : "published";
 
-export async function story<T>(slug: string): Promise<T> {
+// api.storyblok.com ist der Endpunkt der Region EU.
+async function cdn<A>(pfad: string, params: Record<string, string> = {}): Promise<A> {
 	const token = process.env.STORYBLOK_TOKEN;
 	if (!token) throw new Error("Inhaltsquelle Storyblok: STORYBLOK_TOKEN fehlt.");
-	const antwort = await fetch(`https://api.storyblok.com/v2/cdn/stories/${slug}?version=${version}&token=${token}`);
-	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: Story „${slug}“ → HTTP ${antwort.status}.`);
-	return (await antwort.json()).story.content as T;
+	const suche = new URLSearchParams({ ...params, version, token });
+	return (await abrufen(`https://api.storyblok.com/v2/cdn/${pfad}?${suche}`, pfad)).json();
+}
+
+export async function story<T>(slug: string): Promise<T> {
+	return (await cdn<{ story: Story<T> }>(`stories/${slug}`)).story.content;
+}
+
+// shortcut: nur die ersten 100 Stories eines Typs, bei mehr paginieren.
+export async function storiesDesTyps<T>(inhaltstyp: string): Promise<Pick<Story<T>, "uuid" | "slug" | "position" | "content">[]> {
+	const { stories } = await cdn<{ stories: Story<T>[] }>("stories", { content_type: inhaltstyp, per_page: "100" });
+	return stories.map(({ uuid, slug, position, content }) => ({ uuid, slug, position, content }));
+}
+
+export async function fullSlug(uuid: string): Promise<string> {
+	return (await cdn<{ story: Story<unknown> }>(`stories/${uuid}`, { find_by: "uuid" })).story.full_slug;
 }
 
 // Remote-URL der Storyblok-Asset-Domain mit Inhalts-Hash; astro:assets lädt sie beim Build herunter (image.domains).
 // shortcut: jedes Bild wird zum Hashen einmal extra geladen, bei sehr vielen Bildern ETag statt Inhalt hashen.
-const versionen = new Map<string, Promise<string>>();
-export function bildDatei(asset: StoryblokAsset): Promise<string> {
-	if (!versionen.has(asset.filename)) versionen.set(asset.filename, versioniert(asset.filename));
-	return versionen.get(asset.filename)!;
-}
-
-// shortcut: nur die ersten 100 Stories eines Typs, bei mehr paginieren.
-export async function alleStories<T>(komponente: string): Promise<{ uuid: string; slug: string; content: T }[]> {
-	const token = process.env.STORYBLOK_TOKEN;
-	if (!token) throw new Error("Inhaltsquelle Storyblok: STORYBLOK_TOKEN fehlt.");
-	const antwort = await fetch(
-		`https://api.storyblok.com/v2/cdn/stories?content_type=${komponente}&per_page=100&version=${version}&token=${token}`,
-	);
-	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: Stories „${komponente}“ → HTTP ${antwort.status}.`);
-	return (await antwort.json()).stories.map((s: { uuid: string; slug: string; content: T }) => ({
-		uuid: s.uuid,
-		slug: s.slug,
-		content: s.content,
-	}));
-}
+const bildVersion = einmal(versioniert);
+export const bildDatei = (asset: StoryblokAsset): Promise<string> => bildVersion(asset.filename);
 
 // Dateien werden beim Build geladen und same-origin ausgeliefert, wie Bilder (ADR-0003).
-export async function datei(asset: StoryblokAsset): Promise<Uint8Array> {
-	const antwort = await fetch(asset.filename);
-	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: Datei ${asset.filename.split("/").pop()} → HTTP ${antwort.status}.`);
-	return new Uint8Array(await antwort.arrayBuffer());
-}
-
-export async function alle<T>(inhaltstyp: string): Promise<T[]> {
-	return (await alleStories<T>(inhaltstyp)).map((s) => s.content);
-}
-
-export async function fullSlug(uuid: string): Promise<string> {
-	const token = process.env.STORYBLOK_TOKEN;
-	const antwort = await fetch(`https://api.storyblok.com/v2/cdn/stories/${uuid}?find_by=uuid&version=${version}&token=${token}`);
-	if (!antwort.ok) throw new Error(`Inhaltsquelle Storyblok: verlinkte Story ${uuid} → HTTP ${antwort.status}.`);
-	return (await antwort.json()).story.full_slug;
-}
+export const datei = dateiInhalt;

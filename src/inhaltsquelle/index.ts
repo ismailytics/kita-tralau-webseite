@@ -1,7 +1,6 @@
 // Inhaltsquelle: das einzige Modul, über das Seiten und Komponenten an Inhalte kommen.
 // Liefert fertige Daten in Begriffen des Glossars; dahinter Storyblok oder die Beispielinhalte im Repo.
 import type { ImageMetadata } from "astro";
-import type { StoryblokAsset } from "../../storyblok/storyblok";
 import type {
 	Album as AlbumStory,
 	Beitrag as BeitragStory,
@@ -18,9 +17,12 @@ import type {
 	UeberUns as UeberUnsStory,
 	Vorstand as VorstandStory,
 } from "../../storyblok/types/storyblok-components";
-import * as beispiel from "./beispiel";
-import * as storyblok from "./storyblok";
+import { einmal } from "../lib/einmal";
 import { VORSCHAU } from "../variante";
+import { bild, quelle } from "./quelle";
+import { dateiPfad, type RichText, richText, verlinkteDateien } from "./rich-text";
+
+export type { RichText, RichTextKnoten } from "./rich-text";
 
 /** Ein Bild, das beim Build über astro:assets same-origin ausgeliefert wird (ADR-0003). */
 export interface Bild {
@@ -56,17 +58,6 @@ export interface Beitrag {
 	text: RichText;
 }
 
-/** Fließtext mit aufgelösten Bildern und Links; zeigt nie auf Storyblok (ADR-0003). */
-export type RichText = RichTextKnoten[];
-export interface RichTextKnoten {
-	type: string;
-	text?: string;
-	level?: number;
-	bild?: Bild;
-	marks?: { type: string; href?: string; extern?: boolean }[];
-	content?: RichTextKnoten[];
-}
-
 export interface Galerie {
 	titel: string;
 	intro: string;
@@ -96,15 +87,6 @@ export interface Kontakt {
 	karte: { bild: Bild; quelle: string; url: string; linkText: string };
 }
 
-// Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
-const quelle = process.env.INHALTSQUELLE === "storyblok" ? storyblok : beispiel;
-
-async function bild(asset: StoryblokAsset): Promise<Bild> {
-	if (!asset?.filename) throw new Error("Inhaltsquelle: Bild fehlt.");
-	if (!asset.alt?.trim()) throw new Error(`Inhaltsquelle: Bild ohne Alt-Text (${asset.filename.split("/").pop()}).`);
-	return { src: await quelle.bildDatei(asset), alt: asset.alt };
-}
-
 // Wie storyblokEditable aus @storyblok/js, ohne Storyblok-Code in den Prod-Build zu holen.
 function bearbeiten(blok: { _editable?: string }): Bearbeiten {
 	if (!VORSCHAU || !blok._editable) return {};
@@ -113,31 +95,25 @@ function bearbeiten(blok: { _editable?: string }): Bearbeiten {
 }
 
 const zeilen = (text = "") => text.split("\n").map((z) => z.trim()).filter(Boolean);
+const abbrechen = (meldung: string): never => {
+	throw new Error(meldung);
+};
 
-let globale: Promise<GlobaleAngaben> | undefined;
+// Alle Funktionen laden über einmal(): Header, Footer, Teilen-Bild und Dateien brauchen dieselben Inhalte auf vielen Seiten.
 
-/** Globale Angaben; einmal pro Build geladen, weil Header und Footer sie auf jeder Seite brauchen. */
-export function globaleAngaben(): Promise<GlobaleAngaben> {
-	globale ??= quelle.story<GlobaleAngabenStory>("globale-angaben").then(async (s) => ({
+export const globaleAngaben = einmal(async (): Promise<GlobaleAngaben> => {
+	const s = await quelle.story<GlobaleAngabenStory>("globale-angaben");
+	return {
 		bearbeiten: bearbeiten(s),
 		name: s.name,
 		logo: await bild(s.logo),
 		footerText: s.footer_text ?? "",
 		kontakt: { strasse: s.strasse, ort: s.ort, telefon: s.telefon || undefined, email: s.email || undefined },
 		oeffnungszeiten: zeilen(s.oeffnungszeiten),
-	}));
-	return globale;
-}
+	};
+});
 
-let start: Promise<Startseite> | undefined;
-
-/** Startseite; einmal pro Build geladen, weil ihr Hero-Bild auch die Teilen-Vorschau der übrigen Seiten ist. */
-export function startseite(): Promise<Startseite> {
-	start ??= ladeStartseite();
-	return start;
-}
-
-async function ladeStartseite(): Promise<Startseite> {
+export const startseite = einmal(async (): Promise<Startseite> => {
 	const s = await quelle.story<StartseiteStory>("startseite");
 	return {
 		bearbeiten: bearbeiten(s),
@@ -145,86 +121,34 @@ async function ladeStartseite(): Promise<Startseite> {
 		konzept: { titel: s.konzept_titel, text: s.konzept_text },
 		kontaktCta: { titel: s.kontakt_titel, text: s.kontakt_text ?? "", button: s.kontakt_button },
 	};
-}
+});
 
-let alleBeitraege: Promise<Beitrag[]> | undefined;
-
-/** Aktuelles: alle Beiträge, neueste zuerst; einmal pro Build geladen (Liste, Detailseiten, Dateien). */
-export function beitraege(): Promise<Beitrag[]> {
-	alleBeitraege ??= ladeBeitraege();
-	return alleBeitraege;
-}
-
-async function ladeBeitraege(): Promise<Beitrag[]> {
-	const stories = await quelle.alleStories<BeitragStory>("beitrag");
+/** Aktuelles: alle Beiträge, neueste zuerst. */
+export const beitraege = einmal(async (): Promise<Beitrag[]> => {
+	const stories = await quelle.storiesDesTyps<BeitragStory>("beitrag");
 	const liste = await Promise.all(
 		stories.map(async ({ slug, content: c }) => ({
 			slug,
 			titel: c.titel,
-			// Storyblok liefert „YYYY-MM-DD HH:mm“ in UTC.
+			// Storyblok liefert „JJJJ-MM-TT HH:mm“ in UTC.
 			datum: new Date(`${c.datum.replace(" ", "T")}Z`),
 			teaserbild: await bild(c.teaserbild),
 			kurztext: c.kurztext,
-			text: await richText(c.text?.content as SbKnoten[]),
+			text: await richText(c.text),
 		})),
 	);
 	return liste.sort((a, b) => b.datum.getTime() - a.datum.getTime());
-}
+});
 
-// Storyblok-Rich-Text (ProseMirror-JSON), lose typisiert: die generierten Typen kennen jede Knotenart einzeln.
-type SbKnoten = { type: string; text?: string; attrs?: Record<string, any>; marks?: SbKnoten[]; content?: SbKnoten[] };
-
-/** Asset-Dateien, auf die Inhalte verlinken: eigener Pfad → Storyblok-URL. */
-const dateiLinks = new Map<string, string>();
-
-/** Alle aus Rich Text verlinkten Asset-Dateien (neue Inhaltstypen mit Rich Text hier mitladen); der Build legt sie unter ihrem eigenen Pfad ab. */
-export async function richTextDateien(): Promise<{ pfad: string; inhalt: () => Promise<Uint8Array> }[]> {
-	await Promise.all([beitraege(), ueberUns(), rechtstext("impressum"), rechtstext("datenschutz")]);
-	return [...dateiLinks].map(([pfad, url]) => ({ pfad, inhalt: () => quelle.datei({ filename: url } as StoryblokAsset) }));
-}
-
-async function linkZiel(a: Record<string, any>): Promise<{ href: string; extern?: boolean }> {
-	const anker = a.anchor ? `#${a.anchor}` : "";
-	switch (a.linktype) {
-		case "story": {
-			const slug = await quelle.fullSlug(a.uuid);
-			return { href: (slug === "startseite" ? "/" : `/${slug}`) + anker };
-		}
-		case "asset": {
-			// https://a.storyblok.com/f/<space>/<hash>/<name> → /dateien/<hash>/<name>
-			const pfad = `/dateien/${new URL(a.href).pathname.split("/").slice(-2).join("/")}`;
-			dateiLinks.set(pfad, a.href);
-			return { href: pfad };
-		}
-		case "email":
-			return { href: `mailto:${a.href}` };
-		default:
-			return { href: a.href + anker, extern: a.target === "_blank" };
-	}
-}
-
-async function richText(knoten: SbKnoten[] = []): Promise<RichText> {
-	return Promise.all(
-		knoten.map(async ({ type, text, attrs, marks, content }) => ({
-			type,
-			text,
-			level: attrs?.level,
-			bild: type === "image" ? await bild({ id: attrs?.id, filename: attrs?.src, alt: attrs?.alt } as StoryblokAsset) : undefined,
-			marks: marks && (await Promise.all(marks.map(async (m) => ({ type: m.type, ...(m.type === "link" ? await linkZiel(m.attrs ?? {}) : {}) })))),
-			content: content && (await richText(content)),
-		})),
-	);
-}
-
-export async function galerie(): Promise<Galerie> {
+export const galerie = einmal(async (): Promise<Galerie> => {
 	const s = await quelle.story<GalerieStory>("galerie");
 	return { titel: s.titel, intro: s.intro ?? "" };
-}
+});
 
 /** Alle Alben, neueste zuerst. */
-export async function alben(): Promise<Album[]> {
+export const alben = einmal(async (): Promise<Album[]> => {
 	const liste = await Promise.all(
-		(await quelle.alleStories<AlbumStory>("album")).map(async ({ slug, content: s }) => ({
+		(await quelle.storiesDesTyps<AlbumStory>("album")).map(async ({ slug, content: s }) => ({
 			slug,
 			titel: s.titel,
 			datum: s.datum.slice(0, 10),
@@ -232,7 +156,7 @@ export async function alben(): Promise<Album[]> {
 		})),
 	);
 	return liste.sort((a, b) => b.datum.localeCompare(a.datum));
-}
+});
 
 export interface Vorstandsmitglied {
 	bearbeiten: Bearbeiten;
@@ -250,23 +174,25 @@ export interface Vorstand {
 	beitritt: { titel: string; text: string };
 }
 
-export async function vorstand(): Promise<Vorstand> {
+export const vorstand = einmal(async (): Promise<Vorstand> => {
 	const s = await quelle.story<VorstandStory>("vorstand");
 	return {
 		bearbeiten: bearbeiten(s),
 		titel: s.titel,
 		intro: s.intro ?? "",
-		mitglieder: await Promise.all((s.mitglieder ?? []).map(async (m) => ({
-			bearbeiten: bearbeiten(m),
-			name: m.name,
-			rolle: m.rolle,
-			// Ein leeres Asset-Feld kommt als Objekt ohne filename.
-			foto: m.foto?.filename ? await bild(m.foto) : undefined,
-			email: m.email?.trim() || undefined,
-		}))),
+		mitglieder: await Promise.all(
+			(s.mitglieder ?? []).map(async (m) => ({
+				bearbeiten: bearbeiten(m),
+				name: m.name,
+				rolle: m.rolle,
+				// Ein leeres Asset-Feld kommt als Objekt ohne filename.
+				foto: m.foto?.filename ? await bild(m.foto) : undefined,
+				email: m.email?.trim() || undefined,
+			})),
+		),
 		beitritt: { titel: s.beitritt_titel, text: s.beitritt_text },
 	};
-}
+});
 
 export interface Zeitblock {
 	bearbeiten: Bearbeiten;
@@ -281,7 +207,7 @@ export interface Tagesablauf {
 	zeitbloecke: Zeitblock[];
 }
 
-export async function tagesablauf(): Promise<Tagesablauf> {
+export const tagesablauf = einmal(async (): Promise<Tagesablauf> => {
 	const s = await quelle.story<TagesablaufStory>("tagesablauf");
 	return {
 		bearbeiten: bearbeiten(s),
@@ -289,7 +215,7 @@ export async function tagesablauf(): Promise<Tagesablauf> {
 		intro: s.intro ?? "",
 		zeitbloecke: (s.zeitbloecke ?? []).map((z) => ({ bearbeiten: bearbeiten(z), uhrzeit: z.uhrzeit, beschreibung: z.beschreibung })),
 	};
-}
+});
 
 export interface Faq {
 	bearbeiten: Bearbeiten;
@@ -298,7 +224,7 @@ export interface Faq {
 	fragen: { bearbeiten: Bearbeiten; frage: string; antwort: string }[];
 }
 
-export async function faq(): Promise<Faq> {
+export const faq = einmal(async (): Promise<Faq> => {
 	const s = await quelle.story<FaqStory>("faq");
 	return {
 		bearbeiten: bearbeiten(s),
@@ -306,28 +232,24 @@ export async function faq(): Promise<Faq> {
 		intro: s.intro ?? "",
 		fragen: (s.fragen ?? []).map((f) => ({ bearbeiten: bearbeiten(f), frage: f.frage, antwort: f.antwort })),
 	};
-}
+});
 
-// Storyblok liefert Datumsfelder als „JJJJ-MM-TT HH:MM“.
+// Storyblok liefert Datumsfelder als „JJJJ-MM-TT HH:mm“.
 const tag = (wert?: string) => wert?.slice(0, 10) || undefined;
-const fehler = (meldung: string): never => {
-	throw new Error(meldung);
-};
 
 /** Alle Termine nach Datum aufsteigend; vergangene bleiben stehen, bis die Redaktion sie löscht. */
-export async function termine(): Promise<Termin[]> {
-	const alle = await quelle.alle<TerminStory>("termin");
-	return alle
-		.map((t) => ({
+export const termine = einmal(async (): Promise<Termin[]> =>
+	(await quelle.storiesDesTyps<TerminStory>("termin"))
+		.map(({ content: t }) => ({
 			bearbeiten: bearbeiten(t),
 			titel: t.titel,
-			datum: tag(t.datum) ?? fehler(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
+			datum: tag(t.datum) ?? abbrechen(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
 			uhrzeit: t.uhrzeit || undefined,
 			enddatum: tag(t.enddatum),
 			kurztext: t.kurztext || undefined,
 		}))
-		.sort((a, b) => a.datum.localeCompare(b.datum));
-}
+		.sort((a, b) => a.datum.localeCompare(b.datum)),
+);
 
 /** Ein Download; `datei` ist der same-origin Pfad, unter dem die Datei beim Build abgelegt wird. */
 export interface Download {
@@ -340,49 +262,37 @@ export interface DownloadKategorie {
 	downloads: Download[];
 }
 
-async function alleDownloads() {
-	return (await quelle.alleStories<DownloadStory>("download")).map(({ content: d }) => {
-		if (!d.datei?.filename) throw new Error(`Inhaltsquelle: Download „${d.titel}“ ohne Datei.`);
-		return {
-			titel: d.titel,
-			kategorie: d.kategorie,
-			asset: d.datei,
-			datei: `/downloads/dateien/${d.datei.id}/${d.datei.filename.split("/").pop()}`,
-		};
-	});
-}
-
 /** Download-Kategorien in der Reihenfolge der Redaktion, Downloads darin nach Titel; leere Kategorien entfallen. */
-export async function downloadKategorien(): Promise<DownloadKategorie[]> {
+export const downloadKategorien = einmal(async (): Promise<DownloadKategorie[]> => {
 	const [kategorien, downloads] = await Promise.all([
-		quelle.alleStories<DownloadKategorieStory>("download_kategorie"),
-		alleDownloads(),
+		quelle.storiesDesTyps<DownloadKategorieStory>("download_kategorie"),
+		quelle.storiesDesTyps<DownloadStory>("download"),
 	]);
+	const mitDatei = downloads.map(({ content: d }) => ({
+		titel: d.titel,
+		kategorie: d.kategorie,
+		datei: dateiPfad(d.datei?.filename || abbrechen(`Inhaltsquelle: Download „${d.titel}“ ohne Datei.`)),
+	}));
 	return kategorien
 		.toSorted((a, b) => Number(a.content.reihenfolge) - Number(b.content.reihenfolge))
 		.map((k) => ({
 			titel: k.content.titel,
-			downloads: downloads
+			downloads: mitDatei
 				.filter((d) => d.kategorie === k.uuid)
 				.toSorted((a, b) => a.titel.localeCompare(b.titel, "de"))
 				.map(({ titel, datei }) => ({ titel, datei })),
 		}))
 		.filter((k) => k.downloads.length);
-}
+});
 
-/** Alle Download-Dateien mit ihrem Pfad, damit der Build sie same-origin ablegt (ADR-0003). */
-export async function downloadDateien(): Promise<{ pfad: string; inhalt: () => Promise<Uint8Array> }[]> {
-	return (await alleDownloads()).map((d) => ({ pfad: d.datei, inhalt: () => quelle.datei(d.asset) }));
-}
-
-export async function kontakt(): Promise<Kontakt> {
+export const kontakt = einmal(async (): Promise<Kontakt> => {
 	const s = await quelle.story<KontaktStory>("kontakt");
 	return {
 		intro: { titel: s.intro_titel, text: s.intro_text ?? "" },
 		kitaportal: { titel: s.kitaportal_titel, text: s.kitaportal_text, url: s.kitaportal_url, linkText: s.kitaportal_link_text },
 		karte: { bild: await bild(s.karte_bild), quelle: s.karte_quelle, url: s.karte_url, linkText: s.karte_link_text },
 	};
-}
+});
 
 export interface UeberUns {
 	bearbeiten: Bearbeiten;
@@ -391,10 +301,10 @@ export interface UeberUns {
 	text: RichText;
 }
 
-export async function ueberUns(): Promise<UeberUns> {
+export const ueberUns = einmal(async (): Promise<UeberUns> => {
 	const s = await quelle.story<UeberUnsStory>("ueber-uns");
-	return { bearbeiten: bearbeiten(s), titel: s.titel, intro: s.intro ?? "", text: await richText(s.text?.content as SbKnoten[]) };
-}
+	return { bearbeiten: bearbeiten(s), titel: s.titel, intro: s.intro ?? "", text: await richText(s.text) };
+});
 
 /** Impressum oder Datenschutzerklärung. */
 export interface Rechtstext {
@@ -403,7 +313,15 @@ export interface Rechtstext {
 	text: RichText;
 }
 
-export async function rechtstext(slug: "impressum" | "datenschutz"): Promise<Rechtstext> {
+export const rechtstext = einmal(async (slug: "impressum" | "datenschutz"): Promise<Rechtstext> => {
 	const s = await quelle.story<RechtstextStory>(slug);
-	return { bearbeiten: bearbeiten(s), titel: s.titel, text: await richText(s.text?.content as SbKnoten[]) };
+	return { bearbeiten: bearbeiten(s), titel: s.titel, text: await richText(s.text) };
+});
+
+/** Alle verlinkten Dateien (Downloads, PDFs im Rich Text) mit ihrem Pfad; der Build legt sie same-origin ab (ADR-0003). */
+export async function dateien(): Promise<{ pfad: string; inhalt: () => Promise<Uint8Array> }[]> {
+	// shortcut: sammelt nur Dateien der hier geladenen Inhalte; ein neuer Inhaltstyp mit Rich Text oder Datei muss hier dazu,
+	// sonst fehlt seine Datei im Build (404). Bei vielen Typen die Dateien beim Rendern der Seiten sammeln.
+	await Promise.all([beitraege(), ueberUns(), rechtstext("impressum"), rechtstext("datenschutz"), downloadKategorien()]);
+	return verlinkteDateien();
 }

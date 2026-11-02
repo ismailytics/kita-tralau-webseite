@@ -6,7 +6,7 @@ import SectionHeading from "@/components/SectionHeading.astro";
 import TerminListe from "@/components/TerminListe.astro";
 import { termine } from "@/inhaltsquelle";
 
-const alle = await termine();
+const liste = await termine();
 ---
 
 <Layout title="Termine" seoDescription="Termine und Schließzeiten der Kindergruppe Travenbrück.">
@@ -15,7 +15,7 @@ const alle = await termine();
 			<SectionHeading>
 				<h1 class="text-5xl font-bold tracking-wide">Termine</h1>
 			</SectionHeading>
-			{alle.length ? <TerminListe termine={alle} /> : <p class="text-center">Zurzeit stehen keine Termine an.</p>}
+			{liste.length ? <TerminListe termine={liste} /> : <p class="text-center">Zurzeit stehen keine Termine an.</p>}
 		</Container>
 	</Section>
 </Layout>

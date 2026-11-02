@@ -1,12 +1,13 @@
-import type { Bild } from "@/inhaltsquelle";
+import type { HTMLAttributes } from "astro/types";
+import type { Bearbeiten, Bild } from "@/inhaltsquelle";
 
 export interface MenuItem {
 	label: string;
 	href: string;
 	target?: "_self" | "_blank";
-    class?: string;
-    hoverClass?: string;
-    activeClass?: string;
+	class?: string;
+	hoverClass?: string;
+	activeClass?: string;
 }
 
 export interface LayoutProps {
@@ -14,31 +15,29 @@ export interface LayoutProps {
 	seoDescription?: string;
 	noindex?: boolean;
 	/** Klick-zum-Bearbeiten für den Inhalt der Seite (Inhaltsquelle). */
-	bearbeiten?: Record<string, string>;
+	bearbeiten?: Bearbeiten;
 	/** Bild der Teilen-Vorschau (OG/Twitter); ohne Angabe das Hero-Bild der Startseite. */
 	bild?: Bild;
 }
 
 export interface ContainerProps {
-    class?: string;
-    contain?: boolean;
+	class?: string;
+	contain?: boolean;
 }
 
 export interface MainHeadingProps {
-    align?: "left" | "center" | "right";
-    class?: string;
+	align?: "left" | "center" | "right";
+	class?: string;
 }
 
 export interface SectionProps {
-    id?: string;
-    class?: string;
+	id?: string;
+	class?: string;
 }
 
 export interface SectionHeadingProps {
-    class?: string;
+	class?: string;
 }
-
-import type { HTMLAttributes } from "astro/types";
 
 export interface VideoProps extends HTMLAttributes<"video"> {
 	src: string;

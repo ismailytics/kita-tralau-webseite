@@ -1,21 +1,23 @@
 // Beispielinhalte: die per Pull-Skript ins Repo gezogenen Stories und Assets (storyblok/).
-import { readdirSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
 import { VORSCHAU } from "../variante";
 
-type Story = { id: number; uuid: string; slug: string; full_slug: string; content: { component?: string } };
-const stories = import.meta.glob<Story>("/storyblok/stories/*.json", {
+type Story = { id: number; uuid: string; slug: string; full_slug: string; position: number; content: { component?: string } };
+const storyDateien = Object.values(
+	import.meta.glob<Story>("/storyblok/stories/*.json", { eager: true, import: "default" }),
+);
+const bildDateien = import.meta.glob<ImageMetadata>("/storyblok/assets/*.{jpg,jpeg,png,webp,avif,gif,svg}", {
 	eager: true,
 	import: "default",
 });
-const dateien = import.meta.glob<ImageMetadata>("/storyblok/assets/*.{jpg,jpeg,png,webp,avif,gif,svg}", {
-	eager: true,
-	import: "default",
-});
+const assets = Object.entries(
+	import.meta.glob<{ id: number; filename: string }>("/storyblok/assets/*.json", { eager: true, import: "default" }),
+);
 
 export async function story<T>(slug: string): Promise<T> {
-	const gefunden = Object.values(stories).find((s) => s.full_slug === slug);
+	const gefunden = storyDateien.find((s) => s.full_slug === slug);
 	if (!gefunden) throw new Error(`Beispielinhalte: Story „${slug}“ fehlt in storyblok/stories/.`);
 	return inhalt(gefunden) as T;
 }
@@ -34,39 +36,29 @@ function inhalt(story: Story): unknown {
 	return markieren(story.content);
 }
 
-export async function alleStories<T>(komponente: string): Promise<{ uuid: string; slug: string; content: T }[]> {
-	return Object.values(stories)
-		.filter((s) => s.content.component === komponente)
-		.map((s) => ({ uuid: s.uuid, slug: s.slug, content: inhalt(s) as T }));
+export async function storiesDesTyps<T>(inhaltstyp: string): Promise<{ uuid: string; slug: string; position: number; content: T }[]> {
+	return storyDateien
+		.filter((s) => s.content.component === inhaltstyp)
+		.map((s) => ({ uuid: s.uuid, slug: s.slug, position: s.position, content: inhalt(s) as T }));
 }
 
 export async function fullSlug(uuid: string): Promise<string> {
-	const gefunden = Object.values(stories).find((s) => s.uuid === uuid);
+	const gefunden = storyDateien.find((s) => s.uuid === uuid);
 	if (!gefunden) throw new Error(`Beispielinhalte: verlinkte Story ${uuid} fehlt in storyblok/stories/.`);
 	return gefunden.full_slug;
 }
 
 // Das CLI legt Assets als <name>_<id>.<endung> ab.
 export function bildDatei(asset: StoryblokAsset): ImageMetadata {
-	const datei = Object.entries(dateien).find(([pfad]) => pfad.includes(`_${asset.id}.`));
+	const datei = Object.entries(bildDateien).find(([pfad]) => pfad.includes(`_${asset.id}.`));
 	if (!datei) throw new Error(`Beispielinhalte: Asset ${asset.id} fehlt in storyblok/assets/.`);
 	return datei[1];
 }
 
-const assets = import.meta.glob<{ id: number; filename: string }>("/storyblok/assets/*.json", {
-	eager: true,
-	import: "default",
-});
-
-export async function datei(asset: StoryblokAsset): Promise<Uint8Array> {
-	// Asset-Links im Rich Text tragen nur die URL, keine ID.
-	const id = asset.id ?? Object.values(assets).find((a) => a.filename === asset.filename)?.id;
-	const name = id && readdirSync("storyblok/assets").find((n) => n.includes(`_${id}.`) && !n.endsWith(".json"));
-	if (!name) throw new Error(`Beispielinhalte: Asset ${asset.id} fehlt in storyblok/assets/.`);
-	return readFileSync(`storyblok/assets/${name}`);
-}
-
-/** Inhalte aller Stories eines Inhaltstyps (z. B. alle Termine). */
-export async function alle<T>(inhaltstyp: string): Promise<T[]> {
-	return (await alleStories<T>(inhaltstyp)).map((s) => s.content);
+// Asset-Links im Rich Text tragen nur die URL, deshalb Suche über die Asset-JSONs neben den Dateien.
+export async function datei(url: string): Promise<Uint8Array> {
+	const json = assets.find(([, a]) => a.filename === url)?.[0];
+	if (!json) throw new Error(`Beispielinhalte: Asset ${url.split("/").pop()} fehlt in storyblok/assets/.`);
+	const endung = url.split(".").pop();
+	return readFileSync(json.slice(1).replace(/\.json$/, `.${endung}`));
 }
