@@ -30,6 +30,7 @@
 		"@iconify-json/heroicons": "^1.2.3",
 		"@iconify-json/lucide": "^1.2.150",
 		"@playwright/test": "^1.64.1",
+		"@storyblok/js": "^6.4.1",
 		"storyblok": "4.26.0",
 		"unplugin-icons": "^24.0.0"
 	}

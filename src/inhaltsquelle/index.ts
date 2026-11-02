@@ -345,7 +345,7 @@ async function alleDownloads() {
 		if (!d.datei?.filename) throw new Error(`Inhaltsquelle: Download „${d.titel}“ ohne Datei.`);
 		return {
 			titel: d.titel,
-			kategorie: d.kategorie as string,
+			kategorie: d.kategorie,
 			asset: d.datei,
 			datei: `/downloads/dateien/${d.datei.id}/${d.datei.filename.split("/").pop()}`,
 		};
