@@ -13,13 +13,13 @@ const kategorien = await downloadKategorien();
 			<h1 class="text-5xl font-bold tracking-wide">Downloads</h1>
 			{
 				kategorien.map((k, i) => (
-					<section aria-labelledby={`kategorie-${i}`} class="flex flex-col gap-y-4">
+					<section aria-labelledby={`kategorie-${i}`} class="flex flex-col gap-y-4" {...k.bearbeiten}>
 						<h2 id={`kategorie-${i}`} class="text-3xl font-bold tracking-wide">
 							{k.titel}
 						</h2>
 						<ul class="flex flex-col gap-y-2">
 							{k.downloads.map((d) => (
-								<li>
+								<li {...d.bearbeiten}>
 									<a href={d.datei} class="underline hover:text-brand-blue">
 										{d.titel}
 									</a>

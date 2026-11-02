@@ -51,6 +51,7 @@ export interface Startseite {
 }
 
 export interface Beitrag {
+	bearbeiten: Bearbeiten;
 	slug: string;
 	titel: string;
 	datum: Kalendertag;
@@ -60,11 +61,13 @@ export interface Beitrag {
 }
 
 export interface Galerie {
+	bearbeiten: Bearbeiten;
 	titel: string;
 	intro: string;
 }
 
 export interface Album {
+	bearbeiten: Bearbeiten;
 	slug: string;
 	titel: string;
 	/** Datum des Anlasses. */
@@ -83,6 +86,7 @@ export interface Termin {
 }
 
 export interface Kontakt {
+	bearbeiten: Bearbeiten;
 	intro: { titel: string; text: string };
 	kitaportal: { titel: string; text: string; url: string; linkText: string };
 	karte: { bild: Bild; quelle: string; url: string; linkText: string };
@@ -129,6 +133,7 @@ export const beitraege = einmal(async (): Promise<Beitrag[]> => {
 	const stories = await quelle.storiesDesTyps<BeitragStory>("beitrag");
 	const liste = await Promise.all(
 		stories.map(async ({ slug, content: c }) => ({
+			bearbeiten: bearbeiten(c),
 			slug,
 			titel: c.titel,
 			datum: kalendertag(c.datum) ?? abbrechen(`Inhaltsquelle: Beitrag „${c.titel}“ ohne Datum.`),
@@ -142,13 +147,14 @@ export const beitraege = einmal(async (): Promise<Beitrag[]> => {
 
 export const galerie = einmal(async (): Promise<Galerie> => {
 	const s = await quelle.story<GalerieStory>("galerie");
-	return { titel: s.titel, intro: s.intro ?? "" };
+	return { bearbeiten: bearbeiten(s), titel: s.titel, intro: s.intro ?? "" };
 });
 
 /** Alle Alben, neueste zuerst. */
 export const alben = einmal(async (): Promise<Album[]> => {
 	const liste = await Promise.all(
 		(await quelle.storiesDesTyps<AlbumStory>("album")).map(async ({ slug, content: s }) => ({
+			bearbeiten: bearbeiten(s),
 			slug,
 			titel: s.titel,
 			datum: kalendertag(s.datum) ?? abbrechen(`Inhaltsquelle: Album „${s.titel}“ ohne Datum.`),
@@ -250,11 +256,13 @@ export const termine = einmal(async (): Promise<Termin[]> =>
 
 /** Ein Download; `datei` ist der same-origin Pfad, unter dem die Datei beim Build abgelegt wird. */
 export interface Download {
+	bearbeiten: Bearbeiten;
 	titel: string;
 	datei: string;
 }
 
 export interface DownloadKategorie {
+	bearbeiten: Bearbeiten;
 	titel: string;
 	downloads: Download[];
 }
@@ -266,6 +274,7 @@ export const downloadKategorien = einmal(async (): Promise<DownloadKategorie[]> 
 		quelle.storiesDesTyps<DownloadStory>("download"),
 	]);
 	const mitDatei = downloads.map(({ content: d }) => ({
+		bearbeiten: bearbeiten(d),
 		titel: d.titel,
 		kategorie: d.kategorie,
 		datei: dateiPfad(d.datei?.filename || abbrechen(`Inhaltsquelle: Download „${d.titel}“ ohne Datei.`)),
@@ -273,11 +282,12 @@ export const downloadKategorien = einmal(async (): Promise<DownloadKategorie[]> 
 	return kategorien
 		.toSorted((a, b) => Number(a.content.reihenfolge) - Number(b.content.reihenfolge))
 		.map((k) => ({
+			bearbeiten: bearbeiten(k.content),
 			titel: k.content.titel,
 			downloads: mitDatei
 				.filter((d) => d.kategorie === k.uuid)
 				.toSorted((a, b) => a.titel.localeCompare(b.titel, "de"))
-				.map(({ titel, datei }) => ({ titel, datei })),
+				.map(({ bearbeiten, titel, datei }) => ({ bearbeiten, titel, datei })),
 		}))
 		.filter((k) => k.downloads.length);
 });
@@ -285,6 +295,7 @@ export const downloadKategorien = einmal(async (): Promise<DownloadKategorie[]> 
 export const kontakt = einmal(async (): Promise<Kontakt> => {
 	const s = await quelle.story<KontaktStory>("kontakt");
 	return {
+		bearbeiten: bearbeiten(s),
 		intro: { titel: s.intro_titel, text: s.intro_text ?? "" },
 		kitaportal: { titel: s.kitaportal_titel, text: s.kitaportal_text, url: s.kitaportal_url, linkText: s.kitaportal_link_text },
 		karte: { bild: await bild(s.karte_bild), quelle: s.karte_quelle, url: s.karte_url, linkText: s.karte_link_text },

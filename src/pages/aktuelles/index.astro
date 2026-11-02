@@ -16,7 +16,7 @@ const liste = await beitraege();
 			<div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
 				{
 					liste.map((b) => (
-						<article class="flex flex-col gap-y-3">
+						<article class="flex flex-col gap-y-3" {...b.bearbeiten}>
 							<Bild bild={b.teaserbild} class="aspect-[4/3] w-full object-cover rounded-lg" widths={[400, 800]} sizes="(min-width: 768px) 33vw, 100vw" />
 							<Datum datum={b.datum} class="text-sm text-gray-600" />
 							<h2 class="text-2xl font-bold">

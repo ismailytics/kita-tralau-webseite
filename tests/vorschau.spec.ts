@@ -23,14 +23,20 @@ test("Vorschau bindet die Bridge ein, setzt noindex und macht alle Bloks bearbei
 	}
 });
 
-// Seite → Elemente verschachtelter Bloks (Mitglieder, Zeitblöcke, Fragen, Termine), die einzeln bearbeitbar sein müssen.
+// Seite → Elemente verschachtelter Bloks (Mitglieder, Zeitblöcke, Fragen) und gelisteter Stories (Termine, Alben,
+// Beiträge, Download-Kategorien und Downloads), die einzeln bearbeitbar sein müssen.
 const VERSCHACHTELT: Record<string, string> = {
 	"/": "main li",
 	"/vorstand": "main li",
 	"/tagesablauf": "main li",
 	"/faq": "main details",
 	"/termine": "main li",
+	"/galerie": "main li",
+	"/aktuelles": "main article",
+	"/downloads": "main section[aria-labelledby], main section[aria-labelledby] li",
 };
+// Seiten ohne eigene Story; dort sind nur die gelisteten Stories bearbeitbar.
+const OHNE_SEITENSTORY = ["/termine", "/aktuelles", "/downloads"];
 
 for (const [pfad, bloks] of Object.entries(VERSCHACHTELT)) {
 	test(`${pfad}: Seite und alle verschachtelten Bloks sind bearbeitbar`, async ({ page }) => {
@@ -38,8 +44,7 @@ for (const [pfad, bloks] of Object.entries(VERSCHACHTELT)) {
 		const elemente = page.locator(bloks);
 		expect(await elemente.count()).toBeGreaterThan(0);
 		for (const element of await elemente.all()) await expect(element).toHaveAttribute("data-blok-c", /"uid":/);
-		// Die Termine-Seite hat keine eigene Story; dort sind nur die Termine selbst Bloks.
-		if (pfad !== "/termine") await expect(page.locator("main")).toHaveAttribute("data-blok-c", /"uid":/);
+		if (!OHNE_SEITENSTORY.includes(pfad)) await expect(page.locator("main")).toHaveAttribute("data-blok-c", /"uid":/);
 	});
 }
 
@@ -59,7 +64,7 @@ test("nach dem Speichern erscheint der Hinweis, bei neuer Build-ID lädt die Sei
 	await expect(hinweis).toBeHidden();
 });
 
-for (const pfad of ["/ueber-uns", "/impressum", "/datenschutz"]) {
+for (const pfad of ["/ueber-uns", "/impressum", "/datenschutz", "/kontakt", "/galerie/sommer-2026", "/aktuelles/laternelaufen"]) {
 	test(`${pfad}: Seite ist bearbeitbar`, async ({ page }) => {
 		await page.goto(pfad);
 		await expect(page.locator("main")).toHaveAttribute("data-blok-c", /"uid":/);
