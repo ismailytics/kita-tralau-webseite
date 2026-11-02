@@ -2,7 +2,8 @@ import { defineConfig } from "@playwright/test";
 
 // --ignore-lock: Astro startet die Vorschau sonst bei erkanntem Agent im Hintergrund.
 // Testet den fertigen Build in dist/ (vorher `pnpm build` mit Beispielinhalten).
-const port = 4322;
+// TEST_PORT: parallele Worktrees brauchen eigene Ports, sonst testet reuseExistingServer fremde Builds.
+const port = Number(process.env.TEST_PORT ?? 4322);
 
 export default defineConfig({
 	testDir: "tests",
