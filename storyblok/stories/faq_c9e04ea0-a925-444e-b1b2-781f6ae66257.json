@@ -1,0 +1,77 @@
+{
+  "name": "FAQ",
+  "parent_id": 0,
+  "group_id": "4b7cd7ea-2bb5-4f8b-b476-8a52107015a6",
+  "alternates": [],
+  "deleted_at": null,
+  "sort_by_date": null,
+  "tag_list": [],
+  "id": 237374967093435,
+  "uuid": "c9e04ea0-a925-444e-b1b2-781f6ae66257",
+  "is_folder": false,
+  "content": {
+    "_uid": "a1e4e454-e69a-4239-a9ba-b07906c6e703",
+    "intro": "Ihre Frage ist nicht dabei? Schreiben Sie uns, wir antworten gern.",
+    "titel": "Häufige Fragen",
+    "fragen": [
+      {
+        "_uid": "26ab4c6e-f3fb-42e0-b8d5-a41394e7869b",
+        "frage": "Ab welchem Alter kann mein Kind zu Ihnen kommen?",
+        "antwort": "Wir betreuen Kinder ab drei Jahren bis zum Schuleintritt.",
+        "component": "faq_frage"
+      },
+      {
+        "_uid": "d33e006f-b4a0-4165-b7d6-a907ee89edcf",
+        "frage": "Wie melde ich mein Kind an?",
+        "antwort": "Die Anmeldung läuft über das Kitaportal des Kreises. Gern zeigen wir Ihnen vorher bei einem Besuch unsere Räume.",
+        "component": "faq_frage"
+      },
+      {
+        "_uid": "44565692-47bc-42e4-9d57-7c69847209e7",
+        "frage": "Was bedeutet Elterninitiative?",
+        "antwort": "Die Kita wird von einem Verein der Eltern getragen. Eltern übernehmen kleine Aufgaben, etwa im Garten oder beim Sommerfest.",
+        "component": "faq_frage"
+      },
+      {
+        "_uid": "49451ded-7925-4a7a-9271-2e997b27fc63",
+        "frage": "Gibt es ein Mittagessen?",
+        "antwort": "Ja, wir essen jeden Tag gemeinsam warm zu Mittag.",
+        "component": "faq_frage"
+      }
+    ],
+    "component": "faq"
+  },
+  "published": true,
+  "slug": "faq",
+  "path": null,
+  "full_slug": "faq",
+  "default_root": null,
+  "disble_fe_editor": false,
+  "disable_fe_editor": false,
+  "parent": null,
+  "is_startpage": false,
+  "unpublished_changes": false,
+  "meta_data": null,
+  "imported_at": null,
+  "pinned": false,
+  "breadcrumbs": [],
+  "publish_at": null,
+  "expire_at": null,
+  "translated_slugs": [],
+  "localized_paths": [],
+  "position": -20,
+  "translated_stories": [],
+  "can_not_view": false,
+  "is_scheduled": null,
+  "scheduled_dates": null,
+  "ideas": [],
+  "current_version_id": 237374967569949,
+  "variant_type": null,
+  "taxonomy_terms": [],
+  "experiment_ids": [],
+  "release_ids": [],
+  "stage": null,
+  "stages": [],
+  "assigned_users_per_language": {},
+  "favourite_for_user_ids": []
+}

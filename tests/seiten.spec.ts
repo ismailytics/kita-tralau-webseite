@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 // Alle Seiten der Site. Neue Seiten hier eintragen, dann gelten die Prüfungen auch für sie.
-const SEITEN = ["/", "/galerie", "/galerie/winter-2026"];
+const SEITEN = ["/", "/termine", "/vorstand", "/tagesablauf", "/faq", "/galerie", "/galerie/winter-2026", "/downloads"];
 
 for (const pfad of SEITEN) {
 	test.describe(`Seite ${pfad}`, () => {

@@ -4,9 +4,15 @@ import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
 import type {
 	Album as AlbumStory,
+	Download as DownloadStory,
+	DownloadKategorie as DownloadKategorieStory,
+	Faq as FaqStory,
 	Galerie as GalerieStory,
 	GlobaleAngaben as GlobaleAngabenStory,
 	Startseite as StartseiteStory,
+	Tagesablauf as TagesablaufStory,
+	Termin as TerminStory,
+	Vorstand as VorstandStory,
 } from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
 import * as storyblok from "./storyblok";
@@ -42,6 +48,15 @@ export interface Album {
 	/** Datum des Anlasses als YYYY-MM-DD. */
 	datum: string;
 	fotos: Bild[];
+}
+
+/** Ein Termin; Daten als ISO-Datum (JJJJ-MM-TT). */
+export interface Termin {
+	titel: string;
+	datum: string;
+	uhrzeit?: string;
+	enddatum?: string;
+	kurztext?: string;
 }
 
 // Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
@@ -85,8 +100,138 @@ export async function galerie(): Promise<Galerie> {
 
 /** Alle Alben, neueste zuerst. */
 export async function alben(): Promise<Album[]> {
-	const stories = await quelle.stories<AlbumStory>("alben");
-	return stories
+	return (await quelle.alleStories<AlbumStory>("album"))
 		.map(({ slug, content: s }) => ({ slug, titel: s.titel, datum: s.datum.slice(0, 10), fotos: s.fotos.map(bild) }))
 		.sort((a, b) => b.datum.localeCompare(a.datum));
+}
+
+export interface Vorstandsmitglied {
+	name: string;
+	rolle: string;
+	foto?: Bild;
+	email?: string;
+}
+
+export interface Vorstand {
+	titel: string;
+	intro: string;
+	mitglieder: Vorstandsmitglied[];
+	beitritt: { titel: string; text: string };
+}
+
+export async function vorstand(): Promise<Vorstand> {
+	const s = await quelle.story<VorstandStory>("vorstand");
+	return {
+		titel: s.titel,
+		intro: s.intro ?? "",
+		mitglieder: (s.mitglieder ?? []).map((m) => ({
+			name: m.name,
+			rolle: m.rolle,
+			// Ein leeres Asset-Feld kommt als Objekt ohne filename.
+			foto: m.foto?.filename ? bild(m.foto) : undefined,
+			email: m.email?.trim() || undefined,
+		})),
+		beitritt: { titel: s.beitritt_titel, text: s.beitritt_text },
+	};
+}
+
+export interface Zeitblock {
+	uhrzeit: string;
+	beschreibung: string;
+}
+
+export interface Tagesablauf {
+	titel: string;
+	intro: string;
+	zeitbloecke: Zeitblock[];
+}
+
+export async function tagesablauf(): Promise<Tagesablauf> {
+	const s = await quelle.story<TagesablaufStory>("tagesablauf");
+	return {
+		titel: s.titel,
+		intro: s.intro ?? "",
+		zeitbloecke: (s.zeitbloecke ?? []).map((z) => ({ uhrzeit: z.uhrzeit, beschreibung: z.beschreibung })),
+	};
+}
+
+export interface Faq {
+	titel: string;
+	intro: string;
+	fragen: { frage: string; antwort: string }[];
+}
+
+export async function faq(): Promise<Faq> {
+	const s = await quelle.story<FaqStory>("faq");
+	return {
+		titel: s.titel,
+		intro: s.intro ?? "",
+		fragen: (s.fragen ?? []).map((f) => ({ frage: f.frage, antwort: f.antwort })),
+	};
+}
+
+// Storyblok liefert Datumsfelder als „JJJJ-MM-TT HH:MM“.
+const tag = (wert?: string) => wert?.slice(0, 10) || undefined;
+const fehler = (meldung: string): never => {
+	throw new Error(meldung);
+};
+
+/** Alle Termine nach Datum aufsteigend; vergangene bleiben stehen, bis die Redaktion sie löscht. */
+export async function termine(): Promise<Termin[]> {
+	const alle = await quelle.alle<TerminStory>("termin");
+	return alle
+		.map((t) => ({
+			titel: t.titel,
+			datum: tag(t.datum) ?? fehler(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
+			uhrzeit: t.uhrzeit || undefined,
+			enddatum: tag(t.enddatum),
+			kurztext: t.kurztext || undefined,
+		}))
+		.sort((a, b) => a.datum.localeCompare(b.datum));
+}
+
+/** Ein Download; `datei` ist der same-origin Pfad, unter dem die Datei beim Build abgelegt wird. */
+export interface Download {
+	titel: string;
+	datei: string;
+}
+
+export interface DownloadKategorie {
+	titel: string;
+	downloads: Download[];
+}
+
+async function alleDownloads() {
+	return (await quelle.alleStories<DownloadStory>("download")).map(({ content: d }) => {
+		if (!d.datei?.filename) throw new Error(`Inhaltsquelle: Download „${d.titel}“ ohne Datei.`);
+		return {
+			titel: d.titel,
+			kategorie: d.kategorie as string,
+			asset: d.datei,
+			datei: `/downloads/dateien/${d.datei.id}/${d.datei.filename.split("/").pop()}`,
+		};
+	});
+}
+
+/** Download-Kategorien in der Reihenfolge der Redaktion, Downloads darin nach Titel; leere Kategorien entfallen. */
+export async function downloadKategorien(): Promise<DownloadKategorie[]> {
+	const [kategorien, downloads] = await Promise.all([
+		quelle.alleStories<DownloadKategorieStory>("download_kategorie"),
+		alleDownloads(),
+	]);
+	return kategorien
+		.toSorted((a, b) => Number(a.content.reihenfolge) - Number(b.content.reihenfolge))
+		.map((k) => ({
+			titel: k.content.titel,
+			downloads: downloads
+				.filter((d) => d.kategorie === k.uuid)
+				.toSorted((a, b) => a.titel.localeCompare(b.titel, "de"))
+				.map(({ titel, datei }) => ({ titel, datei })),
+		}))
+		.filter((k) => k.downloads.length);
+}
+
+/** Alle Download-Dateien mit ihrem Pfad, damit der Build sie same-origin ablegt (ADR-0003). */
+export async function downloadDateien(): Promise<{ pfad: string; inhalt: () => Promise<Uint8Array> }[]> {
+	return (await alleDownloads()).map((d) => ({ pfad: d.datei, inhalt: () => quelle.datei(d.asset) }));
 }
