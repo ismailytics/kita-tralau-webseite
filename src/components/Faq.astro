@@ -1,29 +1,30 @@
 ---
-import FaqItem from "@/components/FaqItem.astro";
-const faqs = [
-	{
-		question: "What grades does Elementary serve?",
-		answer: "We serve students from Pre-K through 5th grade, with dedicated classrooms and teachers for each grade level.",
-	},
-	{
-		question: "What are the school hours?",
-		answer: "Doors open at 7:45 AM for breakfast, classes begin at 8:15 AM, and dismissal is at 3:00 PM. After-school care is available until 5:30 PM.",
-	},
-	{
-		question: "How do I enroll my child?",
-		answer: "Visit our front office or call (555) 123-4567 to start the enrollment process. We'll guide you through every step!",
-	},
-	{
-		question: "Is there a school lunch program?",
-		answer: "Yes! We offer nutritious hot lunches daily with vegetarian and allergy-friendly options. Free and reduced-price meals are available for qualifying families.",
-	},
-	{
-		question: "Does the school offer before and after-school care?",
-		answer: "Absolutely! Our before-school program starts at 6:30 AM and after-school care runs until 5:30 PM with homework help, snacks, and supervised activities.",
-	},
-];
+// Native <details>: auf- und zuklappbar ohne JavaScript, per Tastatur bedienbar.
+import type { Faq } from "@/inhaltsquelle";
+
+type Props = { fragen: Faq["fragen"] };
+const { fragen } = Astro.props;
 ---
 
-<dl class="space-y-4 max-w-3xl mx-auto">
-	{faqs.map((faq, i) => <FaqItem id={`faq-${i}`} question={faq.question} answer={faq.answer} />)}
-</dl>
+<div class="space-y-4 max-w-3xl mx-auto">
+	{
+		fragen.map(({ bearbeiten, frage, antwort }) => (
+			<details class="group border border-brand-foreground/15 rounded-2xl overflow-hidden" {...bearbeiten}>
+				<summary class="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between p-5 text-left text-brand-foreground font-bold hover:bg-brand-foreground/5 transition-colors">
+					{frage}
+					<svg
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.5"
+						aria-hidden="true"
+						class="ml-6 size-5 shrink-0 text-gray-500 transition-transform group-open:rotate-45"
+					>
+						<path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+				</summary>
+				<p class="px-5 pb-5 pt-1 whitespace-pre-line">{antwort}</p>
+			</details>
+		))
+	}
+</div>

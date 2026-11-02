@@ -1,0 +1,39 @@
+{
+  "name": "faq_frage",
+  "display_name": "Frage",
+  "description": "Eine Frage mit Antwort in der FAQ.",
+  "created_at": "2026-11-02T18:00:49.164Z",
+  "updated_at": "2026-11-02T18:00:49.164Z",
+  "id": 237374870180712,
+  "schema": {
+    "frage": {
+      "type": "text",
+      "pos": 0,
+      "required": true,
+      "display_name": "Frage",
+      "id": "pChXG33sQLy7tZ-BeZctbg"
+    },
+    "antwort": {
+      "type": "textarea",
+      "pos": 1,
+      "required": true,
+      "display_name": "Antwort",
+      "id": "hToNQPJZQkOthl7Hx-k7jQ"
+    }
+  },
+  "image": null,
+  "preview_field": null,
+  "is_root": false,
+  "preview_tmpl": null,
+  "is_nestable": true,
+  "all_presets": [],
+  "preset_id": null,
+  "real_name": "Frage",
+  "component_group_uuid": null,
+  "color": null,
+  "icon": null,
+  "internal_tags_list": [],
+  "internal_tag_ids": [],
+  "content_type_asset_preview": null,
+  "metadata": {}
+}

@@ -23,6 +23,26 @@ test("Vorschau bindet die Bridge ein, setzt noindex und macht alle Bloks bearbei
 	}
 });
 
+// Seite → Elemente verschachtelter Bloks (Mitglieder, Zeitblöcke, Fragen, Termine), die einzeln bearbeitbar sein müssen.
+const VERSCHACHTELT: Record<string, string> = {
+	"/": "main li",
+	"/vorstand": "main li",
+	"/tagesablauf": "main li",
+	"/faq": "main details",
+	"/termine": "main li",
+};
+
+for (const [pfad, bloks] of Object.entries(VERSCHACHTELT)) {
+	test(`${pfad}: Seite und alle verschachtelten Bloks sind bearbeitbar`, async ({ page }) => {
+		await page.goto(pfad);
+		const elemente = page.locator(bloks);
+		expect(await elemente.count()).toBeGreaterThan(0);
+		for (const element of await elemente.all()) await expect(element).toHaveAttribute("data-blok-c", /"uid":/);
+		// Die Termine-Seite hat keine eigene Story; dort sind nur die Termine selbst Bloks.
+		if (pfad !== "/termine") await expect(page.locator("main")).toHaveAttribute("data-blok-c", /"uid":/);
+	});
+}
+
 test("nach dem Speichern erscheint der Hinweis, bei neuer Build-ID lädt die Seite neu", async ({ page }) => {
 	await page.goto("/");
 	const hinweis = page.getByRole("status");

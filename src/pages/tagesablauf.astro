@@ -1,0 +1,22 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Agenda from "@/components/Agenda.astro";
+import { tagesablauf } from "@/inhaltsquelle";
+
+const { bearbeiten, titel, intro, zeitbloecke } = await tagesablauf();
+---
+
+<Layout title="Tagesablauf" seoDescription={intro || undefined} bearbeiten={bearbeiten}>
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				{intro && <p>{intro}</p>}
+			</SectionHeading>
+			<Agenda zeitbloecke={zeitbloecke} />
+		</Container>
+	</Section>
+</Layout>

@@ -2,7 +2,14 @@
 // Liefert fertige Daten in Begriffen des Glossars; dahinter Storyblok oder die Beispielinhalte im Repo.
 import type { ImageMetadata } from "astro";
 import type { StoryblokAsset } from "../../storyblok/storyblok";
-import type { GlobaleAngaben as GlobaleAngabenStory, Startseite as StartseiteStory } from "../../storyblok/types/storyblok-components";
+import type {
+	Faq as FaqStory,
+	GlobaleAngaben as GlobaleAngabenStory,
+	Startseite as StartseiteStory,
+	Tagesablauf as TagesablaufStory,
+	Termin as TerminStory,
+	Vorstand as VorstandStory,
+} from "../../storyblok/types/storyblok-components";
 import * as beispiel from "./beispiel";
 import * as storyblok from "./storyblok";
 import { VORSCHAU } from "../variante";
@@ -30,6 +37,16 @@ export interface Startseite {
 	hero: { titel: string; text: string; bild: Bild };
 	konzept: { titel: string; text: string };
 	kontaktCta: { titel: string; text: string; button: string };
+}
+
+/** Ein Termin; Daten als ISO-Datum (JJJJ-MM-TT). */
+export interface Termin {
+	bearbeiten: Bearbeiten;
+	titel: string;
+	datum: string;
+	uhrzeit?: string;
+	enddatum?: string;
+	kurztext?: string;
 }
 
 // Auswahl per Umgebungsvariable; ohne Angabe die Beispielinhalte, damit Build und Tests ohne Storyblok-Zugang laufen.
@@ -73,4 +90,99 @@ export async function startseite(): Promise<Startseite> {
 		konzept: { titel: s.konzept_titel, text: s.konzept_text },
 		kontaktCta: { titel: s.kontakt_titel, text: s.kontakt_text ?? "", button: s.kontakt_button },
 	};
+}
+
+export interface Vorstandsmitglied {
+	bearbeiten: Bearbeiten;
+	name: string;
+	rolle: string;
+	foto?: Bild;
+	email?: string;
+}
+
+export interface Vorstand {
+	bearbeiten: Bearbeiten;
+	titel: string;
+	intro: string;
+	mitglieder: Vorstandsmitglied[];
+	beitritt: { titel: string; text: string };
+}
+
+export async function vorstand(): Promise<Vorstand> {
+	const s = await quelle.story<VorstandStory>("vorstand");
+	return {
+		bearbeiten: bearbeiten(s),
+		titel: s.titel,
+		intro: s.intro ?? "",
+		mitglieder: (s.mitglieder ?? []).map((m) => ({
+			bearbeiten: bearbeiten(m),
+			name: m.name,
+			rolle: m.rolle,
+			// Ein leeres Asset-Feld kommt als Objekt ohne filename.
+			foto: m.foto?.filename ? bild(m.foto) : undefined,
+			email: m.email?.trim() || undefined,
+		})),
+		beitritt: { titel: s.beitritt_titel, text: s.beitritt_text },
+	};
+}
+
+export interface Zeitblock {
+	bearbeiten: Bearbeiten;
+	uhrzeit: string;
+	beschreibung: string;
+}
+
+export interface Tagesablauf {
+	bearbeiten: Bearbeiten;
+	titel: string;
+	intro: string;
+	zeitbloecke: Zeitblock[];
+}
+
+export async function tagesablauf(): Promise<Tagesablauf> {
+	const s = await quelle.story<TagesablaufStory>("tagesablauf");
+	return {
+		bearbeiten: bearbeiten(s),
+		titel: s.titel,
+		intro: s.intro ?? "",
+		zeitbloecke: (s.zeitbloecke ?? []).map((z) => ({ bearbeiten: bearbeiten(z), uhrzeit: z.uhrzeit, beschreibung: z.beschreibung })),
+	};
+}
+
+export interface Faq {
+	bearbeiten: Bearbeiten;
+	titel: string;
+	intro: string;
+	fragen: { bearbeiten: Bearbeiten; frage: string; antwort: string }[];
+}
+
+export async function faq(): Promise<Faq> {
+	const s = await quelle.story<FaqStory>("faq");
+	return {
+		bearbeiten: bearbeiten(s),
+		titel: s.titel,
+		intro: s.intro ?? "",
+		fragen: (s.fragen ?? []).map((f) => ({ bearbeiten: bearbeiten(f), frage: f.frage, antwort: f.antwort })),
+	};
+}
+
+// Storyblok liefert Datumsfelder als „JJJJ-MM-TT HH:MM“.
+const tag = (wert?: string) => wert?.slice(0, 10) || undefined;
+const fehler = (meldung: string): never => {
+	throw new Error(meldung);
+};
+
+/** Alle Termine nach Datum aufsteigend; vergangene bleiben stehen, bis die Redaktion sie löscht. */
+export async function termine(): Promise<Termin[]> {
+	const alle = await quelle.alle<TerminStory>("termin");
+	return alle
+		.map((t) => ({
+			bearbeiten: bearbeiten(t),
+			titel: t.titel,
+			datum: tag(t.datum) ?? fehler(`Inhaltsquelle: Termin „${t.titel}“ ohne Datum.`),
+			uhrzeit: t.uhrzeit || undefined,
+			enddatum: tag(t.enddatum),
+			kurztext: t.kurztext || undefined,
+		}))
+		.sort((a, b) => a.datum.localeCompare(b.datum));
 }

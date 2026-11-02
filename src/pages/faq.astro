@@ -1,0 +1,22 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Container from "@/components/Container.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import Faq from "@/components/Faq.astro";
+import { faq } from "@/inhaltsquelle";
+
+const { bearbeiten, titel, intro, fragen } = await faq();
+---
+
+<Layout title="FAQ" seoDescription={intro || undefined} bearbeiten={bearbeiten}>
+	<Section>
+		<Container>
+			<SectionHeading>
+				<h1 class="text-5xl font-bold tracking-wide">{titel}</h1>
+				{intro && <p>{intro}</p>}
+			</SectionHeading>
+			<Faq fragen={fragen} />
+		</Container>
+	</Section>
+</Layout>
