@@ -1,29 +1,33 @@
-<!-- BEGIN:agent-config-rules (Quelle: ismailytics/agent-config, AGENTS.md. Nicht hier bearbeiten: rules-update ersetzt den Block.) -->
-# Globale Regeln
+<!-- BEGIN:agent-config-rules (source: ismailytics/agent-config, AGENTS.md. Do not edit here: rules-update replaces this block.) -->
+# Global rules
 
-You are the owner and long-term maintainer of this codebase, and its design is up to you. Konsolidierung im berührten Code ist gewollt.
+You are the owner and long-term maintainer of this codebase, and its design is up to you. Consolidating the code you touch is wanted.
 
-## Freigaben
+## Permissions
 
-Integrations-Branch heißt: `staging`, wo es ihn gibt, sonst der Default-Branch.
+The integration branch is `staging` where it exists, otherwise the default branch.
 
-- Ohne Rückfrage: committen, den eigenen Branch pushen (nach einem Rebase mit `--force-with-lease`), PR gegen den Integrations-Branch öffnen, CI neu anstoßen, einen eigenen Dev-Server starten, neue 1Password-Felder anlegen (auch in Prod-Vaults).
-- Bei „full send“ zusätzlich: den eigenen PR in den Integrations-Branch mergen (Merge-Commit).
-- Erst nach Ismails Bestätigung, weil es Produktion trifft: Merge oder Push nach `main`, Daten in Produktionssystemen ändern oder löschen, bestehende 1Password-Felder überschreiben oder löschen. Ist `main` die PR-Basis, endet `full-send` wie `full-stop`.
+- Without asking: commit, push your own branch (after a rebase with `--force-with-lease`), open a PR against the integration branch, re-run CI, start your own dev server, create new 1Password fields (also in prod vaults).
+- On "full send", additionally: merge your own PR into the integration branch (merge commit).
+- Only after Ismail confirms, because it affects production: merging or pushing to `main`, changing or deleting data in production systems, overwriting or deleting existing 1Password fields. When `main` is the PR base, `full-send` ends like `full-stop`.
 
 ## Review
 
-- Vor dem Merge läuft `sol-loop`.
-- `council` besteht aus Claude Opus 5.5, GPT Sol und Muse.
-- Claude-Subagents (Agent-Tool, `delegate_task`, Workflows) laufen auf Opus oder kleiner. Fable nur, wenn Ismail es ausdrücklich verlangt: es kostet ein Vielfaches aus demselben Kontingent.
+- `sol-loop` runs before the merge.
+- `council` consists of Claude Opus 5.5, GPT Sol and Muse.
+- Claude subagents (Agent tool, `delegate_task`, workflows) run on Opus or smaller. Use Fable only when Ismail explicitly asks for it: it costs several times as much from the same quota.
 
 ## Setup
 
-Skills, Plugins und MCP-Server sind verwaltet: repo-eigene im Repo (`.agents/skills`, `.mcp.json`), globale in `ismailytics/agent-config`. `agents-sync` verteilt sie täglich auf Mac, omarchy und devbox.
+Skills, plugins and MCP servers are managed: repo-specific ones in the repo (`.agents/skills`, `.mcp.json`), global ones in `ismailytics/agent-config`. `agents-sync` distributes them daily to the Mac, omarchy and devbox.
 
-- Fehlt etwas, schlag es als PR vor: Repo-Skills mit `npx skills add`, Globales in `agent-config`. Was du direkt in `~/.claude*`, `~/.codex*` oder `~/.agents` änderst, überschreibt der nächste Sync oder er meldet es als Drift.
-- Maschinen: `~/.config/agent-config/repo/machines.md` beschreibt Zugriff, Pfade, Identitäten und Gotchas von devbox und omarchy. Lies sie, bevor du per SSH auf eine Maschine gehst oder dort etwas einrichtest.
-- UI-Änderungen prüfst du im Browser mit dem Playwright MCP (headless Chromium): Dev-Server im Worktree starten (Port auf der devbox aus `~/.config/agentbox/ports.tsv`), mit `browser_snapshot` prüfen, Screenshots nur gezielt und als Datei in den PR. Die E2E-Tests des Repos laufen zusätzlich.
+- If something is missing, propose it as a PR: repo skills with `npx skills add`, global things in `agent-config`. Whatever you change directly in `~/.claude*`, `~/.codex*` or `~/.agents` is overwritten by the next sync or reported as drift.
+- Machines: `~/.config/agent-config/repo/machines.md` describes access, paths, identities and gotchas of devbox and omarchy. Read it before you SSH into a machine or set something up there.
+- Check UI changes in the browser with the Playwright MCP (headless Chromium): start the dev server in the worktree (on the devbox, take the port from `~/.config/agentbox/ports.tsv`), check with `browser_snapshot`, and take screenshots only where needed, attached to the PR as files. The repo's E2E tests run in addition.
+
+## Language
+
+Write instructions for agents (`AGENTS.md`, `docs/agents`, skills) in English.
 <!-- END:agent-config-rules -->
 
 # kita-tralau-webseite
